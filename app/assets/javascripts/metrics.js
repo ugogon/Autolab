@@ -3,7 +3,8 @@
 $(document).ready(function(){
     $('.tabular.menu .item').tab();
     $('.ui.dropdown').dropdown();
-    $('.ui.checkbox').checkbox();
+		$('.ui.checkbox').checkbox();
+		$('.ui.icon').popup();
     $('.ui.form')
 	  .form({
 	    fields: {

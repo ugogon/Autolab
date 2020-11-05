@@ -44,9 +44,9 @@
         <div class="ui tab segments active" data-tab="new_tab">
           <% if @new_students > 0 then %>
             <!-- TODO: Remove rendering -->
-            <%= render partial: 'student_row', locals: {student_name: "Jane Doe", grace_days: 3, low_scores: 2} %>
-            <%= render partial: 'student_row', locals: {student_name: "Emily Lee", missing_submissions: 2} %>
-            <%= render partial: 'student_row', locals: {student_name: "John Smith", downward_trend: 1} %>
+            <%= render partial: 'student_row', locals: {student_name: "Jane Doe", andrew_id: "jdoe", grace_days: 3, low_scores: 2} %>
+            <%= render partial: 'student_row', locals: {student_name: "Emily Lee", andrew_id: "elee", missing_submissions: 2, archived: true} %>
+            <%= render partial: 'student_row', locals: {student_name: "John Smith", andrew_id: "jsmith", downward_trend: 1} %>
           <% else %>
             <div id="undefined_metrics">
               <center>
@@ -94,7 +94,7 @@
           <center>
             <i class="massive inbox icon"></i> 
             <h3> You have not defined your risk metrics </h3>
-            Set up identification conditions at in the <b>Risk Metrics</b> tab.  <br> 
+            Set up identification conditions at in the <b>Risk Metrics</b> tab. <br> 
             Identified possible at-risk students will appear here. 
           </center>
         </div>

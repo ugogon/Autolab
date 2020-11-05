@@ -5,7 +5,17 @@
     <label>
       <p> <%= student_name %> </p>
     </label>
+    
   </div>
+
+  <% if local_assigns[:andrew_id] then %>
+    <span>
+      <label id="andrew_id">
+        <i> <%= andrew_id %> </i>
+      </label>
+    </span>
+  <% end %>
+
   <% if local_assigns[:grace_days] then %>
   <div class="ui circular label"> <%= grace_days %> grace days used</div>
   <% end %>
@@ -22,6 +32,11 @@
   <% end %>
 
   <div class="students-buttons-right"> 
+    <% if local_assigns[:archived] then %>
+      <div class="left ui icon" data-content="This student also appears in archived">
+        <i class="exclamation circle icon"></i>
+      </div>
+    <% end %>
     <button class="ui submit tiny button"><i class="mail outline icon"></i>CONTACT</button>
     <button class="ui submit tiny button"><i class="check circle icon"></i>RESOLVE</button>
   </div>
