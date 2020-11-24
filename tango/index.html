@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.6.3">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
     
     
       
@@ -530,8 +530,20 @@
 
 
   <li class="md-nav__item">
-    <a href="../one-click/" title="OneClick Install" class="md-nav__link">
-      OneClick Install
+    <a href="../docker-compose/" title="Docker Compose Install" class="md-nav__link">
+      Docker Compose Install
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../one-click/" title="(Legacy) OneClick Install" class="md-nav__link">
+      (Legacy) OneClick Install
     </a>
   </li>
 
@@ -608,12 +620,12 @@
 <li><code>vmms/</code> - VMMS library implementations</li>
 <li><code>restful-tango/</code> - HTTP server layer on the main Tango</li>
 </ul>
-<p>Tango runs jobs in VMs using a high level Virtual Memory Management System (VMMS) API. Tango currently has support for running jobs in <a href="https://www.docker.com/">Docker</a> containers (<strong>recommended</strong>), <a href="http://opencirrus.intel-research.net/tashi/">Tashi VMs</a>, or <a href="https://aws.amazon.com/ec2">Amazon EC2</a>.</p>
+<p>Tango runs jobs in VMs using a high level Virtual Memory Management System (VMMS) API. Tango currently has support for running jobs in <a href="https://www.docker.com/">Docker</a> containers (<strong>recommended</strong>) or <a href="https://aws.amazon.com/ec2">Amazon EC2</a>.</p>
 <p>For more information about the different Tango components, go to the following pages:</p>
 <ul>
 <li><a href="/tango-rest/">REST API docs</a></li>
 <li><a href="/tango-vmms/">VMMS API docs</a></li>
-<li><a href="http://autolab.github.io/2015/04/making-backend-scalable/">Tango Architecture Overview</a></li>
+<li><a href="https://docs.autolabproject.com/2015/04/making-backend-scalable/">Tango Architecture Overview</a></li>
 <li><a href="/tango-deploy/">Deploying Tango</a></li>
 </ul>
 <h3 id="installation">Installation</h3>
@@ -627,7 +639,7 @@
 
 </li>
 <li>
-<p>Install Redis following <a href="http://redis.io/topics/quickstart">this guide</a>. By default, Tango uses Redis as a stateless job queue. Learn more <a href="http://autolab.github.io/2015/04/making-backend-scalable/">here</a>.</p>
+<p>Install Redis following <a href="http://redis.io/topics/quickstart">this guide</a>. By default, Tango uses Redis as a stateless job queue. Learn more <a href="https://docs.autolabproject.com/2015/04/making-backend-scalable/">here</a>.</p>
 </li>
 <li>
 <p>Create a <code>config.py</code> file from the given template.</p>
@@ -689,7 +701,7 @@ $ mkdir volumes
 </code></pre></div>
 
 
-<p>For more information on the job producer/consumer model check out our <a href="http://autolab.github.io/2015/04/making-backend-scalable/">blog post</a></p>
+<p>For more information on the job producer/consumer model check out our <a href="https://docs.autolabproject.com/2015/04/making-backend-scalable/">blog post</a></p>
 </li>
 <li>
 <p>Ensure Tango is running:</p>
@@ -792,9 +804,9 @@ $ mkdir volumes
   <div class="md-footer-social">
     <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
     
-      <a href="https://github.com/Autolab" target="_blank" rel="noopener" title="github" class="md-footer-social__link fa fa-github"></a>
+      <a href="https://github.com/Autolab" target="_blank" rel="noopener" title="" class="md-footer-social__link fa fa-"></a>
     
-      <a href="https://facebook.com/autolabproject" target="_blank" rel="noopener" title="facebook" class="md-footer-social__link fa fa-facebook"></a>
+      <a href="https://facebook.com/autolabproject" target="_blank" rel="noopener" title="" class="md-footer-social__link fa fa-"></a>
     
   </div>
 
@@ -806,7 +818,7 @@ $ mkdir volumes
     
       <script src="../assets/javascripts/application.c33a9706.js"></script>
       
-      <script>app.initialize({version:"1.1.2",url:{base:".."}})</script>
+      <script>app.initialize({version:"1.1",url:{base:".."}})</script>
       
     
   </body>

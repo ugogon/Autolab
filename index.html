@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-4.6.3">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
     
     
       
@@ -633,8 +633,20 @@
 
 
   <li class="md-nav__item">
-    <a href="one-click/" title="OneClick Install" class="md-nav__link">
-      OneClick Install
+    <a href="docker-compose/" title="Docker Compose Install" class="md-nav__link">
+      Docker Compose Install
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="one-click/" title="(Legacy) OneClick Install" class="md-nav__link">
+      (Legacy) OneClick Install
     </a>
   </li>
 
@@ -803,9 +815,10 @@
                 
                 <h1 id="welcome-to-the-autolab-docs">Welcome to the Autolab Docs</h1>
 <p>Autolab is a course management platform that enables instructors to offer autograded programming assignments to their students. The two key ideas in Autolab are <em>autograding</em> that is, programs evaluating other programs, and <em>scoreboards</em> that display the latest autograded scores for each student. Autolab also provides gradebooks, rosters, handins/handouts, lab writeups, code annotation, manual grading, late penalties, grace days, cheat checking, meetings, partners, and bulk emails.</p>
-<p>For information on how to use Autolab for your course see the <a href="/instructors">Guide for Instructors</a>. To learn how to write an autograded lab see the <a href="/lab">Guide for Lab Authors</a>. To get straight to an installation, go to <a href="#getting-started">Getting Started</a></p>
+<p>You can install Autolab easily by using our recommended <a href="/docker-compose">Docker Compose installation</a> guide, or by following the steps from a manual install at <a href="#getting-started">Getting Started</a>.</p>
+<p>For information on how to use Autolab for your course see the <a href="/instructors">Guide for Instructors</a>. To learn how to write an autograded lab see the <a href="/lab">Guide for Lab Authors</a>. </p>
 <h2 id="demonstration-site">Demonstration Site</h2>
-<p>If you would like to check out Autolab prior to installation, go over to our <a href="http://autolab.ml" target="_blank">Demo Site</a>! Login through <code>Developer Login</code> with the email: <code>admin@foo.bar</code>. </p>
+<p>If you would like to check out Autolab prior to installation, go over to our <a href="https://demo.autolabproject.com" target="_blank">Demo Site</a>! Login through <code>Developer Login</code> with the email: <code>admin@foo.bar</code>. </p>
 <p>This is a demonstration website. It refreshes at 0,6,12,18 Hours (UTC) daily, and it is publicly accessible, so please only use it for your exploration. Do not use this site to store important information.</p>
 <p>Try the following in order:</p>
 <h3 id="create-a-new-course">Create a new course</h3>
@@ -850,6 +863,7 @@
 <h2 id="getting-started">Getting Started</h2>
 <p>Autolab consists of two services: (1) the Ruby on Rails frontend, and (2) <a href="/tango">Tango</a>, the RESTful Python autograding server. Either service can run independently without the other. But in order to use all features of Autolab, we highly recommend installing both services.</p>
 <p>Currently, we have support for installing Autolab on <a href="#ubuntu-1804">Ubuntu 18.04+</a>, and <a href="#mac-osx-1011">Mac OSX</a>.</p>
+<p>The following instructions are for manual installation of Autolab. We strongly encourage you to try out the <a href="/docker-compose">Docker Compose</a> installation method which is much faster and easier. It is production ready and comes deployed with MySQL and TLS.</p>
 <h3 id="mac-osx-1011">Mac OSX 10.11+</h3>
 <p>Follow the step-by-step instructions below:</p>
 <ol>
@@ -938,7 +952,7 @@ bundle install
 <li>
 <p>Configure the Devise Auth System with a unique key (run these commands exactly - leave <code>&lt;YOUR-SECRET-KEY&gt;</code> as it is):</p>
 <div class="codehilite"><pre><span></span><code>cp config/initializers/devise.rb.template config/initializers/devise.rb
-sed -i <span class="s2">&quot;s/&lt;YOUR-SECRET-KEY&gt;/`bundle exec rake secret`/g&quot;</span> config/initializers/devise.rb
+sed -i <span class="s2">&quot;s/&lt;YOUR-SECRET-KEY&gt;/`bundle exec rails secret`/g&quot;</span> config/initializers/devise.rb
 </code></pre></div>
 
 
@@ -946,8 +960,8 @@ sed -i <span class="s2">&quot;s/&lt;YOUR-SECRET-KEY&gt;/`bundle exec rake secret
 </li>
 <li>
 <p>Create and initialize the database tables:</p>
-<div class="codehilite"><pre><span></span><code>bundle <span class="nb">exec</span> rake db:create
-bundle <span class="nb">exec</span> rake db:migrate
+<div class="codehilite"><pre><span></span><code>bundle <span class="nb">exec</span> rails db:create
+bundle <span class="nb">exec</span> rails db:migrate
 </code></pre></div>
 
 
@@ -955,7 +969,7 @@ bundle <span class="nb">exec</span> rake db:migrate
 </li>
 <li>
 <p>Populate dummy data (development only):</p>
-<div class="codehilite"><pre><span></span><code>bundle <span class="nb">exec</span> rake autolab:populate
+<div class="codehilite"><pre><span></span><code>bundle <span class="nb">exec</span> rails autolab:populate
 </code></pre></div>
 
 
@@ -1074,7 +1088,7 @@ bundle install
 cp config/database.yml.template config/database.yml
 cp config/school.yml.template config/school.yml
 cp config/initializers/devise.rb.template config/initializers/devise.rb
-sed -i <span class="s2">&quot;s/&lt;YOUR-SECRET-KEY&gt;/`bundle exec rake secret`/g&quot;</span> config/initializers/devise.rb
+sed -i <span class="s2">&quot;s/&lt;YOUR-SECRET-KEY&gt;/`bundle exec rails secret`/g&quot;</span> config/initializers/devise.rb
 cp config/autogradeConfig.rb.template config/autogradeConfig.rb
 </code></pre></div>
 
@@ -1140,9 +1154,9 @@ mysql&gt; <span class="nb">exit</span>
 <li>
 <p>Initializing Autolab Database</p>
 <div class="codehilite"><pre><span></span><code><span class="nb">cd</span> Autolab
-bundle <span class="nb">exec</span> rake db:create
-bundle <span class="nb">exec</span> rake db:reset
-bundle <span class="nb">exec</span> rake db:migrate
+bundle <span class="nb">exec</span> rails db:create
+bundle <span class="nb">exec</span> rails db:reset
+bundle <span class="nb">exec</span> rails db:migrate
 </code></pre></div>
 
 
@@ -1150,7 +1164,7 @@ bundle <span class="nb">exec</span> rake db:migrate
 <li>
 <p>Populating sample course &amp; students</p>
 <div class="codehilite"><pre><span></span><code><span class="nb">cd</span> Autolab
-bundle <span class="nb">exec</span> rake autolab:populate
+bundle <span class="nb">exec</span> rails autolab:populate
 </code></pre></div>
 
 
@@ -1326,9 +1340,9 @@ Unable to find expected entry <span class="s1">&#39;main/binary-i386/Packages&#3
   <div class="md-footer-social">
     <link rel="stylesheet" href="assets/fonts/font-awesome.css">
     
-      <a href="https://github.com/Autolab" target="_blank" rel="noopener" title="github" class="md-footer-social__link fa fa-github"></a>
+      <a href="https://github.com/Autolab" target="_blank" rel="noopener" title="" class="md-footer-social__link fa fa-"></a>
     
-      <a href="https://facebook.com/autolabproject" target="_blank" rel="noopener" title="facebook" class="md-footer-social__link fa fa-facebook"></a>
+      <a href="https://facebook.com/autolabproject" target="_blank" rel="noopener" title="" class="md-footer-social__link fa fa-"></a>
     
   </div>
 
@@ -1340,7 +1354,7 @@ Unable to find expected entry <span class="s1">&#39;main/binary-i386/Packages&#3
     
       <script src="assets/javascripts/application.c33a9706.js"></script>
       
-      <script>app.initialize({version:"1.1.2",url:{base:"."}})</script>
+      <script>app.initialize({version:"1.1",url:{base:"."}})</script>
       
     
   </body>
