@@ -34,6 +34,9 @@
   </div>
   <% else %>
     <div class="code-table">
+        <script>
+          var language = `<%= @displayFilename.split(".")[-1].downcase %>`
+        </script>
         <% @data.each_with_index do |(code, annotation), index| %>
           <div class="code-line" id="line-<%=index%>" data-line-id="<%=index%>">
             <div class="line-sticky">
@@ -44,7 +47,7 @@
               <% if @cud.instructor? or @cud.course_assistant? then %><div class="add-button-container"><button class="add-button" id="add-btn-<%= index+1 %>"><i class="material-icons">add_comment</i></button></div><% end %>
             </div>
             <% begin %>
-            <div class="code"><pre><code class="<%= @displayFilename.split(".")[-1].downcase %>"><%= code %></code></pre></div>
+            <div class="code"><pre><code><%= code %></code></pre></div>
             <% rescue %>
               </code></pre></div></div>
               <% success = false %>

@@ -32,6 +32,21 @@
     var fileNameStr = "<%= @filename %>";
     var cudEmailStr = "<%= @cud.email %>";
 
+    function hljsLineByLineBreakdown() {
+      // create one single blob of code
+      let code = "";
+      $('pre code').each(function () {
+        code += $(this).text();
+      });
+      code = code.substr(0, code.length-1);
+
+      const raw = hljs.highlight(language, code).value;
+      const result = raw.split(/\r\n|\r|\n/g);
+      result.forEach((html, index) => {
+        $(`#line-${index} div pre code`).html(html);
+      });
+    }
+
     // a json list of problems for this assessment
     var problems = <%= raw @problems.to_json %>;
 
@@ -46,7 +61,7 @@
     <% else %>
       var headerPositionStr = null;
     <% end %>
-    hljs.initHighlightingOnLoad();
+    hljsLineByLineBreakdown();
     PDFJS.workerSrc = "<%= asset_url 'pdf.worker.js' %>";
   </script>
   <%= javascript_include_tag "annotations.js" %>

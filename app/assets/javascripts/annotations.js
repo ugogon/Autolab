@@ -59,11 +59,6 @@ function changeFile(headerPos) {
       $('#symbol-tree-container').html(newFile.symbolTree);
     }
 
-    // Add syntax highlighting to the new code viewer
-    $('pre code').each(function () {
-      hljs.highlightBlock(this);
-    });
-
     // Update the page URL
     history.replaceState(null, null, newFile.url);
 
@@ -395,7 +390,6 @@ function attachChangeFileEvents() {
     if (wasCachedLocally) {
       e.preventDefault();
       if ($(this).data("line")) {
-        console.log("called")
         scrollToLine($(this).data("line"));
       }
       return false;
