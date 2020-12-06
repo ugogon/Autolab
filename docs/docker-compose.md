@@ -208,3 +208,20 @@ If the menu doesn't display correctly, press '!'
 
 Restarting /home/app/webapp (production)
 ```
+
+### Restarting Tango Supervisord Job
+We use `supervisord` to manage the Tango job manager and server. This can be restarted with `supervisorctl restart all` within the Tango container.
+
+```
+root@62d2bbf692eb:/opt/TangoService/Tango# supervisorctl restart all
+wrapdocker: stopped
+nginx: stopped
+tangoJobManager: stopped
+tango: stopped
+nginx: started
+tangoJobManager: started
+wrapdocker: started
+tango: started
+root@62d2bbf692eb:/opt/TangoService/Tango# 
+```
+
