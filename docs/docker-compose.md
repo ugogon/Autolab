@@ -10,14 +10,15 @@ First ensure that you have Docker and Docker Compose installed on your machine. 
 1. Clone this repository and its submodules: `git clone --recurse-submodules -j8 git://github.com/autolab/docker.git autolab-docker`
 2. Enter the project directory: `cd autolab-docker`
 3. Update submodules: `make update`
-4. Create initial configs: `make`
-5. Build the Dockerfiles: `docker-compose build`
-6. Run the containers: `docker-compose up -d`. Note at this point Nginx will still be crash-looping in the Autolab container because SSL has not been configuired/disabled yet.
-7. Ensure that the newly created config files have the right permissions: `make set-perms`
-8. Perform migrations: `make db-migrate`
-9. Create initial root user: `make create-user`
-10. Stop all containers: `docker-compose stop`
-11. Continue with TLS setup as outlined in the next section
+4. Change the two occurrences of `REPLACE_ME_SECRET_TANGO_KEY` in `docker-compose.yml` to another secret value that must both be the same. This is the shared key between Autolab and Tango.
+5. Create initial configs: `make`
+6. Build the Dockerfiles: `docker-compose build`
+7. Run the containers: `docker-compose up -d`. Note at this point Nginx will still be crash-looping in the Autolab container because SSL has not been configuired/disabled yet.
+8. Ensure that the newly created config files have the right permissions: `make set-perms`
+9. Perform migrations: `make db-migrate`
+10. Create initial root user: `make create-user`
+11. Stop all containers: `docker-compose stop`
+12. Continue with TLS setup as outlined in the next section
 
 ## Configuring SSL/TLS
 There are three options for TLS: using Let's Encrypt (for free TLS certificates), using your own certificate, and not using TLS (not recommended for production deployment).
