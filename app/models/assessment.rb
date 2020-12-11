@@ -128,7 +128,7 @@ class Assessment < ApplicationRecord
   end
 
   def config_file_path
-    Rails.root.join("assessmentConfig", "#{course.name}-#{sanitized_name}.rb")
+    Rails.root.join("assessmentConfig", "#{course.name}-#{sanitized_name}.rb").to_s
   end
 
   def config_module_name
