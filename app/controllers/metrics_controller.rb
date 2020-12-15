@@ -76,7 +76,7 @@ class MetricsController < ApplicationController
 				hash[entry["id"]] = entry
 				hash
 			end
-
+			
 			render json: {:risk_conditions=>risk_hash,:users=> user_hash,:instances=>instances}, status: :ok
 		rescue => error
 			render json: {error:error.message}, status: :not_found
