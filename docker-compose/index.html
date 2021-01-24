@@ -251,10 +251,96 @@
           
 
 
-  <li class="md-nav__item">
-    <a href="../features/" class="md-nav__link">
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-1-4" type="checkbox" id="nav-1-4">
+    
+    <label class="md-nav__link" for="nav-1-4">
       Features
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Features" data-md-level="2">
+      <label class="md-nav__title" for="nav-1-4">
+        <span class="md-nav__icon md-icon"></span>
+        Features
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../features/formatted-feedback/" class="md-nav__link">
+      Formatted Feedback
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../features/scoreboards/" class="md-nav__link">
+      Scoreboards
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../features/embedded-forms/" class="md-nav__link">
+      Embedded Forms
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../features/annotations/" class="md-nav__link">
+      Annotations
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../features/moss/" class="md-nav__link">
+      MOSS Plagiarism Detection
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../features/metrics/" class="md-nav__link">
+      Metrics
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
         
@@ -569,6 +655,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    FAQ
+  </a>
+  
+    <nav class="md-nav" aria-label="FAQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-unable-to-unlink-old-dbschemarb-permission-denied" class="md-nav__link">
+    error: unable to unlink old 'db/schema.rb': Permission denied
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -721,6 +827,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#faq" class="md-nav__link">
+    FAQ
+  </a>
+  
+    <nav class="md-nav" aria-label="FAQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-unable-to-unlink-old-dbschemarb-permission-denied" class="md-nav__link">
+    error: unable to unlink old 'db/schema.rb': Permission denied
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -740,7 +866,7 @@
                 
                 <h1 id="autolab-tango-docker-compose-installation">Autolab + Tango Docker Compose Installation</h1>
 <p>The Autolab Docker Compose installation is a fast and easy production-ready installation and deployment method. It uses a MySQL database for the Autolab deployment, and comes with SSL support. This is now the preferred way of installing Autolab.</p>
-<p>The Docker Compose installation method is relatively new and so you may likely run into issues. If you are stuck or find issues with the installation process please join our Slack <a href="https://autolab-slack.herokuapp.com/">here</a> and let us know and we will try our best to help. Also see the <a href="#debugging">debugging</a> section for tips on how to diagnose problems.</p>
+<p>If you are stuck or find issues with the installation process you can either file an issue on our Github repository, or join our Slack <a href="https://autolab-slack.herokuapp.com/">here</a> and let us know and we will try our best to help. Also see the <a href="#debugging">debugging</a> section for tips on how to diagnose problems.</p>
 <h2 id="installation">Installation</h2>
 <p>First ensure that you have Docker and Docker Compose installed on your machine. See the official <a href="See https://docs.docker.com/install/">Docker docs</a> for the installation steps.</p>
 <ol>
@@ -753,9 +879,11 @@
 <li>Ensure that the newly created config files have the right permissions: <code>make set-perms</code></li>
 <li>Perform migrations: <code>make db-migrate</code></li>
 <li>Create initial root user: <code>make create-user</code></li>
+<li>Change <code>DOCKER_TANGO_HOST_VOLUME_PATH</code> in <code>docker-compose.yml</code> to be the absolute path to the Tango <code>volumes</code> directory, i.e <code>/&lt;path-to-docker-compose-installation&gt;/Tango/volumes</code></li>
 <li>Stop all containers: <code>docker-compose stop</code></li>
 <li>Continue with TLS setup as outlined in the next section</li>
-<li>Build the autograding image(s) that you want to use in Tango (see <a href="https://docs.autolabproject.com/tango-vmms/#docker-vmms-setup">the docs</a> for more information). For this setup we will stick to the default Ubuntu 14.04 autograding image: <code>docker build -t autograding_image Tango/vmms/</code>. Note that we can just run this directly on the host because we are mapping the Docker socket to the Tango container (i.e they are using the same Docker server).</li>
+<li>Modify the appropriate Nginx config (either <code>app.conf</code> or <code>no-ssl-app.conf</code>) by replacing the placeholders with your real domain</li>
+<li>Build the autograding image(s) that you want to use in Tango (see <a href="https://docs.autolabproject.com/tango-vmms/#docker-vmms-setup">the docs</a> for more information). For this setup we will stick to the default Ubuntu 18.04 autograding image: <code>docker build -t autograding_image Tango/vmms/</code>. Note that we can just run this directly on the host because we are mapping the Docker socket to the Tango container (i.e they are using the same Docker server).</li>
 <li>Start up everything: <code>docker-compose up -d</code>. Autolab should now be accessible on port 80 (and 443 if you configured SSL)!</li>
 </ol>
 <h2 id="configuring-ssltls">Configuring SSL/TLS</h2>
@@ -918,6 +1046,16 @@ root@a5b77b5267b1:/opt/TangoService# tail -f -n +1 tango_job_manager_log.log tan
 
 <span class="n">Restarting</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">app</span><span class="o">/</span><span class="n">webapp</span> <span class="p">(</span><span class="n">production</span><span class="p">)</span>
 </code></pre></div>
+
+<h2 id="faq">FAQ</h2>
+<h3 id="error-unable-to-unlink-old-dbschemarb-permission-denied">error: unable to unlink old 'db/schema.rb': Permission denied</h3>
+<p>If you obtain the following error when attempting to perform <code>make update</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">error</span><span class="o">:</span> <span class="n">unable</span> <span class="n">to</span> <span class="n">unlink</span> <span class="n">old</span> <span class="s1">&#39;db/schema.rb&#39;</span><span class="o">:</span> <span class="n">Permission</span> <span class="n">denied</span>
+<span class="n">fatal</span><span class="o">:</span> <span class="n">Could</span> <span class="n">not</span> <span class="n">reset</span> <span class="n">index</span> <span class="n">file</span> <span class="n">to</span> <span class="n">revision</span> <span class="s1">&#39;HEAD&#39;</span><span class="o">.</span>
+</code></pre></div>
+
+<p>This is due to the fact that <code>db/schema.rb</code> is updated whenever migrations are performed. <code>db/schema.rb</code> documents the database schema, which depends on the database that you are using, its version, and when the migrations were run. It is likely that your <code>db/schema.rb</code> will diverge from the one generated by the devs.</p>
+<p>You can resolve this by changing the owner of the files to be your current user, and then running <code>make set-perms</code> afterwards when you start the containers again.</p>
                 
               
               
