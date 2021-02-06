@@ -24,6 +24,10 @@ module AssessmentHandin
     if @assessment.embedded_quiz
 
       contents = params[:submission]["embedded_quiz_form_answer"].to_s
+      require 'json'
+      inject = JSON.parse params[:submission]["embedded_quiz_form_answer"].to_s
+      inject["id"] = @cud.email
+      contents = JSON.dump inject
 
       out_file = File.new("out.txt", "w+")
       out_file.puts(contents)
@@ -337,7 +341,7 @@ private
     when :fail_type_check
       msg = "Submission failed Filetype Check. " + flash[:error]
     end
-    
+
     flash[:error] = msg
     return false
   end
