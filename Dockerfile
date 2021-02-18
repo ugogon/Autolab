@@ -18,8 +18,11 @@ RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
   sqlite3 \
-  tzdata  \
-  shared-mime-info
+  tzdata \
+  shared-mime-info \
+  python3-pip
+
+RUN pip3 install numpy jinja2 markdown
 
 # Start Nginx / Passenger
 RUN rm -f /etc/service/nginx/down
@@ -62,4 +65,3 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Use baseimage-docker's init system.
 CMD ["/sbin/my_init"]
-
