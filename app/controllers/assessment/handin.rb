@@ -22,11 +22,13 @@ module AssessmentHandin
   def handin
 
     if @assessment.embedded_quiz
-
+      show()
       contents = params[:submission]["embedded_quiz_form_answer"].to_s
       require 'json'
       inject = JSON.parse params[:submission]["embedded_quiz_form_answer"].to_s
       inject["id"] = @cud.email
+      inject["html"] = ERB.new(@assessment.embedded_quiz_form_data).result(binding).html_safe
+
       contents = JSON.dump inject
 
       out_file = File.new("out.txt", "w+")
