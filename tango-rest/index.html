@@ -1,4 +1,6 @@
 
+
+
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -7,40 +9,35 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
       
-      
         <link rel="canonical" href="https://docs.autolabproject.com/tango-rest/">
       
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.4">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.12">
     
     
       
-        <title>REST API - Autolab Documentation</title>
+        <title>Tango API - Autolab Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.358818c7.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.4dd2dd8d.min.css">
       
-        
-        <link rel="stylesheet" href="../assets/stylesheets/palette.f0267088.min.css">
-        
-          
-          
-          <meta name="theme-color" content="#ef5552">
-        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.6a5ad368.min.css">
+      
       
     
     
     
       
-        
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
       
     
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     
       
@@ -56,11 +53,9 @@
     
     
     
-    
-    
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="red" data-md-color-accent="blue">
-      
+    <body dir="ltr" data-md-color-scheme="autolab" data-md-color-primary="" data-md-color-accent="">
   
+    
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
@@ -76,9 +71,7 @@
       
     </div>
     
-      
-
-<header class="md-header" data-md-component="header">
+      <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
     <a href="https://docs.autolabproject.com/" title="Autolab Documentation" class="md-header-nav__button md-logo" aria-label="Autolab Documentation">
       
@@ -96,7 +89,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              REST API
+              Tango API
             
           </span>
         </div>
@@ -152,6 +145,8 @@
     
     <div class="md-container" data-md-component="container">
       
+        
+      
       
         
       
@@ -162,9 +157,7 @@
               <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="https://docs.autolabproject.com/" title="Autolab Documentation" class="md-nav__button md-logo" aria-label="Autolab Documentation">
       
@@ -194,16 +187,73 @@
       
 
 
+  <li class="md-nav__item">
+    <a href=".." title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
     
-    <label class="md-nav__link" for="nav-1">
+    <label class="md-nav__link" for="nav-2">
+      Installation
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Installation" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Installation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../installation/overview/" title="Installation Overview" class="md-nav__link">
+      Installation Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../installation/docker-compose/" title="Docker Compose Install" class="md-nav__link">
+      Docker Compose Install
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-3" type="checkbox" id="nav-2-3">
+    
+    <label class="md-nav__link" for="nav-2-3">
       Autolab
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="Autolab" data-md-level="1">
-      <label class="md-nav__title" for="nav-1">
+    <nav class="md-nav" aria-label="Autolab" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-3">
         <span class="md-nav__icon md-icon"></span>
         Autolab
       </label>
@@ -216,8 +266,8 @@
 
 
   <li class="md-nav__item">
-    <a href=".." class="md-nav__link">
-      Getting Started
+    <a href="../installation/ubuntu/" title="Ubuntu 18.04" class="md-nav__link">
+      Ubuntu 18.04
     </a>
   </li>
 
@@ -228,7 +278,107 @@
 
 
   <li class="md-nav__item">
-    <a href="../instructors/" class="md-nav__link">
+    <a href="../installation/osx/" title="Mac OSX 10.11+" class="md-nav__link">
+      Mac OSX 10.11+
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../installation/troubleshoot/" title="Troubleshooting" class="md-nav__link">
+      Troubleshooting
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../installation/mailing/" title="Mailing Setup" class="md-nav__link">
+      Mailing Setup
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../installation/tango/" title="Tango" class="md-nav__link">
+      Tango
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Getting Started
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Getting Started
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Autolab Frontend
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Autolab Frontend" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        <span class="md-nav__icon md-icon"></span>
+        Autolab Frontend
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../instructors/" title="Guide for Instructors" class="md-nav__link">
       Guide for Instructors
     </a>
   </li>
@@ -240,7 +390,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../lab/" class="md-nav__link">
+    <a href="../lab/" title="Guide for Lab Authors" class="md-nav__link">
       Guide for Lab Authors
     </a>
   </li>
@@ -253,14 +403,14 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-1-4" type="checkbox" id="nav-1-4">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-1-3" type="checkbox" id="nav-3-1-3">
     
-    <label class="md-nav__link" for="nav-1-4">
+    <label class="md-nav__link" for="nav-3-1-3">
       Features
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="Features" data-md-level="2">
-      <label class="md-nav__title" for="nav-1-4">
+    <nav class="md-nav" aria-label="Features" data-md-level="3">
+      <label class="md-nav__title" for="nav-3-1-3">
         <span class="md-nav__icon md-icon"></span>
         Features
       </label>
@@ -273,7 +423,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/formatted-feedback/" class="md-nav__link">
+    <a href="../features/formatted-feedback/" title="Formatted Feedback" class="md-nav__link">
       Formatted Feedback
     </a>
   </li>
@@ -285,7 +435,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/scoreboards/" class="md-nav__link">
+    <a href="../features/scoreboards/" title="Scoreboards" class="md-nav__link">
       Scoreboards
     </a>
   </li>
@@ -297,7 +447,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/embedded-forms/" class="md-nav__link">
+    <a href="../features/embedded-forms/" title="Embedded Forms" class="md-nav__link">
       Embedded Forms
     </a>
   </li>
@@ -309,7 +459,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/annotations/" class="md-nav__link">
+    <a href="../features/annotations/" title="Annotations" class="md-nav__link">
       Annotations
     </a>
   </li>
@@ -321,7 +471,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/moss/" class="md-nav__link">
+    <a href="../features/moss/" title="MOSS Plagiarism Detection" class="md-nav__link">
       MOSS Plagiarism Detection
     </a>
   </li>
@@ -333,7 +483,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/metrics/" class="md-nav__link">
+    <a href="../features/metrics/" title="Metrics" class="md-nav__link">
       Metrics
     </a>
   </li>
@@ -348,27 +498,6 @@
     </nav>
   </li>
 
-    
-      
-      
-      
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
-    
-    <label class="md-nav__link" for="nav-2">
-      Autolab API
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Autolab API" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        <span class="md-nav__icon md-icon"></span>
-        Autolab API
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
         
           
           
@@ -376,8 +505,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../api-overview/" class="md-nav__link">
-      Overview
+    <a href="../command-line-interface/" title="Autolab Frontend CLI" class="md-nav__link">
+      Autolab Frontend CLI
     </a>
   </li>
 
@@ -388,32 +517,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../api-interface/" class="md-nav__link">
-      Reference
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../command-line-interface/" class="md-nav__link">
-      Command Line Interface
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../api-managing-authorized-apps/" class="md-nav__link">
-      Managing Authorized Apps
+    <a href="../tango-cli/" title="Tango CLI" class="md-nav__link">
+      Tango CLI
     </a>
   </li>
 
@@ -432,16 +537,16 @@
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
     
-    <label class="md-nav__link" for="nav-3">
-      Tango
+    <label class="md-nav__link" for="nav-4">
+      Reference
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="Tango" data-md-level="1">
-      <label class="md-nav__title" for="nav-3">
+    <nav class="md-nav" aria-label="Reference" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
         <span class="md-nav__icon md-icon"></span>
-        Tango
+        Reference
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -452,8 +557,41 @@
 
 
   <li class="md-nav__item">
-    <a href="../tango/" class="md-nav__link">
-      Getting Started
+    <a href="../reference/" title="Reference Overview" class="md-nav__link">
+      Reference Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-2" type="checkbox" id="nav-4-2">
+    
+    <label class="md-nav__link" for="nav-4-2">
+      Autolab Frontend API
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Autolab Frontend API" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-2">
+        <span class="md-nav__icon md-icon"></span>
+        Autolab Frontend API
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../api-overview/" title="Overview" class="md-nav__link">
+      Overview
     </a>
   </li>
 
@@ -464,9 +602,26 @@
 
 
   <li class="md-nav__item">
-    <a href="../tango-cli/" class="md-nav__link">
-      Tango CLI
+    <a href="../api-interface/" title="Endpoints" class="md-nav__link">
+      Endpoints
     </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../api-managing-authorized-apps/" title="Managing Authorized Apps" class="md-nav__link">
+      Managing Authorized Apps
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
   </li>
 
         
@@ -483,12 +638,12 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        REST API
+        Tango API
         <span class="md-nav__icon md-icon"></span>
       </label>
     
-    <a href="./" class="md-nav__link md-nav__link--active">
-      REST API
+    <a href="./" title="Tango API" class="md-nav__link md-nav__link--active">
+      Tango API
     </a>
     
       
@@ -611,50 +766,14 @@
 
 
   <li class="md-nav__item">
-    <a href="../tango-vmms/" class="md-nav__link">
-      VMMS Docs
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../tango-deploy/" class="md-nav__link">
-      Deploying Tango
+    <a href="../tango-vmms/" title="Tango VMMS API" class="md-nav__link">
+      Tango VMMS API
     </a>
   </li>
 
         
       </ul>
     </nav>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../docker-compose/" class="md-nav__link">
-      Docker Compose Install
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../one-click/" class="md-nav__link">
-      (Legacy) OneClick Install
-    </a>
   </li>
 
     
@@ -792,7 +911,10 @@
                   </a>
                 
                 
-                  <h1>REST API</h1>
+                  
+                
+                
+                  <h1>Tango API</h1>
                 
                 <p>This page documents the REST API for submitting jobs to Tango.</p>
 <h3 id="authentication">Authentication</h3>
@@ -811,6 +933,7 @@ Response body:</p>
 <span class="p">}</span>
 </code></pre></div>
 
+
 <h4 id="upload">upload</h4>
 <p>After receiving a list of MD5 hashes of files that exist on the Tango server, the client can choose to upload files that are different from the ones on the Tango server via successive <code>upload</code> commands. For each upload, the client must supply a <code>filename</code> header that gives the name of the file (on the local machine) to be uploaded to Tango. One of these files must be a Makefile, which needs to contain a rule called <code>autograde</code> (command to drive the autograding process).</p>
 <p>Request header: <code>POST /upload/key/courselab/</code><br />
@@ -821,6 +944,7 @@ Response body:</p>
   <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span>
 <span class="p">}</span>
 </code></pre></div>
+
 
 <h4 id="addjob">addJob</h4>
 <p>After uploading the appropriate files, the client uses this command to run the job for the files specified as <code>files</code> in the <code>courselab</code> and on an instance of a particular VM <code>image</code>. Each file has <code>localFile</code> and <code>destFile</code> attributes which specify what the file is called on the Tango server and what it should be called when copied over to a VM (for autograding) respectively. Exactly one of the specified <code>files</code> should have the <code>destFile</code> attribute set to <code>Makefile</code>, and the Makefile must contain a rule called <code>autograde</code>. Clients can also specify an optional timeout value (<code>timeout</code>) and maximum output file size (<code>max_kb</code>). This command is non-blocking and returns immediately with a status message. Additionally, the command accepts an optional parameter, <code>callback_url</code>. If the <code>callback_url</code> is specified, then the Tango server sends a <code>POST</code> request to the <code>callback_url</code> with the output file once the job is terminated. If the <code>callback_url</code> is not specified, the client can then send a <code>poll</code> request for the <code>output_file</code> to check the status of that job and retrieve the output file from the Tango server if autograding is complete.</p>
@@ -838,6 +962,7 @@ Request body:</p>
 <span class="p">}</span>
 </code></pre></div>
 
+
 <p>Response body:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
   <span class="nt">&quot;statusMsg&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span><span class="p">,</span>
@@ -845,6 +970,7 @@ Request body:</p>
   <span class="nt">&quot;jobId&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span>
 <span class="p">}</span>
 </code></pre></div>
+
 
 <h4 id="poll">poll</h4>
 <p>Check if the job for <code>outputFile</code> has completed. If not, return <code>404: Not Found</code> and a status message, otherwise return the file in the response body, and free all resources held by the job.</p>
@@ -855,6 +981,7 @@ Request body:</p>
 <span class="p">}</span>
 </code></pre></div>
 
+
 <p>Response body:<br />
 <code>&lt;autograder output file&gt;</code> if autograding successful otherwise:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -862,6 +989,7 @@ Request body:</p>
   <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span>
 <span class="p">}</span>
 </code></pre></div>
+
 
 <h3 id="administrative-requests">Administrative Requests</h3>
 <p>Here are the requests that administrators use to manage the Tango service, typically from a command line client.</p>
@@ -873,6 +1001,7 @@ Request body:</p>
   <span class="err">&lt;empty&gt;</span>
 <span class="p">}</span>
 </code></pre></div>
+
 
 <p>Response body:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
@@ -891,6 +1020,7 @@ Request body:</p>
   <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="mi">0</span>
 <span class="p">}</span>
 </code></pre></div>
+
 
 <h4 id="jobs">/jobs</h4>
 <p>Return a list of jobs. If deadjobs is set to 1, then return a list of recently completed jobs. Otherwise, return the list of currently running jobs. Note: This isn't strictly an admin request, since clients might find it useful to display jobs status, as we do in the Autolab front end.</p>
@@ -911,6 +1041,7 @@ Request body:</p>
     <span class="nt">&quot;memory&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>      <span class="err">#</span> <span class="err">amount</span> <span class="err">of</span> <span class="err">memory</span> <span class="err">per</span> <span class="err">VM</span>
 <span class="p">}</span>
 </code></pre></div>
+
 
 <p>Response body: <code>{ "status": &lt;string&gt; }</code></p>
 <h3 id="implementation-notes">Implementation Notes</h3>
@@ -934,7 +1065,7 @@ Request body:</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../tango-cli/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../api-managing-authorized-apps/" title="Managing Authorized Apps" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -943,19 +1074,19 @@ Request body:</p>
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Tango CLI
+                Managing Authorized Apps
               </div>
             </div>
           </a>
         
         
-          <a href="../tango-vmms/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../tango-vmms/" title="Tango VMMS API" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                VMMS Docs
+                Tango VMMS API
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
@@ -1004,15 +1135,15 @@ Request body:</p>
       
     </div>
     
-      <script src="../assets/javascripts/vendor.7e0ee788.min.js"></script>
-      <script src="../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../assets/javascripts/vendor.3636a4ec.min.js"></script>
+      <script src="../assets/javascripts/bundle.e9fe3281.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
       
       <script>
         app = initialize({
           base: "..",
-          features: [],
+          features: ["navigation.tabs", "toc.integrate"],
           search: Object.assign({
-            worker: "../assets/javascripts/worker/search.4ac00218.min.js"
+            worker: "../assets/javascripts/worker/search.5eca75d3.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>

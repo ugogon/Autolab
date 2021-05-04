@@ -1,4 +1,6 @@
 
+
+
 <!doctype html>
 <html lang="en" class="no-js">
   <head>
@@ -7,40 +9,35 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
       
-      
         <link rel="canonical" href="https://docs.autolabproject.com/tango-vmms/">
       
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-6.1.4">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.12">
     
     
       
-        <title>VMMS Docs - Autolab Documentation</title>
+        <title>Tango VMMS API - Autolab Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.358818c7.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.4dd2dd8d.min.css">
       
-        
-        <link rel="stylesheet" href="../assets/stylesheets/palette.f0267088.min.css">
-        
-          
-          
-          <meta name="theme-color" content="#ef5552">
-        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.6a5ad368.min.css">
+      
       
     
     
     
       
-        
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
       
     
     
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     
       
@@ -56,11 +53,9 @@
     
     
     
-    
-    
-    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="red" data-md-color-accent="blue">
-      
+    <body dir="ltr" data-md-color-scheme="autolab" data-md-color-primary="" data-md-color-accent="">
   
+    
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" for="__drawer"></label>
@@ -76,9 +71,7 @@
       
     </div>
     
-      
-
-<header class="md-header" data-md-component="header">
+      <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid" aria-label="Header">
     <a href="https://docs.autolabproject.com/" title="Autolab Documentation" class="md-header-nav__button md-logo" aria-label="Autolab Documentation">
       
@@ -96,7 +89,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              VMMS Docs
+              Tango VMMS API
             
           </span>
         </div>
@@ -152,6 +145,8 @@
     
     <div class="md-container" data-md-component="container">
       
+        
+      
       
         
       
@@ -162,9 +157,7 @@
               <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
-                    
-
-<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+                    <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href="https://docs.autolabproject.com/" title="Autolab Documentation" class="md-nav__button md-logo" aria-label="Autolab Documentation">
       
@@ -194,16 +187,73 @@
       
 
 
+  <li class="md-nav__item">
+    <a href=".." title="Overview" class="md-nav__link">
+      Overview
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
     
-    <label class="md-nav__link" for="nav-1">
+    <label class="md-nav__link" for="nav-2">
+      Installation
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Installation" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        <span class="md-nav__icon md-icon"></span>
+        Installation
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../installation/overview/" title="Installation Overview" class="md-nav__link">
+      Installation Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../installation/docker-compose/" title="Docker Compose Install" class="md-nav__link">
+      Docker Compose Install
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2-3" type="checkbox" id="nav-2-3">
+    
+    <label class="md-nav__link" for="nav-2-3">
       Autolab
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="Autolab" data-md-level="1">
-      <label class="md-nav__title" for="nav-1">
+    <nav class="md-nav" aria-label="Autolab" data-md-level="2">
+      <label class="md-nav__title" for="nav-2-3">
         <span class="md-nav__icon md-icon"></span>
         Autolab
       </label>
@@ -216,8 +266,8 @@
 
 
   <li class="md-nav__item">
-    <a href=".." class="md-nav__link">
-      Getting Started
+    <a href="../installation/ubuntu/" title="Ubuntu 18.04" class="md-nav__link">
+      Ubuntu 18.04
     </a>
   </li>
 
@@ -228,7 +278,107 @@
 
 
   <li class="md-nav__item">
-    <a href="../instructors/" class="md-nav__link">
+    <a href="../installation/osx/" title="Mac OSX 10.11+" class="md-nav__link">
+      Mac OSX 10.11+
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../installation/troubleshoot/" title="Troubleshooting" class="md-nav__link">
+      Troubleshooting
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../installation/mailing/" title="Mailing Setup" class="md-nav__link">
+      Mailing Setup
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../installation/tango/" title="Tango" class="md-nav__link">
+      Tango
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      Getting Started
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Getting Started" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        <span class="md-nav__icon md-icon"></span>
+        Getting Started
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-1" type="checkbox" id="nav-3-1">
+    
+    <label class="md-nav__link" for="nav-3-1">
+      Autolab Frontend
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Autolab Frontend" data-md-level="2">
+      <label class="md-nav__title" for="nav-3-1">
+        <span class="md-nav__icon md-icon"></span>
+        Autolab Frontend
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../instructors/" title="Guide for Instructors" class="md-nav__link">
       Guide for Instructors
     </a>
   </li>
@@ -240,7 +390,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../lab/" class="md-nav__link">
+    <a href="../lab/" title="Guide for Lab Authors" class="md-nav__link">
       Guide for Lab Authors
     </a>
   </li>
@@ -253,14 +403,14 @@
 
   <li class="md-nav__item md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-1-4" type="checkbox" id="nav-1-4">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3-1-3" type="checkbox" id="nav-3-1-3">
     
-    <label class="md-nav__link" for="nav-1-4">
+    <label class="md-nav__link" for="nav-3-1-3">
       Features
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="Features" data-md-level="2">
-      <label class="md-nav__title" for="nav-1-4">
+    <nav class="md-nav" aria-label="Features" data-md-level="3">
+      <label class="md-nav__title" for="nav-3-1-3">
         <span class="md-nav__icon md-icon"></span>
         Features
       </label>
@@ -273,7 +423,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/formatted-feedback/" class="md-nav__link">
+    <a href="../features/formatted-feedback/" title="Formatted Feedback" class="md-nav__link">
       Formatted Feedback
     </a>
   </li>
@@ -285,7 +435,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/scoreboards/" class="md-nav__link">
+    <a href="../features/scoreboards/" title="Scoreboards" class="md-nav__link">
       Scoreboards
     </a>
   </li>
@@ -297,7 +447,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/embedded-forms/" class="md-nav__link">
+    <a href="../features/embedded-forms/" title="Embedded Forms" class="md-nav__link">
       Embedded Forms
     </a>
   </li>
@@ -309,7 +459,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/annotations/" class="md-nav__link">
+    <a href="../features/annotations/" title="Annotations" class="md-nav__link">
       Annotations
     </a>
   </li>
@@ -321,7 +471,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/moss/" class="md-nav__link">
+    <a href="../features/moss/" title="MOSS Plagiarism Detection" class="md-nav__link">
       MOSS Plagiarism Detection
     </a>
   </li>
@@ -333,7 +483,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../features/metrics/" class="md-nav__link">
+    <a href="../features/metrics/" title="Metrics" class="md-nav__link">
       Metrics
     </a>
   </li>
@@ -348,27 +498,6 @@
     </nav>
   </li>
 
-    
-      
-      
-      
-
-
-  <li class="md-nav__item md-nav__item--nested">
-    
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
-    
-    <label class="md-nav__link" for="nav-2">
-      Autolab API
-      <span class="md-nav__icon md-icon"></span>
-    </label>
-    <nav class="md-nav" aria-label="Autolab API" data-md-level="1">
-      <label class="md-nav__title" for="nav-2">
-        <span class="md-nav__icon md-icon"></span>
-        Autolab API
-      </label>
-      <ul class="md-nav__list" data-md-scrollfix>
-        
         
           
           
@@ -376,8 +505,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../api-overview/" class="md-nav__link">
-      Overview
+    <a href="../command-line-interface/" title="Autolab Frontend CLI" class="md-nav__link">
+      Autolab Frontend CLI
     </a>
   </li>
 
@@ -388,32 +517,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../api-interface/" class="md-nav__link">
-      Reference
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../command-line-interface/" class="md-nav__link">
-      Command Line Interface
-    </a>
-  </li>
-
-        
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../api-managing-authorized-apps/" class="md-nav__link">
-      Managing Authorized Apps
+    <a href="../tango-cli/" title="Tango CLI" class="md-nav__link">
+      Tango CLI
     </a>
   </li>
 
@@ -432,16 +537,16 @@
 
   <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
     
-    <label class="md-nav__link" for="nav-3">
-      Tango
+    <label class="md-nav__link" for="nav-4">
+      Reference
       <span class="md-nav__icon md-icon"></span>
     </label>
-    <nav class="md-nav" aria-label="Tango" data-md-level="1">
-      <label class="md-nav__title" for="nav-3">
+    <nav class="md-nav" aria-label="Reference" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
         <span class="md-nav__icon md-icon"></span>
-        Tango
+        Reference
       </label>
       <ul class="md-nav__list" data-md-scrollfix>
         
@@ -452,8 +557,41 @@
 
 
   <li class="md-nav__item">
-    <a href="../tango/" class="md-nav__link">
-      Getting Started
+    <a href="../reference/" title="Reference Overview" class="md-nav__link">
+      Reference Overview
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-4-2" type="checkbox" id="nav-4-2">
+    
+    <label class="md-nav__link" for="nav-4-2">
+      Autolab Frontend API
+      <span class="md-nav__icon md-icon"></span>
+    </label>
+    <nav class="md-nav" aria-label="Autolab Frontend API" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-2">
+        <span class="md-nav__icon md-icon"></span>
+        Autolab Frontend API
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../api-overview/" title="Overview" class="md-nav__link">
+      Overview
     </a>
   </li>
 
@@ -464,8 +602,8 @@
 
 
   <li class="md-nav__item">
-    <a href="../tango-cli/" class="md-nav__link">
-      Tango CLI
+    <a href="../api-interface/" title="Endpoints" class="md-nav__link">
+      Endpoints
     </a>
   </li>
 
@@ -476,8 +614,25 @@
 
 
   <li class="md-nav__item">
-    <a href="../tango-rest/" class="md-nav__link">
-      REST API
+    <a href="../api-managing-authorized-apps/" title="Managing Authorized Apps" class="md-nav__link">
+      Managing Authorized Apps
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../tango-rest/" title="Tango API" class="md-nav__link">
+      Tango API
     </a>
   </li>
 
@@ -495,12 +650,12 @@
     
     
       <label class="md-nav__link md-nav__link--active" for="__toc">
-        VMMS Docs
+        Tango VMMS API
         <span class="md-nav__icon md-icon"></span>
       </label>
     
-    <a href="./" class="md-nav__link md-nav__link--active">
-      VMMS Docs
+    <a href="./" title="Tango VMMS API" class="md-nav__link md-nav__link--active">
+      Tango VMMS API
     </a>
     
       
@@ -583,20 +738,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#docker-vmms-setup" class="md-nav__link">
-    Docker VMMS Setup
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#amazon-ec2-vmms-setup" class="md-nav__link">
-    Amazon EC2 VMMS Setup
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -604,44 +745,8 @@
   </li>
 
         
-          
-          
-          
-
-
-  <li class="md-nav__item">
-    <a href="../tango-deploy/" class="md-nav__link">
-      Deploying Tango
-    </a>
-  </li>
-
-        
       </ul>
     </nav>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../docker-compose/" class="md-nav__link">
-      Docker Compose Install
-    </a>
-  </li>
-
-    
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../one-click/" class="md-nav__link">
-      (Legacy) OneClick Install
-    </a>
   </li>
 
     
@@ -735,20 +840,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#docker-vmms-setup" class="md-nav__link">
-    Docker VMMS Setup
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#amazon-ec2-vmms-setup" class="md-nav__link">
-    Amazon EC2 VMMS Setup
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -766,151 +857,64 @@
                   </a>
                 
                 
-                  <h1>VMMS Docs</h1>
+                  
                 
-                <p>This page documents the interface for Tango's Virtual Machine Management Systems' (VMMSs) API and instructions for setting up VMMSs. See <a href="https://github.com/autolab/Tango/tree/master/vmms">the vmms directory</a> in Tango for example implementations.</p>
+                
+                  <h1>Tango VMMS API</h1>
+                
+                <p>This page documents the interface for Tango's Virtual Machine Management Systems' (VMMSs) API and instructions for setting up VMMSs. </p>
+<p>See <a href="https://github.com/autolab/Tango/tree/master/vmms" target="_blank">the vmms directory</a> in Tango for example implementations. </p>
+<p>We currently provide <a href="/installation/tango/#docker-vmms-setup">Docker VMMS</a> and the <a href="/installation/tango/#amazon-ec2-vmms-setup">Amazon EC2 VMMS</a> interfaces. The following API is for developers who intend to use a different kind of VMMS for Tango's autograding purposes.</p>
 <h2 id="api">API</h2>
 <p>The functions necessary to implement the API are documented here. Note that for certain implementations, some of these methods will be no-ops since the VMMS doesn't require any particular instructions to perform the specified actions. Furthermore, throughout this document, we use the term "VM" liberally to represent any container-like object on which Tango jobs may be run.</p>
 <h3 id="initializevm">initializeVM</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">initializeVM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vm</span><span class="p">)</span>
 </code></pre></div>
 
+
 <p>Creates a new VM instance for the VMMS based on the fields of <code>vm</code>, which is a <code>TangoMachine</code> object defined in <code>tangoObjects.py</code>.</p>
 <h3 id="waitvm">waitVM</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">waitVM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vm</span><span class="p">,</span> <span class="n">max_secs</span><span class="p">)</span>
 </code></pre></div>
+
 
 <p>Waits at most <code>max_secs</code> for a VM to be ready to run jobs. Returns an error if the VM is not ready after <code>max_secs</code>.</p>
 <h3 id="copyin">copyIn</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">copyIn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vm</span><span class="p">,</span> <span class="n">inputFiles</span><span class="p">)</span>
 </code></pre></div>
 
+
 <p>Copies the input files for a job into the VM. <code>inputFiles</code> is a list of <code>InputFile</code> objects defined in <code>tangoObjects.py</code>. For each <code>InputFile</code> object, <code>file.localFile</code> is the name of the file on the Tango host machine and <code>file.destFile</code> is what the name of the file should be on the VM.</p>
 <h3 id="runjob">runJob</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">runJob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vm</span><span class="p">,</span> <span class="n">runTimeout</span><span class="p">,</span> <span class="n">maxOutputFileSize</span><span class="p">)</span>
 </code></pre></div>
+
 
 <p>Runs the autodriver binary on the VM. The autodriver runs <code>make</code> on the VM (which in turn runs the job via the <code>Makefile</code> that was provided as a part of the input files for the job). The output from the autodriver most likely should be redirected to some feedback file to be used in the next method of the API.</p>
 <h3 id="copyout">copyOut</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">copyOut</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vm</span><span class="p">,</span> <span class="n">destFile</span><span class="p">)</span>
 </code></pre></div>
 
+
 <p>Copies the output file for the job out of the VM into <code>destFile</code> on the Tango host machine.</p>
 <h3 id="destroyvm">destroyVM</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">destroyVM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vm</span><span class="p">)</span>
 </code></pre></div>
+
 
 <p>Removes a VM from the Tango system.</p>
 <h3 id="safedestroyvm">safeDestroyVM</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">safeDestroyVM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vm</span><span class="p">)</span>
 </code></pre></div>
 
+
 <p>Removes a VM from the Tango system and makes sure that it has been removed.</p>
 <h3 id="getvms">getVMs</h3>
 <div class="codehilite"><pre><span></span><code><span class="n">getVMs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </code></pre></div>
 
+
 <p>Returns a complete list of VMs associated with this Tango system.</p>
-<h2 id="docker-vmms-setup">Docker VMMS Setup</h2>
-<p>This is a guide to set up Tango to run jobs inside Docker containers.</p>
-<ol>
-<li>
-<p>Install docker on host machine by following instructions on the <a href="https://docs.docker.com/installation/">docker installation page</a>. Ensure docker is running:</p>
-<div class="codehilite"><pre><span></span><code>$ docker ps <span class="c1"># CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES</span>
-</code></pre></div>
-
-</li>
-<li>
-<p>Build base Docker image from root Tango directory.</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> path/to/Tango
-docker build -t autograding_image vmms/
-docker images autograding_image    <span class="c1"># Check if image built</span>
-</code></pre></div>
-
-</li>
-<li>
-<p>Update <code>VMMS_NAME</code> in <code>config.py</code>.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># in config.py</span>
-<span class="n">VMMS_NAME</span> <span class="o">=</span> <span class="s2">&quot;localDocker&quot;</span>
-</code></pre></div>
-
-</li>
-</ol>
-<h2 id="amazon-ec2-vmms-setup">Amazon EC2 VMMS Setup</h2>
-<p>This is a guide to set up Tango to run jobs on an Amazon EC2 VM.</p>
-<ol>
-<li>
-<p>Create an <a href="https://aws.amazon.com/">AWS Account</a> or use an existing one.</p>
-</li>
-<li>
-<p>Obtain your <code>access_key_id</code> and <code>secret_access_key</code> by following the instructions <a href="http://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html#access-keys-and-secret-access-keys">here</a>.</p>
-</li>
-<li>
-<p>Add AWS Credentials to a file called <code>~/.boto</code> using the following format:</p>
-<div class="codehilite"><pre><span></span><code><span class="o">[</span>Credentials<span class="o">]</span>
-    <span class="nv">aws_access_key_id</span> <span class="o">=</span> MYAMAZONTESTKEY12345
-    <span class="nv">aws_secret_access_key</span> <span class="o">=</span> myawssecretaccesskey12345
-</code></pre></div>
-
-<p>Tango uses the <a href="http://boto.cloudhackers.com/en/latest/">Boto</a> Python package to interface with Amazon Web Services</p>
-</li>
-<li>
-<p>In the AWS EC2 console, create an Ubuntu 14.04+ EC2 instance and save the <code>.pem</code> file in a safe location.</p>
-</li>
-<li>
-<p>Copy the directory and contents of <code>autodriver/</code> in the Tango repo into the EC2 VM. For more help connecting to the EC2 instance follow <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstancesLinux.html#AccessingInstancesLinuxSCP">this guide</a></p>
-<div class="codehilite"><pre><span></span><code>chmod <span class="m">400</span> /path/my-key-pair.pem
-scp -i /path/my-key-pair.pem -r autodriver/ ubuntu@&lt;ec2-host-name&gt;.compute-1.amazonaws.com:~/
-</code></pre></div>
-
-<p>The autodriver is used as a sandbox environment to run the job inside the VM. It limits Disk I/O, Disk Usage, monitors security, and controls other valuable <code>sudo</code> level resources.</p>
-</li>
-<li>
-<p>In the EC2 VM, compile the autodriver.</p>
-<div class="codehilite"><pre><span></span><code>$ <span class="nb">cd</span> autodriver/
-$ make clean<span class="p">;</span> make
-$ cp -p autodriver /usr/bin/autodriver
-</code></pre></div>
-
-</li>
-<li>
-<p>Create the <code>autograde</code> Linux user and directory. All jobs will be run under this user.</p>
-<div class="codehilite"><pre><span></span><code>$ useradd autograde
-$ mkdir autograde
-$ chown autograde autograde
-$ chown :autograde autograde
-</code></pre></div>
-
-</li>
-<li>
-<p>In the AWS EC2 console, create an AMI image from your EC2 VM. Use <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/creating-an-ami-ebs.html#how-to-create-ebs-ami">this guide</a> to create a custom AMI.</p>
-</li>
-<li>
-<p>Exit the EC2 instance and edit the following values in <code>config.py</code> in the Tango directory.</p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># VMMS to use. Must be set to a VMMS implemented in vmms/ before</span>
-<span class="c1"># starting Tango.  Options are: &quot;localDocker&quot;, &quot;distDocker&quot;,</span>
-<span class="c1"># &quot;tashiSSH&quot;, and &quot;ec2SSH&quot;</span>
-<span class="nv">VMMS_NAME</span> <span class="o">=</span> <span class="s2">&quot;ec2SSH&quot;</span>
-<span class="c1">######</span>
-<span class="c1"># Part 5: EC2 Constants</span>
-<span class="c1">#</span>
-<span class="nv">EC2_REGION</span> <span class="o">=</span> <span class="s1">&#39;us-east-1&#39;</span>             <span class="c1"># EC2 Region</span>
-<span class="nv">EC2_USER_NAME</span> <span class="o">=</span> <span class="s1">&#39;ubuntu&#39;</span>             <span class="c1"># EC2 username</span>
-<span class="nv">DEFAULT_AMI</span> <span class="o">=</span> <span class="s1">&#39;ami-4c99c35b&#39;</span>         <span class="c1"># Custom AMI Id</span>
-<span class="nv">DEFAULT_INST_TYPE</span> <span class="o">=</span> <span class="s1">&#39;t2.micro&#39;</span>       <span class="c1"># Instance Type</span>
-<span class="nv">DEFAULT_SECURITY_GROUP</span> <span class="o">=</span> <span class="s1">&#39;autolab-autograde-ec2&#39;</span>  <span class="c1"># Security Group with full access to EC2</span>
-<span class="nv">SECURITY_KEY_PATH</span> <span class="o">=</span> <span class="s1">&#39;/path/to/my-key-pair.pem&#39;</span>    <span class="c1"># Absolute path to my-key-pair.pem</span>
-<span class="nv">DYNAMIC_SECURITY_KEY_PATH</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>       <span class="c1"># Leave blank</span>
-<span class="nv">SECURITY_KEY_NAME</span> <span class="o">=</span> <span class="s1">&#39;my-key-pair&#39;</span>    <span class="c1"># Name of the key file. Ex: if file name is &#39;my-key-pair.pem&#39;, fill value with &#39;my-key-pair&#39;</span>
-<span class="nv">TANGO_RESERVATION_ID</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>           <span class="c1"># Leave as 1</span>
-<span class="nv">INSTANCE_RUNNING</span> <span class="o">=</span> <span class="m">16</span>                <span class="c1"># Status code of a running instance, leave as 16</span>
-</code></pre></div>
-
-</li>
-<li>
-<p>You should now be ready to run Tango jobs on EC2! Use the <a href="/tango-cli/">Tango CLI</a> to test your setup.</p>
-</li>
-</ol>
                 
               
               
@@ -929,7 +933,7 @@ $ chown :autograde autograde
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../tango-rest/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href="../tango-rest/" title="Tango API" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -938,25 +942,11 @@ $ chown :autograde autograde
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                REST API
+                Tango API
               </div>
             </div>
           </a>
         
-        
-          <a href="../tango-deploy/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-footer-nav__title">
-              <div class="md-ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Deploying Tango
-              </div>
-            </div>
-            <div class="md-footer-nav__button md-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-            </div>
-          </a>
         
       </nav>
     </div>
@@ -999,15 +989,15 @@ $ chown :autograde autograde
       
     </div>
     
-      <script src="../assets/javascripts/vendor.7e0ee788.min.js"></script>
-      <script src="../assets/javascripts/bundle.b3a72adc.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}</script>
+      <script src="../assets/javascripts/vendor.3636a4ec.min.js"></script>
+      <script src="../assets/javascripts/bundle.e9fe3281.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
       
       <script>
         app = initialize({
           base: "..",
-          features: [],
+          features: ["navigation.tabs", "toc.integrate"],
           search: Object.assign({
-            worker: "../assets/javascripts/worker/search.4ac00218.min.js"
+            worker: "../assets/javascripts/worker/search.5eca75d3.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
