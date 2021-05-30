@@ -11,8 +11,8 @@
       
         <link rel="canonical" href="https://docs.autolabproject.com/lab/">
       
-      <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.5">
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.6">
     
     
       
@@ -20,7 +20,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.77f3fd56.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.2c0c5eaf.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.7fa14f5b.min.css">
@@ -75,11 +75,9 @@
       
     </div>
     
-      
-
-<header class="md-header" data-md-component="header">
+      <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="https://docs.autolabproject.com/" title="Autolab Documentation" class="md-header__button md-logo" aria-label="Autolab Documentation">
+    <a href=".." title="Autolab Documentation" class="md-header__button md-logo" aria-label="Autolab Documentation" data-md-component="logo">
       
   <img src="../images/logo.svg" alt="logo">
 
@@ -247,8 +245,6 @@
                   <div class="md-sidebar__inner">
                     
 
-
-
   
 
 
@@ -256,7 +252,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="https://docs.autolabproject.com/" title="Autolab Documentation" class="md-nav__button md-logo" aria-label="Autolab Documentation">
+    <a href=".." title="Autolab Documentation" class="md-nav__button md-logo" aria-label="Autolab Documentation" data-md-component="logo">
       
   <img src="../images/logo.svg" alt="logo">
 
@@ -1026,7 +1022,7 @@ The autograder processes these files and generates arbitrary text lines on stdou
 <h3 id="directory-structure">Directory Structure</h3>
 <p>Autolab expects to find the <code>autograde-Makefile</code>and <code>autograde.tar</code> files in the <code>hello</code> lab directory, but otherwise places no constraints on the contents and organization of this directory. However, based on our experience, we strongly recommend a directory structure with the following form:</p>
 <p><a href="https://github.com/autolab/Autolab/tree/master/examples/hello/README" target="_blank">hello/README</a>:</p>
-<div class="codehilite"><pre><span></span><code><span class="gh">#</span> Basic files created by the lab author
+<div class="codehilite"><pre><span></span><code><span class="gh"># Basic files created by the lab author</span>
 
 Makefile              Builds the lab from src/
 README
@@ -1035,7 +1031,7 @@ src/                  Contains all src files and solutions
 test-autograder/      For testing autograder offline
 writeup/              Lab writeup that students view from Autolab
 
-<span class="gh">#</span> Files created by running make
+<span class="gh"># Files created by running make</span>
 
 hello-handout/        The directory that is handed out to students, created
                       using files from src/.
@@ -1043,7 +1039,7 @@ hello-handout.tar     Archive of hello-handout directory
 autograde.tar         File that is copied to the autograding instance
                       (along with autograde-Makefile and student handin file)
 
-<span class="gh">#</span> Files created and managed by Autolab
+<span class="gh"># Files created and managed by Autolab</span>
 
 handin/               All students handin files
 hello.rb              Config file
@@ -1105,16 +1101,16 @@ log.txt               Log of autograded submissions
 <p>The <a href="https://github.com/autolab/Autolab/tree/master/examples/hello/src" target="_blank">hello/src/</a> directory
 contains <em>all</em> of the code files for the Hello Lab, including the files that are handed out to students:</p>
 <p><a href="https://github.com/autolab/Autolab/tree/master/examples/hello/src/README" target="_blank">hello/src/README</a>:</p>
-<div class="codehilite"><pre><span></span><code><span class="o">#</span> <span class="n">Autograder</span> <span class="k">and</span> <span class="n">solution</span> <span class="n">files</span>
-<span class="n">Makefile</span>                <span class="n">Makefile</span> <span class="k">and</span> <span class="p">...</span>
-<span class="n">README</span>                  <span class="p">...</span> <span class="n">README</span> <span class="k">for</span> <span class="n">this</span> <span class="n">directory</span>
-<span class="n">driver</span><span class="p">.</span><span class="n">sh</span><span class="o">*</span>              <span class="n">Autograder</span>
-<span class="n">hello</span><span class="p">.</span><span class="k">c</span>                 <span class="n">Solution</span> <span class="n">hello</span><span class="p">.</span><span class="k">c</span> <span class="n">file</span>
+<div class="codehilite"><pre><span></span><code># <span class="nv">Autograder</span> <span class="nv">and</span> <span class="nv">solution</span> <span class="nv">files</span>
+<span class="nv">Makefile</span>                <span class="nv">Makefile</span> <span class="nv">and</span> ...
+<span class="nv">README</span>                  ... <span class="nv">README</span> <span class="k">for</span> <span class="nv">this</span> <span class="nv">directory</span>
+<span class="nv">driver</span>.<span class="nv">sh</span><span class="o">*</span>              <span class="nv">Autograder</span>
+<span class="nv">hello</span>.<span class="nv">c</span>                 <span class="nv">Solution</span> <span class="nv">hello</span>.<span class="nv">c</span> <span class="nv">file</span>
 
-<span class="o">#</span> <span class="n">Files</span> <span class="n">that</span> <span class="k">are</span> <span class="n">handed</span> <span class="k">out</span> <span class="k">to</span> <span class="n">students</span>
-<span class="n">Makefile</span><span class="o">-</span><span class="n">handout</span>        <span class="n">Makefile</span> <span class="k">and</span> <span class="p">...</span>
-<span class="n">README</span><span class="o">-</span><span class="n">handout</span>          <span class="p">...</span> <span class="n">README</span> <span class="n">handed</span> <span class="k">out</span> <span class="k">to</span> <span class="n">students</span>
-<span class="n">hello</span><span class="p">.</span><span class="k">c</span><span class="o">-</span><span class="n">handout</span>         <span class="n">Blank</span> <span class="n">hello</span><span class="p">.</span><span class="k">c</span> <span class="n">file</span> <span class="n">handed</span> <span class="k">out</span> <span class="k">to</span> <span class="n">students</span>
+# <span class="nv">Files</span> <span class="nv">that</span> <span class="nv">are</span> <span class="nv">handed</span> <span class="nv">out</span> <span class="nv">to</span> <span class="nv">students</span>
+<span class="nv">Makefile</span><span class="o">-</span><span class="nv">handout</span>        <span class="nv">Makefile</span> <span class="nv">and</span> ...
+<span class="nv">README</span><span class="o">-</span><span class="nv">handout</span>          ... <span class="nv">README</span> <span class="nv">handed</span> <span class="nv">out</span> <span class="nv">to</span> <span class="nv">students</span>
+<span class="nv">hello</span>.<span class="nv">c</span><span class="o">-</span><span class="nv">handout</span>         <span class="nv">Blank</span> <span class="nv">hello</span>.<span class="nv">c</span> <span class="nv">file</span> <span class="nv">handed</span> <span class="nv">out</span> <span class="nv">to</span> <span class="nv">students</span>
 </code></pre></div>
 
 <h3 id="handout-directory">Handout Directory</h3>
@@ -1328,7 +1324,7 @@ $ ls -l
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "toc.integrate"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.5cf3e710.min.js"></script>
+      <script src="../assets/javascripts/bundle.a1c7c35e.min.js"></script>
       
     
   </body>

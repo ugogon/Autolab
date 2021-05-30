@@ -11,8 +11,8 @@
       
         <link rel="canonical" href="https://docs.autolabproject.com/tango-rest/">
       
-      <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.5">
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.6">
     
     
       
@@ -20,7 +20,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.77f3fd56.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.2c0c5eaf.min.css">
       
         
         <link rel="stylesheet" href="../assets/stylesheets/palette.7fa14f5b.min.css">
@@ -75,11 +75,9 @@
       
     </div>
     
-      
-
-<header class="md-header" data-md-component="header">
+      <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="https://docs.autolabproject.com/" title="Autolab Documentation" class="md-header__button md-logo" aria-label="Autolab Documentation">
+    <a href=".." title="Autolab Documentation" class="md-header__button md-logo" aria-label="Autolab Documentation" data-md-component="logo">
       
   <img src="../images/logo.svg" alt="logo">
 
@@ -247,8 +245,6 @@
                   <div class="md-sidebar__inner">
                     
 
-
-
   
 
 
@@ -256,7 +252,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="https://docs.autolabproject.com/" title="Autolab Documentation" class="md-nav__button md-logo" aria-label="Autolab Documentation">
+    <a href=".." title="Autolab Documentation" class="md-nav__button md-logo" aria-label="Autolab Documentation" data-md-component="logo">
       
   <img src="../images/logo.svg" alt="logo">
 
@@ -923,9 +919,9 @@
 Request body: empty<br />
 Response body:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;statusMsg&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span><span class="p">,</span>
-  <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>
-  <span class="nt">&quot;files&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="err">&lt;fileName1&gt;</span> <span class="err">:</span> <span class="err">&lt;md5hash1&gt;,</span> <span class="err">&lt;fileName2&gt;</span> <span class="err">:</span> <span class="err">&lt;md5hash2&gt;</span> <span class="err">...</span> <span class="p">},</span>
+  <span class="nt">&quot;statusMsg&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span><span class="p">,</span>
+  <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>
+  <span class="nt">&quot;files&quot;</span><span class="p">:</span> <span class="p">{</span> <span class="err">&lt;</span><span class="kc">f</span><span class="err">ileName</span><span class="mi">1</span><span class="err">&gt;</span> <span class="p">:</span> <span class="err">&lt;md</span><span class="mi">5</span><span class="err">hash</span><span class="mi">1</span><span class="err">&gt;</span><span class="p">,</span> <span class="err">&lt;</span><span class="kc">f</span><span class="err">ileName</span><span class="mi">2</span><span class="err">&gt;</span> <span class="p">:</span> <span class="err">&lt;md</span><span class="mi">5</span><span class="err">hash</span><span class="mi">2</span><span class="err">&gt;</span> <span class="err">...</span> <span class="p">},</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -935,8 +931,8 @@ Response body:</p>
 Request body: <code>&lt;file&gt;</code><br />
 Response body:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;statusMsg&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span><span class="p">,</span>
-  <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span>
+  <span class="nt">&quot;statusMsg&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span><span class="p">,</span>
+  <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -945,22 +941,22 @@ Response body:</p>
 <p>Request header: <code>POST /addJob/key/courselab/</code><br />
 Request body:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;image&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span><span class="p">,</span>                            <span class="err">#</span> <span class="err">required</span> <span class="err">VM</span> <span class="err">image</span> <span class="err">(e.g.</span> <span class="nt">&quot;rhel.img&quot;</span><span class="err">)</span>
-  <span class="s2">&quot;files&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="nt">&quot;localFile&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span><span class="p">,</span>
-               <span class="nt">&quot;destFile&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span> <span class="p">},</span> <span class="err">...</span><span class="p">],</span>    <span class="err">#</span> <span class="err">required</span> <span class="err">list</span> <span class="err">of</span> <span class="err">files</span> <span class="err">to</span> <span class="err">be</span> <span class="err">used</span> <span class="err">for</span> <span class="err">autograding</span>
-  <span class="nt">&quot;jobName&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span><span class="p">,</span>                          <span class="err">#</span> <span class="err">required</span> <span class="err">name</span> <span class="err">of</span> <span class="err">job</span>
-  <span class="nt">&quot;output_file&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span><span class="p">,</span>                      <span class="err">#</span> <span class="err">required</span> <span class="err">name</span> <span class="err">of</span> <span class="err">output</span> <span class="err">file</span>
-  <span class="nt">&quot;timeout&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>                             <span class="err">#</span> <span class="err">optional</span> <span class="err">timeout</span> <span class="err">value</span> <span class="err">(secs)</span>
-  <span class="nt">&quot;max_kb&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>                              <span class="err">#</span> <span class="err">optional</span> <span class="err">max</span> <span class="err">output</span> <span class="err">file</span> <span class="err">size</span> <span class="err">(KB)</span>
-  <span class="nt">&quot;callback_url&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span>                      <span class="err">#</span> <span class="err">optional</span> <span class="err">URL</span> <span class="err">for</span> <span class="err">POST</span> <span class="err">callback</span> <span class="err">from</span> <span class="err">server</span> <span class="err">to</span> <span class="err">client</span>
+  <span class="nt">&quot;image&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span><span class="p">,</span>                            <span class="err">#</span> <span class="err">required</span> <span class="err">VM</span> <span class="err">image</span> <span class="err">(e.g.</span> <span class="s2">&quot;rhel.img&quot;</span><span class="err">)</span>
+  <span class="nt">&quot;files&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="nt">&quot;localFile&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span><span class="p">,</span>
+               <span class="nt">&quot;destFile&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span> <span class="p">},</span> <span class="err">...</span><span class="p">],</span>    <span class="err">#</span> <span class="err">required</span> <span class="err">lis</span><span class="kc">t</span> <span class="err">o</span><span class="kc">f</span> <span class="kc">f</span><span class="err">iles</span> <span class="kc">t</span><span class="err">o</span> <span class="err">be</span> <span class="err">used</span> <span class="kc">f</span><span class="err">or</span> <span class="err">au</span><span class="kc">t</span><span class="err">ogradi</span><span class="kc">n</span><span class="err">g</span>
+  <span class="nt">&quot;jobName&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span><span class="p">,</span>                          <span class="err">#</span> <span class="err">required</span> <span class="kc">na</span><span class="err">me</span> <span class="err">o</span><span class="kc">f</span> <span class="err">job</span>
+  <span class="nt">&quot;output_file&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span><span class="p">,</span>                      <span class="err">#</span> <span class="err">required</span> <span class="kc">na</span><span class="err">me</span> <span class="err">o</span><span class="kc">f</span> <span class="err">ou</span><span class="kc">t</span><span class="err">pu</span><span class="kc">t</span> <span class="kc">f</span><span class="err">ile</span>
+  <span class="nt">&quot;timeout&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>                             <span class="err">#</span> <span class="err">op</span><span class="kc">t</span><span class="err">io</span><span class="kc">nal</span> <span class="kc">t</span><span class="err">imeou</span><span class="kc">t</span> <span class="err">value</span> <span class="err">(secs)</span>
+  <span class="nt">&quot;max_kb&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>                              <span class="err">#</span> <span class="err">op</span><span class="kc">t</span><span class="err">io</span><span class="kc">nal</span> <span class="err">max</span> <span class="err">ou</span><span class="kc">t</span><span class="err">pu</span><span class="kc">t</span> <span class="kc">f</span><span class="err">ile</span> <span class="err">size</span> <span class="err">(KB)</span>
+  <span class="nt">&quot;callback_url&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span>                      <span class="err">#</span> <span class="err">op</span><span class="kc">t</span><span class="err">io</span><span class="kc">nal</span> <span class="err">URL</span> <span class="kc">f</span><span class="err">or</span> <span class="err">POST</span> <span class="err">callback</span> <span class="kc">fr</span><span class="err">om</span> <span class="err">server</span> <span class="kc">t</span><span class="err">o</span> <span class="err">clie</span><span class="kc">nt</span>
 <span class="p">}</span>
 </code></pre></div>
 
 <p>Response body:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;statusMsg&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span><span class="p">,</span>
-  <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>
-  <span class="nt">&quot;jobId&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span>
+  <span class="nt">&quot;statusMsg&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span><span class="p">,</span>
+  <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>
+  <span class="nt">&quot;jobId&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -969,15 +965,15 @@ Request body:</p>
 <p>Request header: <code>GET /poll/key/courselab/outputFile/</code><br />
 Request body:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-  <span class="err">&lt;empty&gt;</span>
+  <span class="err">&lt;emp</span><span class="kc">t</span><span class="err">y&gt;</span>
 <span class="p">}</span>
 </code></pre></div>
 
 <p>Response body:<br />
 <code>&lt;autograder output file&gt;</code> if autograding successful otherwise:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-  <span class="nt">&quot;statusMsg&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span><span class="p">,</span>
-  <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span>
+  <span class="nt">&quot;statusMsg&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span><span class="p">,</span>
+  <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -988,22 +984,22 @@ Request body:</p>
 <p>Request header: <code>GET /info/&lt;KEY&gt;/&lt;COURSE_LAB&gt;/</code><br />
 Request body:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-  <span class="err">&lt;empty&gt;</span>
+  <span class="err">&lt;emp</span><span class="kc">t</span><span class="err">y&gt;</span>
 <span class="p">}</span>
 </code></pre></div>
 
 <p>Response body:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
   <span class="nt">&quot;info&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="nt">&quot;num_threads&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>
-            <span class="nt">&quot;job_requests&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>
-            <span class="nt">&quot;waitvm_timeouts&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>
-            <span class="nt">&quot;runjob_timeouts&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>
-            <span class="nt">&quot;elapsed_secs&quot;</span><span class="p">:</span> <span class="err">&lt;float&gt;</span><span class="p">,</span>
-            <span class="nt">&quot;runjob_errors&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>
-            <span class="nt">&quot;job_retries&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>
-            <span class="nt">&quot;copyin_errors&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>
-            <span class="nt">&quot;copyout_errors&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span>
+            <span class="nt">&quot;num_threads&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>
+            <span class="nt">&quot;job_requests&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>
+            <span class="nt">&quot;waitvm_timeouts&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>
+            <span class="nt">&quot;runjob_timeouts&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>
+            <span class="nt">&quot;elapsed_secs&quot;</span><span class="p">:</span> <span class="err">&lt;</span><span class="kc">fl</span><span class="err">oa</span><span class="kc">t</span><span class="err">&gt;</span><span class="p">,</span>
+            <span class="nt">&quot;runjob_errors&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>
+            <span class="nt">&quot;job_retries&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>
+            <span class="nt">&quot;copyin_errors&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>
+            <span class="nt">&quot;copyout_errors&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span>
           <span class="p">},</span>
   <span class="nt">&quot;statusMsg&quot;</span><span class="p">:</span> <span class="s2">&quot;Found info successfully&quot;</span><span class="p">,</span>
   <span class="nt">&quot;statusId&quot;</span><span class="p">:</span> <span class="mi">0</span>
@@ -1024,9 +1020,9 @@ Response body: JSON <code>pool</code> object</p>
 <p>Request header: <code>POST /prealloc/key/image/num/</code><br />
 Request body:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span>
-    <span class="nt">&quot;vmms&quot;</span><span class="p">:</span> <span class="err">&lt;string&gt;</span><span class="p">,</span>     <span class="err">#</span> <span class="err">vmms</span> <span class="err">to</span> <span class="err">use</span> <span class="err">(e.g.</span> <span class="nt">&quot;localSSH&quot;</span><span class="err">)</span>
-    <span class="s2">&quot;cores&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>       <span class="err">#</span> <span class="err">number</span> <span class="err">of</span> <span class="err">cores</span> <span class="err">per</span> <span class="err">VM</span>
-    <span class="nt">&quot;memory&quot;</span><span class="p">:</span> <span class="err">&lt;int&gt;</span><span class="p">,</span>      <span class="err">#</span> <span class="err">amount</span> <span class="err">of</span> <span class="err">memory</span> <span class="err">per</span> <span class="err">VM</span>
+    <span class="nt">&quot;vmms&quot;</span><span class="p">:</span> <span class="err">&lt;s</span><span class="kc">tr</span><span class="err">i</span><span class="kc">n</span><span class="err">g&gt;</span><span class="p">,</span>     <span class="err">#</span> <span class="err">vmms</span> <span class="kc">t</span><span class="err">o</span> <span class="err">use</span> <span class="err">(e.g.</span> <span class="s2">&quot;localSSH&quot;</span><span class="err">)</span>
+    <span class="nt">&quot;cores&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>       <span class="err">#</span> <span class="kc">nu</span><span class="err">mber</span> <span class="err">o</span><span class="kc">f</span> <span class="err">cores</span> <span class="err">per</span> <span class="err">VM</span>
+    <span class="nt">&quot;memory&quot;</span><span class="p">:</span> <span class="err">&lt;i</span><span class="kc">nt</span><span class="err">&gt;</span><span class="p">,</span>      <span class="err">#</span> <span class="err">amou</span><span class="kc">nt</span> <span class="err">o</span><span class="kc">f</span> <span class="err">memory</span> <span class="err">per</span> <span class="err">VM</span>
 <span class="p">}</span>
 </code></pre></div>
 
@@ -1126,7 +1122,7 @@ Request body:</p>
     <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "toc.integrate"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.fb4a9340.min.js", "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.5cf3e710.min.js"></script>
+      <script src="../assets/javascripts/bundle.a1c7c35e.min.js"></script>
       
     
   </body>
