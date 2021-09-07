@@ -1,6 +1,6 @@
 // Initialize all Flatpicker Datetime Pickers on the page
 ;(function() {
-  
+
   $(document).ready(function() {
     var datetimeElts = $('.datetimepicker');
 
@@ -34,6 +34,12 @@
       $(dateElts[i]).flatpickr({
         altInput: true,
         defaultDate: defaultDate,
+        formatDate: (date, format) => {
+          return moment(date).format(format);
+        },
+        parseDate: (datestr, format) => {
+          return moment(datestr, format, true).toDate();
+        },
       })
     }
   });
