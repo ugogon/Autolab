@@ -1,4 +1,6 @@
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  skip_before_action :verify_authenticity_token, only: :ldap
+
   def facebook
     if user_signed_in?
       if data = request.env["omniauth.auth"]
@@ -21,6 +23,65 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         # automatic cleanup of devise.* after sign in
         session["devise.facebook_data"] = request.env["omniauth.auth"].except("extra")
         redirect_to(new_user_registration_url) && return
+      end
+    end
+  end
+
+  def ldap
+    if user_signed_in?
+      if data = request.env["omniauth.auth"]
+        # add this authentication object to current user
+        if current_user.authentications.where(provider: data["provider"],
+                                              uid: data["uid"]).empty?
+          current_user.authentications.create(provider: data["provider"],
+                                              uid: data["uid"])
+        end
+      end
+      redirect_to(root_path) && return
+    else
+      @user = User.find_for_ldap_oauth(request.env["omniauth.auth"], current_user)
+
+      if @user
+        sign_in_and_redirect @user, event: :authentication # this will throw if @user is not activated
+        set_flash_message(:notice, :success, kind: "TU-Berlin") if is_navigational_format?
+        return
+      else
+
+        begin
+
+          # Skip sign up for CMU Shibboleth user
+          data = request.env["omniauth.auth"]
+          info = User.tub_ldap_lookup(data["uid"], request['password'])
+
+          @user = User.where(email: info[:email]).first # email is uid in our case
+
+          # If user doesn't exist, create one first
+          if @user.nil?
+            @user = User.new
+            @user.email = info[:email]
+            @user.first_name = info[:first_name]
+            @user.last_name = info[:last_name]
+
+            temp_pass = Devise.friendly_token[0, 20]    # generate a random token
+            @user.password = temp_pass
+            @user.password_confirmation = temp_pass
+            @user.skip_confirmation!
+            @user.save!
+          end
+
+
+          if @user.authentications.where(provider: data["provider"], uid: data["uid"]).empty?
+            @user.authentications.create(provider: data["provider"], uid: data["uid"])
+          end
+
+          sign_in_and_redirect @user, event: :authentication # this will throw if @user is not activated
+          set_flash_message(:notice, :success, kind: "TU-Berlin") if is_navigational_format?
+
+        rescue => exception
+          logger.info(exception.backtrace)
+          logger.info(exception.message)
+        end
+
       end
     end
   end

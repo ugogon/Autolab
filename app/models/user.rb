@@ -9,7 +9,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable
 
-  devise :omniauthable, omniauth_providers: [:shibboleth]
+  devise :omniauthable, omniauth_providers: [:ldap]
 
   has_many :course_user_data, dependent: :destroy
   has_many :courses, through: :course_user_data
@@ -85,6 +85,12 @@ class User < ApplicationRecord
     return authentication.user if authentication && authentication.user
   end
 
+  def self.find_for_ldap_oauth(auth, _signed_in_resource = nil)
+    authentication = Authentication.find_by(provider: auth.provider,
+                                            uid: auth.uid)
+    return authentication.user if authentication && authentication.user
+  end
+
   def self.find_for_google_oauth2_oauth(auth, _signed_in_resource = nil)
     authentication = Authentication.find_by(provider: auth.provider,
                                             uid: auth.uid)
@@ -106,6 +112,12 @@ class User < ApplicationRecord
         user.authentications.new(provider: data["provider"],
                                  uid: data["uid"])
       elsif (data = session["devise.google_oauth2_data"])
+        user.first_name = data["info"]["first_name"]
+        user.last_name = data["info"]["last_name"]
+        user.email = data["info"]["email"]
+        user.authentications.new(provider: data["provider"],
+                                 uid: data["uid"])
+      elsif (data = session["devise.ldap_data"])
         user.first_name = data["info"]["first_name"]
         user.last_name = data["info"]["last_name"]
         user.email = data["info"]["email"]
@@ -139,7 +151,7 @@ class User < ApplicationRecord
     user.password = temp_pass
     user.password_confirmation = temp_pass
     user.skip_confirmation!
-    
+
     puts("user email: ", user.email)
     puts("user pswd: ", user.password)
 
@@ -176,6 +188,31 @@ class User < ApplicationRecord
     else
       return user.courses.order("display_name ASC")
     end
+  end
+
+  def self.tub_ldap_lookup(dn, password)
+    return unless dn
+    require "rubygems"
+    require "net/ldap"
+
+    ldap = Net::LDAP.new(
+      :host => "ldap.tu-berlin.de",
+      :port => 636,
+      :base => "ou=user,dc=tu-berlin,dc=de",
+      :auth => {
+        :method => :simple,
+        :username => dn,
+        :password => password
+      }
+    )
+    ldap.encryption(:simple_tls)
+    user = ldap.search(base: dn).first
+    return unless user
+    result = {}
+    result[:first_name] = user[:givenname][-1]
+    result[:last_name] = user[:sn][-1]
+    result[:email] = user[:mail][-1]
+    result
   end
 
   # use LDAP to look up a user
