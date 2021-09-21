@@ -57,6 +57,7 @@ gem 'omniauth', '>=1.2.2'
 gem 'omniauth-facebook', '>=2.0.0'
 gem 'omniauth-google-oauth2', '>=0.2.5'
 gem 'omniauth-shibboleth', '>=1.1.2'
+gem 'omniauth-ldap'
 
 # Autolab API OAuth Service
 gem 'doorkeeper'
@@ -142,5 +143,5 @@ gem 'sprockets-rails', '>=3.2.1'
 
 gem "jstz-rails3-plus", ">= 1.0"
 
-# For getting file types 
-gem 'mimemagic', '>= 0.3.7'
+# For getting file types
+gem 'mimemagic', '>= 0.3.6'
