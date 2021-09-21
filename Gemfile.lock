@@ -119,11 +119,7 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-<<<<<<< HEAD
-    faraday (1.7.1)
-=======
     faraday (1.7.2)
->>>>>>> fixed Gemfile mimemagic contradiction
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -214,20 +210,6 @@ GEM
     omniauth (2.0.4)
       hashie (>= 3.4.6)
       rack (>= 1.6.2, < 3)
-<<<<<<< HEAD
-    omniauth-facebook (8.0.0)
-      omniauth-oauth2 (~> 1.2)
-    omniauth-google-oauth2 (0.8.2)
-      jwt (>= 2.0)
-      oauth2 (~> 1.1)
-      omniauth (~> 1.1)
-      omniauth-oauth2 (>= 1.6)
-    omniauth-ldap (1.0.5)
-      net-ldap (~> 0.12)
-      omniauth (~> 1.0)
-      pyu-ruby-sasl (~> 0.0.3.2)
-      rubyntlm (~> 0.3.4)
-=======
       rack-protection
     omniauth-facebook (8.0.0)
       omniauth-oauth2 (~> 1.2)
@@ -236,7 +218,6 @@ GEM
       oauth2 (~> 1.1)
       omniauth (~> 2.0)
       omniauth-oauth2 (~> 1.7.1)
->>>>>>> fixed Gemfile mimemagic contradiction
     omniauth-oauth2 (1.7.1)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
@@ -259,10 +240,6 @@ GEM
       ruby-rc4
       ttfunk (~> 1.0.3)
     public_suffix (4.0.6)
-<<<<<<< HEAD
-    pyu-ruby-sasl (0.0.3.3)
-=======
->>>>>>> fixed Gemfile mimemagic contradiction
     racc (1.5.2)
     rack (2.2.3)
     rack-attack (6.5.0)
@@ -321,11 +298,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.2)
-<<<<<<< HEAD
-    rubocop (1.20.0)
-=======
     rubocop (1.21.0)
->>>>>>> fixed Gemfile mimemagic contradiction
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -339,10 +312,6 @@ GEM
     ruby-progressbar (1.11.0)
     ruby-rc4 (0.1.5)
     ruby2_keywords (0.0.5)
-<<<<<<< HEAD
-    rubyntlm (0.3.4)
-=======
->>>>>>> fixed Gemfile mimemagic contradiction
     rubyzip (2.3.2)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -385,11 +354,7 @@ GEM
       tzinfo (>= 1.0.0)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
-<<<<<<< HEAD
-    unicode-display_width (2.0.0)
-=======
     unicode-display_width (2.1.0)
->>>>>>> fixed Gemfile mimemagic contradiction
     warden (1.2.9)
       rack (>= 2.0.9)
     webmock (3.14.0)
@@ -429,11 +394,7 @@ DEPENDENCIES
   js_cookie_rails
   jstz-rails3-plus (>= 1.0)
   materialize-sass
-<<<<<<< HEAD
-  mimemagic (>= 0.3.6)
-=======
   mimemagic (>= 0.3.7)
->>>>>>> fixed Gemfile mimemagic contradiction
   mini_racer
   moment_timezone-rails
   momentjs-rails (>= 2.9.0)
