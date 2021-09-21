@@ -12,7 +12,7 @@ FROM phusion/passenger-ruby26:1.0.13
 MAINTAINER Autolab Development Team "autolab-dev@andrew.cmu.edu"
 
 # Change to your time zone here
-RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
+RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # Install dependencies
 ENV DEBIAN_FRONTEND=noninteractive
