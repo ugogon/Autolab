@@ -254,13 +254,13 @@
               <%= f.hidden_field :embedded_quiz_form_answer, value: "" %>
 
               <%# Render instructor's custom quiz form elements. %>
-              <p>
+              <div>
                 <% begin %>
                     <%= ERB.new(@assessment.embedded_quiz_form_data).result(binding).html_safe %>
                 <% rescue %>
                   <p style = "color: red">Your assessment has no content yet! </p>
                 <% end %>
-              </p>
+              </div>
 
               <!-- Academic integrity checkbox -->
 
