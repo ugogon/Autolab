@@ -12,7 +12,15 @@ FROM phusion/passenger-ruby26:1.0.13
 MAINTAINER Autolab Development Team "autolab-dev@andrew.cmu.edu"
 
 # Change to your time zone here
-RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+ENV TZ=Europe/Berlin
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN sh -c 'echo "" > /etc/apt/sources.list.d/passenger.list'
+RUN apt-get update
+RUN apt-get install -y dirmngr gnupg
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
+RUN apt-get install -y apt-transport-https ca-certificates
+RUN sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger focal main > /etc/apt/sources.list.d/passenger.list'
 
 # Install dependencies
 ENV DEBIAN_FRONTEND=noninteractive
