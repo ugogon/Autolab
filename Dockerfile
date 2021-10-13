@@ -20,6 +20,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
   sqlite3 \
   tzdata \
+  shared-mime-info \
   python3-pip
 
 RUN pip3 install numpy jinja2 markdown dill
