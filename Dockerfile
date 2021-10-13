@@ -9,18 +9,11 @@
 #
 FROM phusion/passenger-ruby26:2.0.0
 
-MAINTAINER Autolab Development Team "autolab-dev@andrew.cmu.edu"
+MAINTAINER Autolab Development Team "wr@cg.tu-berlin.de"
 
 # Change to your time zone here
 ENV TZ=Europe/Berlin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-RUN sh -c 'echo "" > /etc/apt/sources.list.d/passenger.list'
-RUN apt-get update
-RUN apt-get install -y dirmngr gnupg
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7
-RUN apt-get install -y apt-transport-https ca-certificates
-RUN sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger focal main > /etc/apt/sources.list.d/passenger.list'
 
 # Install dependencies
 ENV DEBIAN_FRONTEND=noninteractive
@@ -29,7 +22,7 @@ RUN apt-get update && apt-get install -y \
   tzdata \
   python3-pip
 
-RUN pip3 install numpy jinja2 markdown
+RUN pip3 install numpy jinja2 markdown dill
 
 # Start Nginx / Passenger
 RUN rm -f /etc/service/nginx/down
