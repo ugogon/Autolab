@@ -1,7 +1,7 @@
 <div class="sign-in-panel home">
 <br>
 
-<%= form_tag user_ldap_omniauth_callback_path do %>
+<%= form_tag(user_ldap_omniauth_callback_path, {class: 'form-tub'}) do %>
   <img src="/images/autolab.svg" alt="" class="valign login-logo">
   <h5>Login to Autolab</h5>
 
@@ -12,7 +12,35 @@
   <div><%= submit_tag "Sign in", :class=>"btn primary" %></div>
 <% end %>
 
+
+<div class="form-plain" style="display:none">
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+
+  <img src="/images/autolab.svg" alt="" class="valign login-logo">
+  <h5>Login to Autolab</h5>
+
+  <div><%= f.email_field :email, :autofocus => true, :placeholder=> "Email Address"%></div>
+  <div><%= f.password_field :password, :placeholder=> "Password"%></div>
+
+  <% if devise_mapping.rememberable? -%>
+  <label>
+      <%= f.check_box :remember_me %>
+      <span> <%= f.label :remember_me %> </span> <br />
+  </label>
+  <p></p>
+  <% end -%>
+  <div><%= f.submit "Sign in", :class=>"btn primary" %></div>
+<% end %>
+</div>
+
 <br>
+<script type="text/javascript">
+const toggle = () => {
+  $(".form-tub").toggle();
+  $(".form-plain").toggle();
+}
+</script>
+<a href="javascript:toggle()">No TUB Account</a><br>
 <% if Rails.env == "development" %>
 <%= link_to "Developer Login", "/home/developer_login" %><br />
 <% end %>
