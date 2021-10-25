@@ -38,9 +38,10 @@
 const toggle = () => {
   $(".form-tub").toggle();
   $(".form-plain").toggle();
+  $(".no").toggle();
 }
 </script>
-<a href="javascript:toggle()">No TUB Account</a><br>
+<a href="javascript:toggle()"><span class="no">No </span>TUB Account</a><br>
 <% if Rails.env == "development" %>
 <%= link_to "Developer Login", "/home/developer_login" %><br />
 <% end %>
