@@ -7,7 +7,7 @@ gem 'rails', '=5.2.0'
 gem 'sass-rails', '>= 4.0.3'
 
 # Use Materialize for the base css
-gem 'materialize-sass'
+gem 'materialize-sass', "=1.0.0"
 
 # Use for some of the glypicons on the site
 gem 'bootstrap-sass', '>= 3.4.1'
@@ -22,7 +22,7 @@ gem 'terser', '>= 1.1.7'
 gem 'coffee-rails', '>= 4.0.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'mini_racer',  platforms: :ruby
+gem 'mini_racer', '<= 0.4.0' , platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -35,6 +35,9 @@ gem 'sdoc', '>= 0.4.0', group: :doc
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring', group: :development
+
+# Sourcing environment variables from .env
+gem 'dotenv-rails'
 
 # Enables Slack notifications
 gem 'slack-notifier'
@@ -58,6 +61,12 @@ gem 'omniauth-facebook', '>=2.0.0'
 gem 'omniauth-google-oauth2', '>=0.2.5'
 gem 'omniauth-shibboleth', '>=1.1.2'
 gem 'omniauth-ldap'
+
+# OAuth2 authentication
+gem 'oauth2'
+
+# Github API
+gem "octokit", "~> 4.0"
 
 # Autolab API OAuth Service
 gem 'doorkeeper'
@@ -145,3 +154,7 @@ gem "jstz-rails3-plus", ">= 1.0"
 
 # For getting file types
 gem 'mimemagic', '>= 0.3.7'
+
+# For encrypting API tokens
+gem 'lockbox'
+

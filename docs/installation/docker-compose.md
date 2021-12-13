@@ -57,22 +57,23 @@ First ensure that you have Docker and Docker Compose installed on your machine. 
 
     This user has full permissions on Autolab and will be able to create other users and designate other admins.
 
-10. Change `DOCKER_TANGO_HOST_VOLUME_PATH` in `docker-compose.yml` to be the absolute path to the Tango `volumes` directory, i.e `/<path-to-docker-compose-installation>/Tango/volumes`. This is so that Tango knows where to put the output files of its autograded jobs.
+10. Change `DOCKER_TANGO_HOST_VOLUME_PATH` in `.env` to be the absolute path to the Tango `volumes` directory, i.e `/<path-to-docker-compose-installation>/Tango/volumes`. This is so that Tango knows where to put the output files of its autograded jobs.
 
         :::bash 
-        # in docker-compose.yml
+        # in .env
 
         # Modify the below to be the path to volumes on your host machine
-        - DOCKER_TANGO_HOST_VOLUME_PATH=/home/your-user/autolab-docker/Tango/volumes # example path
+        DOCKER_TANGO_HOST_VOLUME_PATH=/home/your-user/autolab-docker/Tango/volumes
 
 11. Stop all containers, as we are going to setup/disable TLS:
 
         :::bash 
         docker-compose stop
 
-12. If you intend to use TLS later, in `nginx/app.conf`, change instances of `<REPLACE_WITH_YOUR_DOMAIN>` to your real domain name. Otherwise, if you are not using TLS, in `nginx/no-ssl-app.conf`, change `server_name` to your real domain name.
+12. Update the Nginx config. Update all occurences of `REPLACE_WITH_YOUR_DOMAIN` in `nginx/app.conf` and `nginx/no-ssl-app.conf` to your real domain name. The configs are used when TLS is enabled and disabled respectively. Double-check that ALL occurrences are replaced as otherwise you will have trouble accessing your deployment.
 
 13. Continue with TLS setup as outlined in the [next section](#configuring-tlsssl)
+
 14. Build the autograding image(s) that you want to use in Tango (see [the docs](/installation/tango/#docker-vmms-setup) for more information). For this setup we will stick to the default Ubuntu 18.04 autograding image: 
 
         :::bash
@@ -116,23 +117,23 @@ There are three options for TLS: using Let's Encrypt (for free TLS certificates)
         # - ./ssl/ssl-dhparams.pem:/etc/letsencrypt/ssl-dhparams.pem
 
 ### Option 3: No TLS (not recommended, only for local development/testing)
-1. In `docker-compose.yml` (for all the subsequent steps), comment out the following:
+1. In `docker-compose.yml`, comment out the following:
 
         :::bash
         # Comment the below out to disable SSL (not recommended)
         - ./nginx/app.conf:/etc/nginx/sites-enabled/webapp.conf
     
-    Also uncomment the following:
+2. In `docker-compose.yml`, also uncomment the following:
 
         :::bash
         # Uncomment the below to disable SSL (not recommended)
         # - ./nginx/no-ssl-app.conf:/etc/nginx/sites-enabled/webapp.conf
     
-    Lastly set `DOCKER_SSL=false`:
+3. Lastly, in `.env` file, set `DOCKER_SSL=false`:
 
         :::bash
-        environment:
-        - DOCKER_SSL=true                         # set to false for no SSL (not recommended)
+        # set to false for no SSL (not recommended)
+        DOCKER_SSL=false
 
 ## Updating Your Docker Compose Deployment
 1. Stop your running instances:
