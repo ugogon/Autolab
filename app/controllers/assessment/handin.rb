@@ -31,7 +31,8 @@ module AssessmentHandin
       inject["submission[embedded_quiz_form_answer]"] = ""
       contents = JSON.dump inject
 
-      out_file = File.new("out.txt", "w+")
+      require 'tempfile'
+      out_file = Tempfile.new('out.txt')
       out_file.puts(contents)
 
       params[:submission]["file"] = out_file
@@ -64,6 +65,11 @@ module AssessmentHandin
 
       COURSE_LOGGER.log("could not save handin: #{exception.class} (#{exception.message})")
       submissions = nil
+    end
+
+    if @assessment.embedded_quiz
+      out_file.close
+      out_file.unlink
     end
 
     # make sure submission was correctly constructed and saved
