@@ -164,6 +164,16 @@ ActiveRecord::Schema.define(version: 2021_10_23_185328) do
     t.boolean "infinite", default: false, null: false
   end
 
+  create_table "github_integrations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "oauth_state"
+    t.text "access_token_ciphertext"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["oauth_state"], name: "index_github_integrations_on_oauth_state", unique: true
+    t.index ["user_id"], name: "index_github_integrations_on_user_id", unique: true
+  end
+
   create_table "groups", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -357,6 +367,7 @@ ActiveRecord::Schema.define(version: 2021_10_23_185328) do
     t.index ["risk_condition_id"], name: "index_watchlist_instances_on_risk_condition_id"
   end
 
+  add_foreign_key "github_integrations", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_device_flow_requests", "oauth_applications", column: "application_id"
