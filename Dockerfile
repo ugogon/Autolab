@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
   shared-mime-info \
   python3-pip
 
-RUN pip3 install numpy jinja2 markdown dill fs
+RUN pip3 install numpy jinja2 markdown matplotlib fs scipy
 
 # Start Nginx / Passenger
 RUN rm -f /etc/service/nginx/down

@@ -257,13 +257,17 @@
               <div>
                 <% begin %>
                     <%= ERB.new(@assessment.embedded_quiz_form_data).result(binding).html_safe %>
-                <% rescue %>
-                  <p style = "color: red">Your assessment has no content yet! </p>
+                <% rescue => exception %>
+                  <pre>
+<%= "Error: " %><%= exception.message %>
+<%= exception.backtrace.join("\n\t") %>
+                  </pre>
+                  <!--<p style = "color: red">Your assessment has no content yet! </p>-->
                 <% end %>
               </div>
 
 
-              <% if @can_submit %>  
+              <% if @can_submit %>
                 <!-- Academic integrity checkbox -->
                 <%= label_tag(:integrity_checkbox) do %>
                   <%= check_box_tag(:integrity_checkbox) %>
