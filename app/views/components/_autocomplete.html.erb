@@ -1,0 +1,34 @@
+<script type="application/javascript">
+  /* requires @usersEncoded and @users to be set, i.e. via Course.get_autocomplete_data */
+  jQuery(function() {
+    /* match user name/email with cud_id */
+    /* escape_javascript prevents issues with backslashes in names, etc. */
+    const userData = {
+      <% @usersEncoded.each do |k,v| %>
+        "<%= j k %>": "<%= v %>",
+      <% end %>
+    };
+
+    /* user autocomplete */
+    const $studentAutocompleteField = $('#student_autocomplete');
+    const $hiddenCUDField = $('<%= hiddenCUDField %>');
+    /* note that the names were already escaped once in retrieve_autocompletion_data! */
+    /* and now, each name (k) is implicitly escaped a second time */
+    /* this is desired behavior since autocomplete unescapes once */
+    $studentAutocompleteField.autocomplete({
+      data: {
+        <% @users.each do |k,v| %>
+          "<%= j k %>": null,
+        <% end %>
+      }
+    });
+
+    /* track changes in student autocomplete field */
+    $studentAutocompleteField.on('change', function() {
+      /* $studentAutocompleteField.val() unescapes a second time */
+      const encoded = window.btoa($studentAutocompleteField.val());
+      // Trigger 'change' event for any code that might be listening
+      $hiddenCUDField.val(userData[encoded]).trigger('change');
+    });
+  });
+</script>

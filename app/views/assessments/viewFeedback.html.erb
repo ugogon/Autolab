@@ -16,22 +16,41 @@ Graded by: <%= if @score.grader && @score.grader.user then @score.grader.user.em
 
 <% end %>
 <!--
-Yes, feedback if per problem but we show all annotations for this submission anyway. While this is not semantically correct, it offers a better UX than we had before. If we just show annotations attached to this problem, then where would we show annotations not attached to a problem at all?
+Yes, feedback is per problem but we show all annotations for this submission anyway. While this is not semantically correct, it offers a better UX than we had before. If we just show annotations attached to this problem, then where would we show annotations not attached to a problem at all?
 -->
 
 <% if @submission.annotations.count > 0 and @problemReleased %>
   <h2 style="margin-top: 1em">Remarks</h2>
 
-  <ul>
-  <% @submission.annotations.each do |annotation| %>
-    <li>
-      <%= link_to annotation.as_text, [:view, @course, @assessment, @submission, header_position: annotation.position] %>
-      <% 
-        # if the submission is an archive, use filename in archive; otherwise, use submission filename
-        filename = @files && annotation.position ? Archive.get_nth_filename(@files, annotation.position) : @submission.filename
-      %>
-      (<%= filename %>: <%= annotation.line %>)
-    </li>
-  <% end %>
-  </ul>
+  <% subs_by_problem = @submission.annotations.group_by(&:problem)
+      subs_by_problem.each do |problem, annotations| %>
+      <b> <%= problem.name %> </b>
+      <ul class="collection">
+      <!-- use custom sort b/c using ordering doesn't work with autograder output, archived files -->
+      <%
+        s_annotations = annotations.sort do |a,b|
+        aFilename = @get_correct_filename.call(a)
+        bFilename = @get_correct_filename.call(b)
+        case
+          when aFilename < bFilename
+            -1
+          when aFilename > bFilename
+              1
+          else
+              a.line <=> b.line
+          end
+        end
+        s_annotations.each do |annotation| %>
+        <li class="collection-item">
+              <div style='white-space: pre-wrap;'><%= annotation.comment%> </div>
+              <% filename = @get_correct_filename.call(annotation)%>
+              <span> 
+                <b><%= annotation.value? ? sprintf("(%+.2f)", annotation.value.round(2)) : "" %></b> 
+                <%= link_to filename.to_s + ":"+ annotation.line.to_s , [:view, @course, @assessment, @submission, header_position: annotation.position] %> 
+              </span>
+        </li>
+        <% end %>
+      </ul>
+    <% end %>
+
 <% end %>

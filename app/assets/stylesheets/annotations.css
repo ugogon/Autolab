@@ -8,7 +8,19 @@
 }
 
 .row {
-  max-height: calc(100vh - 190px);
+  max-height: calc(100vh - 173px);
+}
+
+.submission-controls select {
+  height: 2rem;
+  display: inline-block;
+  width: 50px;
+}
+
+.submission-controls .btn {
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
 }
 
 #code-loader {
@@ -216,8 +228,10 @@
   padding: 5px;
 }
 
-.code-table .annotation-line .annotation-box .annotation-body p {
+.code-table .annotation-line .annotation-box .annotation-body div {
   margin: 5px 0;
+  font-family: 'Source Sans Pro', sans-serif;
+  white-space: pre-line;
 }
 
 
@@ -458,7 +472,6 @@
 
 #pdf-doc .ann-box .score-box {
   float: none;
-  background-color: transparent;
   color: black;
   border-radius: 2px;
   font-size: 12px;
@@ -492,9 +505,9 @@
   display: flex;
   flex-flow: column;
   height: 100%;
+  overflow-y: auto;
 }
 .annotationSummary{
-  border: solid 2px #0882af;
   margin-bottom: 15px;
   color: #4f4f4f;
 }
@@ -517,7 +530,6 @@
   box-shadow: none;
   border: none;
   margin: 10px 0;
-  max-height: 350px;
 }
 
 .annotationSummary .collapsible-header{
@@ -526,6 +538,7 @@
   border: none;
   padding: 5px;
   padding-left: 10px;
+  user-select: none;
 }
 
 .annotationSummary .collapsible-header h4{
@@ -533,13 +546,32 @@
   font-size: 1.1em;
 }
 
-.annotationSummary .collapsible-header .dropdown-arrow{
-
-}
-
 .annotationSummary .collapsible-body{
   padding: 0 1rem;
   border: none;
+}
+
+.annotationSummary .collapsible-body .file_annotations {
+  margin-bottom: 10px;
+}
+
+.annotationSummary .collapsible {
+  overflow: auto;
+}
+
+/* Annotations collapsible icons */
+
+.annotationSummary .collapsible i.expand-icon,
+.annotationSummary .collapsible i.collapse-icon {
+  font-size: 2rem;
+}
+
+.annotationSummary .collapsible li.active i.expand-icon {
+  display: none;
+}
+
+.annotationSummary .collapsible li:not(.active) i.collapse-icon {
+  display: none;
 }
 
 .annotationSummary .summary_score {
@@ -563,27 +595,33 @@
   background: #818181;
 }
 
-.problemGrades{
-  border: solid 2px #ebebeb;
-  overflow: auto;
+.annotationSummary .line_number {
+  background: #818181;
+  margin-left: -8px;
+  border-top-left-radius: 100vw;
+  padding-left: 8px;
+  padding-right: 3px;
+  border-bottom-left-radius: 100vw;
 }
-.problemGrades h1{
-  margin: 0px;
-  background-color: #ebebeb;
-  padding: 8px;
-  border-right: none;
-  border-left: none;
-  font-weight: normal !important;
-  font-size: 1em !important;
-  color: #909090;
-  white-space: nowrap;
-  overflow: hidden;
-  padding-left: 10px;
-  padding-right: 15px;
-  text-align: left;
+
+.annotation-comment {
+  margin-bottom:0;
+  padding-bottom:0 !important;
 }
-.problemGrades ul{
-  margin: 5px 10px;
+
+.annotation-problem-score {
+  margin-bottom:0;
+  margin-top:0 !important;
+  padding-bottom:0 !important;
+}
+
+.annotation-buttons {
+  margin-top:0 !important;
+  margin-bottom:0 !important;
+}
+
+.problemGrades {
+  overflow-y: auto;
 }
 
 .collection{
@@ -609,7 +647,7 @@
 
 /* File Tree Styling CSS */
 .file-explorer{
-  max-height: 60%;
+  max-height: 100%;
   overflow: auto;
 }
 
@@ -621,7 +659,7 @@
   margin-left:10px;
 }
 
-.file{
+.file, .folder{
   margin-left:5px;
   padding: 3px;
 }
@@ -667,12 +705,9 @@
 
 /* Symbol Tree Styling */
 #symbol-tree-container {
-  height: 30%;
+  max-height: 100%;
   overflow: auto;
-}
-
-#symbol-tree-box {
-  /* overflow: auto; */
+  padding: 5px;
 }
 
 #symbol-tree-box ul {
@@ -684,6 +719,7 @@
 #symbol-tree-box ul li {
   cursor: pointer;
   display: flex;
+  align-items: center;
 }
 
 #symbol-tree-box ul li:hover {
@@ -781,10 +817,6 @@
     opacity: 0;
   }
 }
-.collapsible {
-  max-height: 50vh;
-  overflow: auto;
-}
 
 .descript {
   cursor: pointer;
@@ -798,3 +830,53 @@
 .summary_score{
   padding-left: 10px;
 }
+
+/* Autocomplete dropdown */
+.ui-menu .ui-menu-item {
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 16px;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+
+}
+.ui-menu-item.ui-state-focus{
+  background: rgba(211, 211, 211, 0.526) !important;
+  background-image: none !important;
+}
+
+.ui-autocomplete {
+  max-height: 15rem;
+  max-width: 97%;
+  overflow-y: auto;
+  /* prevent horizontal scrollbar */
+  overflow-x: hidden;
+}
+
+/* Golden Layout */
+
+.lm_content {
+  background: #fff;
+}
+
+.lm_header {
+  background: #f9f9f9 !important;
+}
+
+.lm_title {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: bold;
+}
+
+/* Tooltip */
+span > .material-icons {
+  vertical-align: middle;
+  color: grey;
+}
+
+.ui-tooltip {
+  font-family: 'Source Sans Pro', sans-serif !important;
+  font-size: 14px !important;
+  box-shadow: 0.5px 0.5px 0.5px 0.5px grey !important;
+  border-color: white !important;
+} 
+

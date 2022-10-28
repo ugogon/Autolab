@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_23_185328) do
+ActiveRecord::Schema.define(version: 2022_09_29_205611) do
 
   create_table "annotations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "submission_id"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2021_10_23_185328) do
     t.float "value"
     t.integer "problem_id"
     t.string "coordinate"
+    t.boolean "shared_comment", default: false
   end
 
   create_table "announcements", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -94,7 +95,9 @@ ActiveRecord::Schema.define(version: 2021_10_23_185328) do
     t.text "embedded_quiz_form_data"
     t.boolean "embedded_quiz"
     t.binary "embedded_quiz_form"
+    t.boolean "allow_student_assign_group", default: true
     t.boolean "github_submission_enabled", default: true
+    t.boolean "is_positive_grading", default: false
   end
 
   create_table "attachments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -321,6 +324,7 @@ ActiveRecord::Schema.define(version: 2021_10_23_185328) do
     t.text "settings"
     t.text "embedded_quiz_form_answer"
     t.integer "submitted_by_app_id"
+    t.string "group_key", default: ""
     t.index ["assessment_id"], name: "index_submissions_on_assessment_id"
     t.index ["course_user_datum_id"], name: "index_submissions_on_course_user_datum_id"
   end
@@ -353,10 +357,19 @@ ActiveRecord::Schema.define(version: 2021_10_23_185328) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "watchlist_instances", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "course_user_datum_id"
-    t.bigint "course_id"
-    t.bigint "risk_condition_id"
+  create_table "watchlist_configurations", force: :cascade do |t|
+    t.json "category_blocklist"
+    t.json "assessment_blocklist"
+    t.integer "course_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["course_id"], name: "index_watchlist_configurations_on_course_id"
+  end
+
+  create_table "watchlist_instances", force: :cascade do |t|
+    t.integer "course_user_datum_id"
+    t.integer "course_id"
+    t.integer "risk_condition_id"
     t.integer "status", default: 0
     t.boolean "archived", default: false
     t.datetime "created_at", null: false

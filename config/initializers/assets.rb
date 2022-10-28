@@ -3,11 +3,12 @@
 # Version of your assets, change this if you want to expire all your assets.
 Rails.application.config.assets.version = '1.0'
 
-# Add additional assets to the asset load path
+# Add additional assets to the asset load path.
 # Rails.application.config.assets.paths << Emoji.images_path
 
 # Precompile additional assets.
-# application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
+# application.js, application.css, and all non-JS/CSS in the app/assets
+# folder are already added.
 Rails.application.config.assets.precompile += %w( *.js )
 Rails.application.config.assets.precompile += %w( animate.css )
 Rails.application.config.assets.precompile += %w( gradesheet.css.scss )
@@ -44,7 +45,7 @@ Rails.application.config.assets.precompile += %w( lodash_set_template_style.js )
 Rails.application.config.assets.precompile += %w( pdf.worker.js )
 Rails.application.config.assets.precompile += %w( table.js )
 Rails.application.config.assets.precompile += %w( app-level.js )
-Rails.application.config.assets.precompile += %w( confirm_discard_changes.js )
+Rails.application.config.assets.precompile += %w( edit_assessment.js )
 Rails.application.config.assets.precompile += %w( groups.coffee )
 Rails.application.config.assets.precompile += %w( jquery.event.drag-2.2.js )
 Rails.application.config.assets.precompile += %w( manage_submissions.js )

@@ -16,9 +16,9 @@
 <% end %>
 
 <% content_for :javascripts do %>
-  <%= external_javascript_include_tag "lodash", "3.3.1" %>
+  <%= external_javascript_include_tag "lodash" %>
   <%= javascript_include_tag "sorttable" %>
-  <%= external_javascript_include_tag "jquery.dataTables", "1.10.9" %>
+  <%= external_javascript_include_tag "jquery.dataTables" %>
 
   <%= javascript_include_tag "table_floating_header" %>
   <%= javascript_include_tag "manage_submissions" %>
@@ -99,7 +99,7 @@
           </label>
         </p>
       </td>
-      <td><%= "#{submission.course_user_datum.last_name}, #{submission.course_user_datum.first_name}" %>
+      <td><%= [submission.course_user_datum.last_name, submission.course_user_datum.first_name].reject(&:blank?).join(', ') %>
       <%= link_to submission.course_user_datum.email,
                       history_course_assessment_path(@course, @assessment, cud_id: submission.course_user_datum_id, partial: true),
                       {remote: true, class: :trigger}

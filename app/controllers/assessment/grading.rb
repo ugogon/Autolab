@@ -113,7 +113,7 @@ private
               course_user_datum_id: user.id,
               assessment_id: asmt.id,
               submitted_by_id: @cud.id,
-              created_at: asmt.due_at
+              created_at: [Time.current, asmt.due_at].min
             )
           end
 
@@ -164,6 +164,7 @@ private
     rescue CSV::MalformedCSVError => e
       flash[:error] = "Failed to parse CSV -- make sure the grades " \
                       "are formatted correctly: <pre>#{e}</pre>"
+      flash[:html_safe] = true
       return false, []
     end
 
@@ -292,11 +293,11 @@ end
     grader = (if score then score.grader else nil end)
     grader_info = ""
     if grader
-      grader_info = "#{grader.first_name} #{grader.last_name} (#{grader.email})"
+      grader_info = grader.full_name_with_email
     end
 
     feedback = score.feedback
-    response = {"grader" => grader_info, "feedback" => feedback, "score" => score.score}
+    response = { "grader" => grader_info, "feedback" => feedback, "score" => score.score }
     render json: response
   end
 
@@ -425,12 +426,12 @@ private
       problem_stats = {}
       # seems like we always index with 1
       @assessment.problems.each do |problem|
-        problem_stats[problem.name] =  stats.stats(problem_scores[problem.id])
+        problem_stats[problem.name] = stats.stats(problem_scores[problem.id])
       end
       problem_stats[:Total] = stats.stats(problem_scores[:total])
       result[group] = {}
       result[group][:data] = problem_stats
-      result[group][:total_students] =problem_scores[ problem_scores.keys[1]].length
+      result[group][:total_students] = problem_scores[:total].length
     end
     # raise result.inspect
     result

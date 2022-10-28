@@ -4,8 +4,8 @@
 <% end %>
 
 <% content_for :javascripts do %>
-  <%= external_javascript_include_tag "jquery-ui", "1.10.2" %>
-  <%= external_javascript_include_tag "jquery.dataTables", "1.10.9" %>
+  <%= external_javascript_include_tag "jquery-ui" %>
+  <%= external_javascript_include_tag "jquery.dataTables" %>
 
   <%= javascript_include_tag "jquery.jeditable" %>
 
@@ -46,7 +46,7 @@
       <% for s in @submissions do %>
           { "id": "",
             "name": {
-              name: "<%= s.course_user_datum.last_name %>, <%= s.course_user_datum.first_name %>",
+              name: "<%= [s.course_user_datum.last_name, s.course_user_datum.first_name].reject(&:blank?).join(', ') %>",
               email: "<%= s.course_user_datum.email %>"
             },
             "lec": "<%= s.course_user_datum.lecture %>",
@@ -195,7 +195,7 @@
 <% end %>
 
 <div class="collection">
-<a id ="interaction_banner" href="https://docs.autolabproject.com/features/#annotations" target="_blank" class="collection-item">
+<a id ="interaction_banner" href="https://docs.autolabproject.com/features/annotations/" target="_blank" class="collection-item">
 Interaction between gradesheet and annotations
 <span id="interaction_badge" class="badge" data-badge-caption="Feature Information"></span></a>
 </div>

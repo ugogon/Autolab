@@ -2,7 +2,7 @@
 
 Traditional approaches of identifying students who are struggling with class is reactive; course staff wait for students to come to them to provide help, which can often be too late.
 
-The metrics feature seeks to be an proactive approach by actively identifying students who might be struggling in class through tracking of metrics that signify possible risks. Identifying students in need of attention early in the course would provide a better chance of getting them back on track in the course.
+The metrics feature seeks to be a proactive approach by actively identifying students who might be struggling in class through tracking of metrics that signify possible risks. Identifying students in need of attention early in the course would provide a better chance of getting them back on track in the course.
 
 
 ## Usage Flow
@@ -66,7 +66,7 @@ Once instructors have set up student metrics for their course, students that are
 
 ![Watchlist Instance](/images/watchlist_instance.png)
 
-Every row in the watchlist represents a particular instance of a student who meets one or more of the metrics conditions. A single student can appear in multiple watchlist instances if they are identified for new metrics conditions on separate occassions of loading the watchlist. 
+Every row in the watchlist represents a particular instance of a student who meets one or more of the metrics conditions. A single student can appear in multiple watchlist instances if they are identified for new metrics conditions on separate occasions of loading the watchlist. 
 
 For example, let's look at Jane Doe in the image above. Upon loading the watchlist, Jane appears in a watchlist instance for using `3 grace days` before the instructor-specified date and for having `2 low scores` below the instructor-specified threshold. If Jane later receives another score below the threshold, a new instance will appear for Jane when the instructor reloads the watchlist. Jane now appears twice in the watchlist, once in an instance with `3 grace days` and `2 low scores`, and once in an instance with `3 grace days` and `3 low scores`.
 
@@ -97,3 +97,11 @@ The `resolved` tab contains all instances that the instructor has marked as reso
 #### Archived
 
 When an instructor adjusts the student metrics for a course, all instances that were in `contacted` or `resolved` for the outdated student metrics are placed into `archived`. All `pending` instances for the outdated student metrics are dropped. As such, all instances in `pending`, `contacted`, and `resolved` are consistent with the most up-to-date student metrics.
+
+## Considered Categories
+To account for the fact that some courses may have optional assignments that shouldn't be used to determine which students are struggling, we have created an "allowlist" of considered categories. This feature allows instructors to toggle which categories of assignments should be included or excluded in metrics calculations.
+
+### Configuring Considered Categories
+The allowlist is located under the "Configurations" tab of the student metrics page. To toggle an assignment between "Included" and "Excluded," a user can press the arrow icon between the two lists. After pressing save, the new considered category settings will be updated and taken into consideration the next time you refresh the watchlist.
+
+![Category Configuration](/images/metrics-category-config.jpg)
