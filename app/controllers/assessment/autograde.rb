@@ -126,7 +126,7 @@ module AssessmentAutograde
   # action_auth_level :regradeAll, :instructor
   def regradeAll
     # Grab all of the submissions for this assessment
-    @submissions = @assessment.submissions.where(special_type: Submission::NORMAL)
+    @submissions = @assessment.submissions#.where(special_type: Submission::NORMAL)
                    .order("version DESC")
 
     last_submissions = @submissions.latest
@@ -165,9 +165,9 @@ module AssessmentAutograde
   # sendJob_AddHTMLMessages - A wrapper for AssessmentAutogradeCore::sendJob that adds error
   #   or congratulatory messages to flash depending on the result of sendJob. Note that this
   #   function does not "handle" the AutogradeError, it just adds messages depending on the
-  #   situation, so the caller of this function will still receive the original error from 
+  #   situation, so the caller of this function will still receive the original error from
   #   sendJob.
-  # 
+  #
   # Called by assessments#handin, submissions#regrade and submissions#regradeAll
   #
   # On success, returns the job id
