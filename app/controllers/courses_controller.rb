@@ -479,6 +479,7 @@ private
           user.school = school
           user.major = major
           user.year = year
+
           begin
             user.save!
           rescue StandardError => e
@@ -514,6 +515,10 @@ private
                                                     lecture: new_cud[:lecture])
           Rails.logger.debug params
           cud.assign_attributes(params.permit(:lecture, :section, :grade_policy))
+
+          if email.include? "@"
+              cud.nickname = email.split('@')[0]
+          end
 
           # Save without validations
           cud.save(validate: false)
