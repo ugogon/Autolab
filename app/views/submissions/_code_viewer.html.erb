@@ -1,5 +1,6 @@
 <div id="code-box">
   <div class="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  <% if @is_pdf %>
   <div class="file-header">
     <div class="file-name">
       <i class="material-icons">insert_drive_file</i> <span><%= @displayFilename %></span>
@@ -27,13 +28,14 @@
     </div>
     <% end %>
   </div>
-
+  <% end %>
   <% success = true %>
   <% if @is_pdf %>
   <div class="code-table">
     <div id="pdf-doc" style="text-align: center;"></div>
   </div>
   <% else %>
+    <% if !@is_quiz or @cud.instructor? or @cud.course_assistant? %>
     <div class="code-table">
         <% @data.each_with_index do |(code, annotation), index| %>
           <div class="code-line" id="line-<%=index%>" data-line-id="<%=index%>">
@@ -56,6 +58,12 @@
           </div>
         <% end %>
     </div>
+    <% end %>
+  <% end %>
+  <% if @is_quiz %>
+  <div style="max-height: 785px; overflow: scroll;">
+      <%= @rendered_quiz %>
+  </div>
   <% end %>
   <% if success == false %>
     <div id="code_error"> Sorry, we could not parse your file because it contains non-ASCII characters. Please <%= link_to [:download, @course, @assessment, @submission, header_position: @header_position ],

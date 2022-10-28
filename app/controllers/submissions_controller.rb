@@ -301,16 +301,17 @@ class SubmissionsController < ApplicationController
       }]
     end
 
+    score_visible = (!@assessment.before_grading_deadline? || @cud.instructor || @cud.course_assistant)
     # Adds autograded file as first option if it exist
     # We are mapping Autograder to header_position -1
-    if(!@submission.autograde_file.nil? && (!@assessment.before_grading_deadline? || @cud.instructor || @cud.course_assistant))
+    if(!@submission.autograde_file.nil? && score_visible)
       @files.prepend({pathname:"Autograder Output",
                       header_position: -1,
                       mac_bs_file: false,
                       directory: false})
       end
 
-    if (params.include?(:header_position) && (params[:header_position].to_i == -1) && !@submission.autograde_file.nil? && (!@assessment.before_grading_deadline? || @cud.instructor || @cud.course_assistant))
+    if (params.include?(:header_position) && (params[:header_position].to_i == -1) && !@submission.autograde_file.nil? && score_visible)
       file = @submission.autograde_file.read || "Empty Autograder Output"
       @displayFilename = "Autograder Output"
     elsif params.include?(:header_position) && Archive.archive?(@submission.handin_file_path)
@@ -468,8 +469,11 @@ class SubmissionsController < ApplicationController
     @nextSubmission = @curSubmissionIndex < (@latestSubmissions.size - 1) ? @latestSubmissions[@curSubmissionIndex + 1] : nil
 
     # Adding allowing scores to be assessed by the view
-    @scores = Score.where(submission_id: @submission.id)
-
+    if (score_visible)
+      @scores = Score.where(submission_id: @submission.id)
+    else
+      @scores = {}
+    end
     # Rendering this page fails. Often. Mostly due to PDFs.
     # So if it fails, redirect, instead of showing an error page.
     if PDF.pdf?(file)
@@ -478,6 +482,20 @@ class SubmissionsController < ApplicationController
       @preview_mode = true if params[:preview]
     else
       @is_pdf = false
+    end
+
+    if @assessment.embedded_quiz
+      # controller = AssessmentsController.new
+      # controller.request = request
+      # controller.response = response
+      # # controller.set_assessment.bind_call(controller)
+      # controller.process(:show)
+      @is_quiz = true
+      @submissions = [@submission]
+      # @blub = {'email': @submission.course_user_datum.user.email }
+      # @cud = @submission.course_user_datum.user
+      @rendered_quiz = ERB.new(@assessment.embedded_quiz_form_data).result(binding).html_safe
+      # @rendered_quiz = @submissions.first.handin_file_path
     end
 
     respond_to do |format|
