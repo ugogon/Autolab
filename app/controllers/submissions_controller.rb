@@ -307,7 +307,6 @@ class SubmissionsController < ApplicationController
     viewing_autograder_output = params.include?(:header_position) &&
                                 (params[:header_position].to_i == -1) &&
                                 !@submission.autograde_file.nil?
-                                && score_visible
 
     # Adds autograded file as first option if it exist
     # We are mapping Autograder to header_position -1
