@@ -20,7 +20,7 @@ class Assessment < ApplicationRecord
   has_one :scoreboard, dependent: :destroy
 
   # Validations
-  validates :name, uniqueness: { scope: :course_id }
+  validates :name, uniqueness: { case_sensitive: false, scope: :course_id }
   validates :name, format: { with: /\A[^0-9].*/, message: "can't have leading numeral" }
   validates :display_name, length: { minimum: 1 }
   validate :verify_dates_order
@@ -88,14 +88,6 @@ class Assessment < ApplicationRecord
 
   def before_grading_deadline?
     Time.current <= grading_deadline
-  end
-
-  def getLanguages
-    languages.split(/\s*,\s*/)
-  end
-
-  def getTextfields
-    textfields.split(/\s*,\s*/)
   end
 
   def folder_path
@@ -225,10 +217,16 @@ class Assessment < ApplicationRecord
     # validate syntax of config
     RubyVM::InstructionSequence.compile(config_source)
 
+    # ensure source_config_module_name is an actual module in the assessment config rb file
+    # otherwise loading the file on subsequent calls to config_module will result in an exception
+    if config_source !~ /\b#{source_config_module_name}\b/
+      raise "Module name in #{name}.rb
+             doesn't match expected #{source_config_module_name}"
+    end
+
     # uniquely rename module (so that it's unique among all assessment modules loaded in Autolab)
     config = config_source.gsub("module #{source_config_module_name}",
                                 "module #{config_module_name}")
-
     # backup old config
     if File.exist?(config_file_path)
       File.rename(config_file_path, config_backup_file_path)
@@ -261,7 +259,7 @@ class Assessment < ApplicationRecord
   # writes the properties of the assessment in YAML format to the assessment's yaml file
   #
   def dump_yaml
-    File.open(path("#{name}.yml"), "w") { |f| f.write(YAML.dump(serialize)) }
+    File.open(path("#{name}.yml"), "w") { |f| f.write(YAML.dump(sort_hash(serialize))) }
   end
 
   ##
@@ -313,6 +311,12 @@ class Assessment < ApplicationRecord
     config_module.instance_methods.include?(methodKey)
   end
 
+  def assessment_variable
+    return {} unless config_module.instance_methods.include?(:assessmentVariables)
+
+    config_module.assessmentVariables
+  end
+
   def has_autograder?
     autograder != nil
   end
@@ -327,6 +331,10 @@ class Assessment < ApplicationRecord
 
   def has_writeup?
     writeup_is_url? || writeup_is_file?
+  end
+
+  def has_handout?
+    overwrites_method?(:handout) || handout_is_url? || handout_is_file?
   end
 
   def groups
@@ -363,6 +371,10 @@ class Assessment < ApplicationRecord
     problems.sum :max_score
   end
 
+  def source_config_file_path
+    Rails.root.join("courses", course.name, sanitized_name, "#{sanitized_name}.rb")
+  end
+
 private
 
   def saved_change_to_grade_related_fields?
@@ -378,10 +390,6 @@ private
 
   def path(filename)
     Rails.root.join("courses", course.name, name, filename)
-  end
-
-  def source_config_file_path
-    Rails.root.join("courses", course.name, sanitized_name, "#{sanitized_name}.rb")
   end
 
   def source_config_module_name
@@ -434,6 +442,20 @@ private
     end
   end
 
+  # Recursively sort a hash by its keys and return an array
+  # Inspired by: https://bdunagan.com/2011/10/23/ruby-tip-sort-a-hash-recursively/
+  def sort_hash(h)
+    h.class[
+      h.each do |k, v|
+        if v.instance_of? Hash
+          h[k] = sort_hash v
+        elsif v.instance_of? Array
+          h[k] = v.collect { |x| sort_hash x }
+        end
+        # else do nothing
+      end.sort]
+  end
+
   def serialize
     s = {}
     s["general"] = serialize_general
@@ -442,21 +464,45 @@ private
     s["scoreboard"] = scoreboard.serialize if has_scoreboard?
     s["late_penalty"] = late_penalty.serialize if late_penalty
     s["version_penalty"] = version_penalty.serialize if version_penalty
+    # convert to string so if instructor wants to edit the date in yml
+    # can do so easily
+    s["dates"] = { start_at: start_at.to_s,
+                   due_at: due_at.to_s,
+                   end_at: end_at.to_s,
+                   grading_deadline: grading_deadline.to_s }.deep_stringify_keys
     s
   end
 
   GENERAL_SERIALIZABLE = Set.new %w[name display_name category_name description handin_filename
                                     handin_directory has_svn has_lang max_grace_days handout
                                     writeup max_submissions disable_handins max_size
-                                    version_threshold is_positive_grading embedded_quiz]
+                                    version_threshold is_positive_grading embedded_quiz group_size
+                                    github_submission_enabled allow_student_assign_group
+                                    is_positive_grading]
 
   def serialize_general
     Utilities.serializable attributes, GENERAL_SERIALIZABLE
   end
 
   def deserialize(s)
-    self.due_at = self.end_at = self.visible_at =
-                    self.start_at = self.grading_deadline = Time.current + 1.day
+    unless s["general"] && (s["general"]["name"] == name)
+      raise "Name in yaml (#{s['general']['name']}) doesn't match #{name}"
+    end
+
+    if s["dates"] && s["dates"]["start_at"]
+      if s["dates"]["due_at"] && s["dates"]["end_at"] && s["dates"]["grading_deadline"]
+        self.due_at = Time.zone.parse(s["dates"]["due_at"])
+        self.start_at = Time.zone.parse(s["dates"]["start_at"])
+        self.end_at = Time.zone.parse(s["dates"]["end_at"])
+        self.grading_deadline = Time.zone.parse(s["dates"]["grading_deadline"])
+      else
+        self.due_at = self.end_at = self.start_at = self.grading_deadline =
+                                      Time.zone.parse(s["dates"]["start_at"])
+      end
+    else
+      self.due_at = self.end_at = self.start_at = self.grading_deadline = Time.current + 1.day
+    end
+
     self.quiz = false
     self.quizData = ""
     update!(s["general"])

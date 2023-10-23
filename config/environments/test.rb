@@ -34,6 +34,9 @@ Rails.application.configure do
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 
+  # Don't care if the mailer can't send.
+  config.action_mailer.raise_delivery_errors = false
+
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.
@@ -46,4 +49,8 @@ Rails.application.configure do
 
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
+  config.lti_config_location  = Rails.root.join('spec/fixtures/lti_config_files').to_s
+
+  # Use custom routes for error pages
+  config.exceptions_app = self.routes
 end

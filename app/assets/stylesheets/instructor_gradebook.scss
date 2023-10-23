@@ -1,0 +1,229 @@
+@import 'variables';
+
+*, *:before, *:after {
+  -moz-box-sizing: content-box;
+       box-sizing: content-box;
+}
+
+div#pageBody {
+  width: 95%;
+  margin: 0 auto;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+h1#courseTitle {
+  font-size: 24.5px;
+  margin-bottom: 0;
+}
+
+span.label {
+  text-transform: uppercase;
+  font-size: 8.5px;
+  vertical-align: text-bottom;
+}
+
+.slick-cell img {
+  vertical-align: baseline;
+}
+
+input#filter {
+  margin-bottom: 0;
+}
+
+input {
+  font-size: inherit !important;
+}
+
+div#footer {
+  display: none;
+}
+
+#grades td.edit {
+  text-align: center;
+  color: #666666;
+  cursor: pointer;
+}
+
+#grades td.edit:hover {
+  color: #e1e1e1;
+}
+
+#filter_container {
+  text-align: center;
+  margin: 20px 0 5px 0;
+}
+
+#last_updated {
+  text-align: right;
+  color: #999;
+  margin-left: auto;
+  width: fit-content;
+  margin-top: auto
+}
+
+#last_updated a {
+  font: inherit;
+}
+
+#last_updated a.regenerate {
+  color: #999;
+}
+
+#last_updated a.regenerate i {
+  vertical-align: text-bottom;
+
+  /* we'd like a blue regenerate icon, so override the glyphicon default image */
+  background-image: url(/images/glyphicons-halflings-1874cd-tinted.png);
+}
+
+#last_updated a.link {
+  font-weight: 500;
+}
+
+#filter_container input {
+  padding: 5px;
+  border: 1px solid #d0d0d0;
+  height: 18px;
+  width: 200px;
+  border-radius: 3px;
+  box-shadow: 0 0 2px $autolab-highlight-gray;
+}
+
+#gradebook {
+  min-height: 100px;
+  background-color: #f8f8f8;
+  box-shadow: 0 0 5px 0 $autolab-subtle-gray;
+  font-size: 14px;
+  border-radius: 2px;
+  margin: 0 auto 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.grid-canvas {
+  background-color: white;
+}
+
+#gradebook .slick-cell {
+  padding: 10px;
+  border: none;
+  border-bottom: 1px solid $autolab-subtle-gray;
+  white-space: nowrap;
+  color: #555;
+  text-align: center;
+}
+
+#gradebook .slick-cell .zeroed {
+  font-weight: bold;
+  color: #3a87ad;
+}
+
+#gradebook .slick-cell .not-submitted {
+  color: #c94a48;
+}
+
+#gradebook .slick-cell .not-yet-submitted {
+  color: #f89406;
+}
+
+#gradebook .slick-header {
+  z-index: 10;
+}
+
+#gradebook .slick-header-columns {
+  background-color: #ebebeb;
+  box-shadow: 0 4px 2px -2px gray;
+}
+
+#gradebook .slick-header-column {
+  padding: 15px;
+  text-transform: uppercase;
+  border-left: none;
+  border-right: none;
+  font-size: 0.9em;
+  font-weight: bold;
+  color: #000000;
+  white-space: nowrap;
+  text-align: center;
+  cursor: pointer;
+}
+
+#gradebook .slick-cell.andrew a {
+  color: $autolab-blue-text;
+  text-decoration: none;
+  font: inherit;
+}
+
+#gradebook .slick-cell.email,
+#gradebook .slick-cell.first_name,
+#gradebook .slick-cell.last_name {
+  text-align: left;
+}
+
+#gradebook .slick-header-column.andrew.right,
+#gradebook .slick-cell.andrew.right {
+  text-align: center;
+}
+
+#gradebook .slick-cell.course_average {
+  background: #f3f3f3;
+  font-weight: bold;
+}
+
+#gradebook .slick-cell.assessment_final_score {
+  background: white;
+}
+
+#gradebook .slick-header-column.assessment_final_score {
+  background: #f3f3f3;
+  border-right: 1px solid #eaeaea;
+  color: #999;
+}
+
+#gradebook .slick-cell.computed {
+  color: #999;
+}
+
+div.course {
+  color: #555;
+  border-radius: 3px;
+  box-shadow: 0 0 2px 0px #f4f4f4;
+  font-size: 0.9em;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+div.course table tr th {
+  color: #aaa;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  font-weight: bold;
+  text-align: right;
+}
+
+div.course table {
+  width: 100%;
+}
+
+div.course table tr td {
+  width: 60px;
+  text-align: right;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+div .search-student-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.gradebook-row {
+  width: 100%;
+  margin-top: -20px;
+  margin-bottom: 10px;
+}

@@ -44,17 +44,20 @@ module AssessmentAutogradeCore
         COURSE_LOGGER.log("Error while uploading autograding files for #{submission.id}: missing file #{name_of_file}")
         raise AutogradeError.new("Error while uploading autograding files", :missing_autograder_file, name_of_file)
       end
+      if f["remoteFile"].nil?
+        f["remoteFile"] = File.basename(f["localFile"])
+      end
     end
 
     # now actually send all of the upload requests
     upload_file_list.each do |f|
       md5hash = Digest::MD5.file(f["localFile"]).to_s
-      next if (existing_files.has_key?(File.basename(f["localFile"])) &&
-          existing_files[File.basename(f["localFile"])] == md5hash)
+      next if (existing_files.has_key?(f["remoteFile"]) &&
+          existing_files[f["remoteFile"]] == md5hash)
 
       begin
         TangoClient.upload("#{course.name}-#{assessment.name}",
-                           File.basename(f["localFile"]),
+                           f["remoteFile"],
                            File.open(f["localFile"], "rb").read)
       rescue TangoClient::TangoException => e
         COURSE_LOGGER.log("Error while uploading autograding files for #{submission.id}: #{e.message}")
@@ -128,6 +131,27 @@ module AssessmentAutogradeCore
     "#{course.name}_#{assessment.name}_#{submission.version}_#{submission.course_user_datum.email}"
   end
 
+  def get_job_status(job_id)
+    begin
+      raw_live_jobs = TangoClient.jobs
+      assigned_jobs, unassigned_jobs = raw_live_jobs.partition {|rjob| rjob["assigned"]}
+
+      # Order by job number to get the position in queue
+      unassigned_jobs = unassigned_jobs.sort {|rjob1, rjob2| rjob1["id"].to_i - rjob2["id"].to_i}
+    rescue TangoClient::TangoException => e
+      COURSE_LOGGER.log("Error while getting jobs")
+      raise AutogradeError.new("Error while getting jobs", :get_job_status)
+    end
+    
+    assignment = {"is_assigned"=>assigned_jobs.any? {|rjob| rjob["id"].to_i == job_id}}
+    if !assignment["is_assigned"] && unassigned_jobs.length > 0
+      # Assign a queue position if the job is live but not assigned
+      assignment["queue_position"] = unassigned_jobs.index {|rjob| rjob["id"] == job_id}
+      assignment["queue_length"] = unassigned_jobs.length
+    end
+    assignment
+  end
+
   ##
   # Makes the Tango addJob request.
   # Returns the Tango response
@@ -135,7 +159,7 @@ module AssessmentAutogradeCore
   def tango_add_job(course, assessment, upload_file_list, callback_url, job_name, output_file)
     job_properties = { "image" => @autograde_prop.autograde_image,
                        "files" => upload_file_list.map do |f|
-                         { "localFile" => File.basename(f["localFile"]),
+                         { "localFile" => f["remoteFile"],
                            "destFile" => Pathname.new(f["destFile"]).basename.to_s }
                        end,
                        "output_file" => output_file,
@@ -189,6 +213,25 @@ module AssessmentAutogradeCore
       end
 
     end
+  end
+
+  def tango_get_partial_feedback(job_id)
+    begin
+      response = TangoClient.getpartialoutput(job_id)
+    rescue Timeout::Error
+      COURSE_LOGGER.log("Error while getting partial feedback for job #{job_id}")
+      raise AutogradeError.new("Timed out while getting partial feedback", :tango_get_partial_feedback)
+    rescue TangoClient::TangoException => e
+      COURSE_LOGGER.log("Error while getting partial feedback for job #{job_id} status: #{e.message}")
+      raise AutogradeError.new("Error while getting partial feedback", :tango_get_partial_feedback, e.message)
+    end
+
+    if response.nil?
+      COURSE_LOGGER.log("Error while getting partial feedback for job #{job_id} status: No feedback")
+      raise AutogradeError.new("Error getting response from getting partial feedback", :tango_get_partial_feedback)
+    end
+
+    response["output"]
   end
 
   ##
@@ -268,7 +311,13 @@ module AssessmentAutogradeCore
       tango_poll(course, assessment, submissions, output_file)
     end
 
-    response_json["jobId"].to_i
+    job = response_json["jobId"].to_i
+    ActiveRecord::Base.transaction do
+      submissions.each do |submission|
+        submission.update!(jobid: job)
+      end
+    end
+    job
   end
 
   #
@@ -281,26 +330,22 @@ module AssessmentAutogradeCore
     # The makefile that runs the process, 3) The tarfile with all
     # of files needed by the autograder. Can be overridden in the
     # lab config file.
-    local_handin = File.join(ass_dir, assessment.handin_directory, submission.filename)
+    local_handin = submission.handin_file_path
+    remote_handin = submission.handin_file_long_filename
     local_makefile = File.join(ass_dir, "autograde-Makefile")
     local_autograde = File.join(ass_dir, "autograde.tar")
-    local_settings_config = File.join(ass_dir, assessment.handin_directory, submission.filename + ".settings.json")
 
     # Name of the handin file on the destination machine
     dest_handin = assessment.handin_filename
 
     # Construct the array of input files.
-    handin = { "localFile" => local_handin, "destFile" => dest_handin }
+    handin = { "localFile" => local_handin,
+               "remoteFile" => remote_handin,
+               "destFile" => dest_handin }
     makefile = { "localFile" => local_makefile, "destFile" => "Makefile" }
     autograde = { "localFile" => local_autograde, "destFile" => "autograde.tar" }
-    settings_config = { "localFile" => local_settings_config, "destFile" => "settings.json" }
 
-    if assessment.has_custom_form
-        [handin, makefile, autograde, settings_config]
-    else
-        [handin, makefile, autograde]
-    end
-    
+    [handin, makefile, autograde]
   end
 
   ##
@@ -312,10 +357,8 @@ module AssessmentAutogradeCore
     ass_dir = @assessment.folder_path
 
     submissions.each do |submission|
-      filename = submission.autograde_feedback_filename
-
-      feedback_file = File.join(ass_dir, @assessment.handin_directory, filename)
-      COURSE_LOGGER.log("Looking for Feedbackfile:" + feedback_file)
+      feedback_file = submission.autograde_feedback_path
+      COURSE_LOGGER.log("Looking for feedback file:" + feedback_file)
 
       feedback.force_encoding("UTF-8")
       if not feedback.valid_encoding?
@@ -340,6 +383,14 @@ module AssessmentAutogradeCore
   #
   def saveAutograde(submissions, feedback)
     begin
+      # Set job id to nil to indicate that autograding is no longer in-progress
+      ActiveRecord::Base.transaction do
+        submissions.each do |submission|
+          submission.jobid = nil
+          submission.save!
+        end
+      end
+
       lines = feedback.rstrip.lines
       raise AutogradeError.new("The Autograder returned no output", :autograde_no_output) if lines.empty?
 
@@ -358,13 +409,51 @@ module AssessmentAutogradeCore
       @autograde_prop = @assessment.autograder
 
       # Record each of the scores extracted from the autoresult
-      scores.keys.each do |key|
-        problem = @assessment.problems.find_by(name: key)
-        raise AutogradeError.new("Problem \"" + key + "\" not found.") unless problem
-        submissions.each do |submission|
+      submissions.each do |submission|
+
+        # If modifySubmissionScore is overridden, use that to modify the score
+        # Provide it with the scores and previous submissions
+        if @assessment.overwrites_method?(:modifySubmissionScores)
+          
+          # Get previous submissions of the same assessment by the user, excluding the current submission
+          previous_submissions = Submission.where(course_user_datum_id: submission.course_user_datum_id, 
+                                 assessment_id: @assessment.id)
+                                 .where.not(id: submission.id)
+                                 .where("created_at < ?", submission.created_at)
+                                 .order(created_at: :desc)
+                                 
+          # If the assessment variable is set to exclude autograding in progress submissions, exclude them
+          previous_submissions = if (@assessment.assessment_variable.key?("exclude_autograding_in_progress_submissions") && 
+            @assessment.assessment_variable.key?("exclude_autograding_in_progress_submissions"))
+                                  previous_submissions.where(jobid: nil)
+                                else
+                                  previous_submissions
+                                end
+          
+          previous_submissions_lookback = if (@assessment.assessment_variable.key?("previous_submissions_lookback"))
+                                            @assessment.assessment_variable["previous_submissions_lookback"]
+                                          else
+                                            1000 # default to 1000
+                                          end 
+
+          # Limit the number of previous submissions to the lookback value
+          previous_submissions = previous_submissions.limit(previous_submissions_lookback)
+          
+          begin
+            scores = @assessment.config_module.modifySubmissionScores(scores, previous_submissions, @assessment.problems)
+          rescue StandardError => e
+            # Append the error message to the feedback
+            feedback_str = "An error occurred while modifying submission scores:\nError message: #{e}\n\n---\n"
+            feedback = feedback_str + feedback
+          end
+        end
+
+        scores.keys.each do |key|
+          problem = @assessment.problems.find_by(name: key)
+          raise AutogradeError.new("Problem \"" + key + "\" not found.") unless problem
           score = submission.scores.find_or_initialize_by(problem_id: problem.id)
           score.score = scores[key]
-          score.feedback = feedback
+          score.feedback = feedback 
           score.released = @autograde_prop.release_score
           score.grader_id = 0
           score.save!
@@ -389,7 +478,7 @@ module AssessmentAutogradeCore
           score.score = 0
           score.feedback = feedback_str
           score.released = true
-          score.grader_id = 0
+          score.grader_id = -1
           score.save!
         end
       end
@@ -451,7 +540,6 @@ module AssessmentAutogradeCore
       @start_at = @assessment.start_at
       @due_at = @assessment.due_at
       @end_at = @assessment.end_at
-      @visible_at = @assessment.visible_at
       @id = @assessment.id
 
       # we iterate over all the methods

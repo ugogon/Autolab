@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_29_205611) do
+ActiveRecord::Schema.define(version: 2023_07_07_161335) do
 
   create_table "annotations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "submission_id"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
     t.integer "problem_id"
     t.string "coordinate"
     t.boolean "shared_comment", default: false
+    t.boolean "global_comment", default: false
   end
 
   create_table "announcements", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -81,17 +82,12 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
     t.integer "late_penalty_id"
     t.integer "version_penalty_id"
     t.datetime "grading_deadline", null: false
-    t.boolean "has_autograde_old"
-    t.boolean "has_scoreboard_old"
     t.boolean "has_svn"
     t.boolean "quiz", default: false
     t.text "quizData"
     t.string "remote_handin_path"
     t.string "category_name"
     t.integer "group_size", default: 1
-    t.boolean "has_custom_form", default: false
-    t.text "languages"
-    t.text "textfields"
     t.text "embedded_quiz_form_data"
     t.boolean "embedded_quiz"
     t.binary "embedded_quiz_form"
@@ -140,6 +136,7 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
     t.boolean "course_assistant", default: false
     t.integer "tweak_id"
     t.integer "user_id", null: false
+    t.string "course_number", default: ""
   end
 
   create_table "courses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -183,7 +180,19 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "module_data", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "lti_course_data", force: :cascade do |t|
+    t.string "context_id"
+    t.integer "course_id"
+    t.datetime "last_synced"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "membership_url"
+    t.string "platform"
+    t.boolean "auto_sync"
+    t.boolean "drop_missing_students"
+  end
+
+  create_table "module_data", force: :cascade do |t|
     t.integer "field_id"
     t.integer "data_id"
     t.binary "data"
@@ -259,6 +268,7 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
     t.datetime "updated_at"
     t.float "max_score", default: 0.0
     t.boolean "optional", default: false
+    t.index ["assessment_id", "name"], name: "problem_uniq", unique: true
   end
 
   create_table "risk_conditions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -277,6 +287,8 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
     t.integer "course_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "until", default: -> { "CURRENT_TIMESTAMP" }
+    t.boolean "disabled", default: false
   end
 
   create_table "score_adjustments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -325,6 +337,7 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
     t.text "embedded_quiz_form_answer"
     t.integer "submitted_by_app_id"
     t.string "group_key", default: ""
+    t.integer "jobid"
     t.index ["assessment_id"], name: "index_submissions_on_assessment_id"
     t.index ["course_user_datum_id"], name: "index_submissions_on_course_user_datum_id"
   end
@@ -363,6 +376,7 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
     t.bigint "course_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "allow_ca", default: false
     t.index ["course_id"], name: "index_watchlist_configurations_on_course_id"
   end
 

@@ -2,8 +2,26 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 @import "semantic-ui";
-$autolab-red: rgba(153, 0, 0, 0.9);
-$autolab-subtle-red: #C87B7E;
+@import 'variables';
+
+/* reset changes by semantic-ui (Line 8-24) */
+@media only screen and (min-width: 0) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  html {
+    font-size: 14.5px;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  html {
+    font-size: 15px;
+  }
+}
 
 .button.submit {
   color: #FFFFFF !important;
@@ -29,15 +47,24 @@ $autolab-subtle-red: #C87B7E;
   min-width: 20px !important;
 }
 
+.select_all {
+  margin-top: 2px;
+  margin-right: -5px;
+}
+
+.select-all-chip{
+  margin-right: 0.5rem;
+}
+
 span.padded-span:before {
   content:" ";
-  display:inline-block; 
+  display:inline-block;
   width:10px;
 }
 
 span.padded-span:after {
-  content:" "; 
-  display:inline-block; 
+  content:" ";
+  display:inline-block;
   width:10px;
 }
 
@@ -70,6 +97,10 @@ input[type="text"] {
 
 .error {
   color: black;
+}
+
+.ui.form input[type="text"] {
+  vertical-align: baseline;
 }
 
 .ui.form .inline.fields .field .calendar:not(.popup), .ui.form .inline.field .calendar:not(.popup) {
@@ -143,7 +174,7 @@ i.external.alternate {
   // color, font-weight needed here for non checkbox label
   color: black;
   font-weight: 300;
-  display: inline-block !important; 
+  display: inline-block !important;
   vertical-align: middle !important;
   -webkit-touch-callout: default !important; /* iOS Safari */
   -webkit-user-select: auto !important; /* Safari */
@@ -158,7 +189,7 @@ i.external.alternate {
   color: black;
   font-weight: 300;
 }
-.ui.checkbox.select_single label:before, 
+.ui.checkbox.select_single label:before,
 .ui.checkbox.select_single label:after {
   top: 6.5px;
 }
@@ -207,4 +238,8 @@ span.instances .segment {
 .select-all-chip {
   display: flex;
   align-items: center;
+}
+
+a:hover {
+  color: $autolab-white;
 }

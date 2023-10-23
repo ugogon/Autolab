@@ -3,7 +3,7 @@ require "fileutils"
 
 class Course < ApplicationRecord
   trim_field :name, :semester, :display_name
-  validates :name, uniqueness: true
+  validates :name, uniqueness: { case_sensitive: false }
   validates :display_name, :start_date, :end_date, presence: true
   validates :late_slack, :grace_days, :late_penalty, :version_penalty, presence: true
   validates :grace_days, numericality: { greater_than_or_equal_to: 0 }
@@ -26,6 +26,7 @@ class Course < ApplicationRecord
   has_many :watchlist_instances, dependent: :destroy
   has_many :risk_conditions, dependent: :destroy
   has_one :watchlist_configuration, dependent: :destroy
+  has_one :lti_course_datum, dependent: :destroy
 
   accepts_nested_attributes_for :late_penalty, :version_penalty
 
@@ -39,6 +40,10 @@ class Course < ApplicationRecord
 
   def config_backup_file_path
     config_file_path.sub_ext(".rb.bak")
+  end
+
+  def directory_path
+    Rails.root.join("courses", name)
   end
 
   # Create a course with name, semester, and instructor email
@@ -105,12 +110,12 @@ class Course < ApplicationRecord
 
   # generate course folder
   def init_course_folder
-    course_dir = Rails.root.join("courses", name)
-    FileUtils.mkdir_p course_dir
+    dir_path = directory_path
+    FileUtils.mkdir_p dir_path
 
-    FileUtils.touch File.join(course_dir, "autolab.log")
+    FileUtils.touch File.join(dir_path, "autolab.log")
 
-    course_rb = File.join(course_dir, "course.rb")
+    course_rb = File.join(dir_path, "course.rb")
 
     # rubocop:disable Rails/FilePath
     default_course_rb = Rails.root.join("lib", "__defaultCourse.rb")
@@ -124,6 +129,8 @@ class Course < ApplicationRecord
   end
 
   def order_of_dates
+    return if start_date.nil? || end_date.nil?
+
     errors.add(:start_date, "must come before end date") if start_date > end_date
   end
 
@@ -247,7 +254,7 @@ class Course < ApplicationRecord
   end
 
   def assessment_categories
-    assessments.distinct.pluck(:category_name).sort
+    assessments.unscope(:order).distinct.pluck(:category_name).sort
   end
 
   def assessments_with_category(cat_name, is_student = false)
@@ -267,6 +274,13 @@ class Course < ApplicationRecord
     asmts.where("due_at < ?", date)
   end
 
+  def exclude_curr_asmts(asmts)
+    date = DateTime.current
+    asmts.reject do |asmt|
+      asmt.due_at > date
+    end
+  end
+
   # Used by manage extensions, create submission, and sudo
   def get_autocomplete_data
     users = {}
@@ -279,6 +293,13 @@ class Course < ApplicationRecord
       usersEncoded[Base64.strict_encode64(cud.full_name_with_email.strip).strip] = cud.id
     end
     [users, usersEncoded]
+  end
+
+  # To determine if a course assistant has permission to watchlist
+  def watchlist_allow_ca
+    return false if watchlist_configuration.nil?
+
+    watchlist_configuration.allow_ca
   end
 
 private

@@ -1,18 +1,15 @@
 require "archive"
 require "csv"
 require "fileutils"
+require "pathname"
 require "statistics"
 
 class CoursesController < ApplicationController
-  skip_before_action :set_course, only: %i[index new create]
+  skip_before_action :set_course, only: %i[courses_redirect index new create]
   # you need to be able to pick a course to be authorized for it
-  skip_before_action :authorize_user_for_course, only: %i[index new create]
+  skip_before_action :authorize_user_for_course, only: %i[courses_redirect index new create]
   # if there's no course, there are no persistent announcements for that course
-  skip_before_action :update_persistent_announcements, only: %i[index new create]
-
-  rescue_from ActionView::MissingTemplate do |_exception|
-    redirect_to("/home/error_404")
-  end
+  skip_before_action :update_persistent_announcements, only: %i[courses_redirect index new create]
 
   def index
     courses_for_user = User.courses_for_user current_user
@@ -20,6 +17,21 @@ class CoursesController < ApplicationController
     redirect_to(home_no_user_path) && return unless courses_for_user.any?
 
     @listing = categorize_courses_for_listing courses_for_user
+  end
+
+  def courses_redirect
+    courses_for_user = User.courses_for_user current_user
+    redirect_to(home_no_user_path) && return unless courses_for_user.any?
+
+    @listing = categorize_courses_for_listing courses_for_user
+    # if only enrolled in one course (currently), go to that course
+    # only happens when first loading the site, not when user goes back to courses
+    if @listing[:current].one?
+      course_name = @listing[:current][0].name
+      redirect_to course_assessments_url(course_name)
+    else
+      redirect_to(action: :index)
+    end
   end
 
   action_auth_level :show, :student
@@ -35,31 +47,35 @@ class CoursesController < ApplicationController
   def manage
     matrix = GradeMatrix.new @course, @cud
     cols = {}
-
     # extract assessment final scores
     @course.assessments.each do |asmt|
       next unless matrix.has_assessment? asmt.id
 
       cells = matrix.cells_for_assessment asmt.id
       final_scores = cells.map { |c| c["final_score"] }
-      cols[asmt.name] = final_scores
+      cols[asmt.name] = ["asmt", asmt, final_scores]
     end
 
     # category averages
     @course.assessment_categories.each do |cat|
       next unless matrix.has_category? cat
 
-      cols["#{cat} Average"] = matrix.averages_for_category cat
+      cols["#{cat} Average"] = ["avg", nil, matrix.averages_for_category(cat)]
     end
 
     # course averages
-    cols["Course Average"] = matrix.course_averages
+    cols["Course Average"] = ["avg", nil, matrix.course_averages]
 
     # calculate statistics
+    # send course_stats back in the form of
+    # name of average / assesment -> [type, asmt, statistics]
+    # where type = "asmt" or "avg" (assessment or average)
+    # asmt = assessment object or nil if an average of category / class
+    # statistics (statistics pertaining to asmt/avg (mean, median, std dev, etc))
     @course_stats = {}
     stat = Statistics.new
-    cols.each do |key, value|
-      @course_stats[key] = stat.stats(value)
+    cols.each do |key, values|
+      @course_stats[key] = [values[0], values[1], stat.stats(values[2])]
     end
   end
 
@@ -108,6 +124,8 @@ class CoursesController < ApplicationController
           instructor = User.instructor_create(params[:instructor_email],
                                               @newCourse.name)
         rescue StandardError => e
+          # roll back course creation
+          @newCourse.destroy
           flash[:error] = "Can't create instructor for the course: #{e}"
           render(action: "new") && return
         end
@@ -149,10 +167,25 @@ class CoursesController < ApplicationController
 
   action_auth_level :update, :instructor
   def update
-    flash[:error] = "Cannot update nil course" if @course.nil?
+    uploaded_config_file = params[:editCourse][:config_file]
+    unless uploaded_config_file.nil?
+      config_source = uploaded_config_file.read
+
+      course_config_source_path = @course.source_config_file_path
+      File.open(course_config_source_path, "w") do |f|
+        f.write(config_source)
+      end
+
+      begin
+        @course.reload_course_config
+      rescue StandardError, SyntaxError => e
+        @error = e
+        render("reload") && return
+      end
+    end
 
     if @course.update(edit_course_params)
-      flash[:success] = "Success: Course info updated."
+      flash[:success] = "Course configuration updated!"
     else
       flash[:error] = "Error: There were errors editing the course."
       @course.errors.full_messages.each do |msg|
@@ -229,6 +262,137 @@ class CoursesController < ApplicationController
             end
   end
 
+  action_auth_level :add_users_from_emails, :instructor
+  def add_users_from_emails
+    # check if user_emails and role exist in params
+    unless params.key?(:user_emails) && params.key?(:role)
+      flash[:error] = "No user emails or role supplied"
+      redirect_to(users_course_path(@course)) && return
+    end
+
+    user_emails = params[:user_emails].split(/\n/).map(&:strip)
+
+    user_emails = user_emails.map do |email|
+      if email.nil?
+        nil
+        # when it's first name <email>
+      elsif email =~ /(.*)\s+(.*)\s+(.*)\s+<(.*)>/
+        { first_name: Regexp.last_match(1), middle_name: Regexp.last_match(2),
+          last_name: Regexp.last_match(3), email: Regexp.last_match(4) }
+        # when it's email
+      elsif email =~ /(.*)\s+(.*)\s+<(.*)>/
+        { first_name: Regexp.last_match(1), last_name: Regexp.last_match(2),
+          email: Regexp.last_match(3) }
+        # when it's first name middle name last name <email>
+      elsif email =~ /(.*)\s+<(.*)>/
+        { first_name: Regexp.last_match(1), email: Regexp.last_match(2) }
+        # when it's first name last name <email>
+      else
+        { email: email }
+      end
+    end
+
+    # filter out nil emails
+    user_emails = user_emails.reject(&:nil?)
+
+    # check if email matches regex
+    email_regex = /\A[\w+\-.]+@[a-z\d-]+(\.[a-z\d-]+)*\.[a-z]+\z/i
+
+    # raise error if any email is invalid and return which emails are invalid
+    invalid_emails = user_emails.reject { |user| user[:email] =~ email_regex }
+    if invalid_emails.any?
+      flash[:error] = "Invalid email(s): #{invalid_emails.map { |user| user[:email] }.join(', ')}"
+      redirect_to([:users, @course]) && return
+    end
+
+    role = params[:role]
+
+    @cuds = []
+    user_emails.each do |email|
+      user = User.find_by(email: email[:email])
+
+      # create users if they don't exist
+      if user.nil?
+        begin
+          user = if email[:first_name].nil? && email[:last_name].nil?
+                   User.roster_create(email[:email], email[:email], "", "", "", "")
+                 else
+                   User.roster_create(email[:email], email[:first_name] || "",
+                                      email[:last_name] || "", "", "", "")
+                 end
+        rescue StandardError => e
+          flash[:error] = "Error: #{e.message}"
+          redirect_to([:users, @course]) && return
+        end
+
+        if user.nil?
+          flash[:error] = "Error: User #{email} could not be created."
+          redirect_to([:users, @course]) && return
+        end
+      end
+
+      # if user already exists in the course, retrieve the cud
+      cud = @course.course_user_data.find_by(user_id: user.id)
+
+      # if user doesn't exist in the course, create a new cud
+      if cud.nil?
+        cud = @course.course_user_data.new
+        cud.user = user
+      end
+
+      # set the role of the user
+      case role
+      when "instructor"
+        cud.instructor = true
+        cud.course_assistant = false
+      when "ca"
+        cud.instructor = false
+        cud.course_assistant = true
+      when "student"
+        cud.instructor = false
+        cud.course_assistant = false
+      # if role is not valid, return error
+      else
+        flash[:error] = "Error: Invalid role #{role}."
+        redirect_to([:users, @course]) && return
+      end
+
+      # add the cud to the list of cuds to be saved
+      @cuds << cud
+    end
+
+    # save all the cuds
+    if @cuds.all?(&:save)
+      flash[:success] = "Success: Users added to course."
+    else
+      flash[:error] = "Error: Users could not be added to course."
+    end
+    redirect_to([:users, @course]) && return
+  end
+
+  action_auth_level :unlink_course, :instructor
+  def unlink_course
+    lcd = LtiCourseDatum.find_by(course_id: @course.id)
+
+    if lcd.nil?
+      flash[:error] = "Unable to unlink course"
+      redirect_to(action: :users) && return
+    end
+
+    lcd.destroy
+    flash[:success] = "Course unlinked"
+    redirect_to(action: :users) && return
+  end
+
+  action_auth_level :update_lti_settings, :instructor
+  def update_lti_settings
+    lcd = @course.lti_course_datum
+    lcd.drop_missing_students = params[:lcd][:drop_missing_students] == "1"
+    lcd.save
+
+    redirect_to(action: :users) && return
+  end
+
   action_auth_level :reload, :instructor
   def reload
     @course.reload_course_config
@@ -258,7 +422,8 @@ class CoursesController < ApplicationController
     if params[:doIt]
       begin
         save_uploaded_roster
-        flash.now[:success] = "Successfully updated roster!"
+        flash[:success] = "Successfully updated roster!"
+        redirect_to(action: "users") && return
       rescue StandardError => e
         if e != "Roster validation error"
           flash[:error] = e
@@ -284,30 +449,6 @@ class CoursesController < ApplicationController
                  @course.name, cud.lecture, cud.section].to_csv
     end
     send_data output, filename: "roster.csv", type: "text/csv", disposition: "inline"
-  end
-
-  # install_assessment - Installs a new assessment, either by
-  # creating it from scratch, or importing it from an existing
-  # assessment directory.
-  action_auth_level :install_assessment, :instructor
-  def install_assessment
-    @assignDir = Rails.root.join("courses", @course.name)
-    @availableAssessments = []
-    begin
-      Dir.foreach(@assignDir) do |filename|
-        if File.exist?(File.join(@assignDir, filename, "#{filename}.rb"))
-          # names must be only lowercase letters and digits
-          next if filename =~ /[^a-z0-9]/
-
-          # Only list assessments that aren't installed yet
-          assessment = @course.assessments.where(name: filename).first
-          @availableAssessments << filename unless assessment
-        end
-      end
-      @availableAssessments = @availableAssessments.sort
-    rescue StandardError => e
-      render(text: "<h3>#{e}</h3>", layout: true) && return
-    end
   end
 
   # email - The email action allows instructors to email the entire course, or
@@ -339,13 +480,11 @@ class CoursesController < ApplicationController
   end
 
   action_auth_level :moss, :instructor
-  def moss
-    @courses = Course.all.select do |course|
-      @cud.user.administrator ||
-        !course.course_user_data.joins(:user).find_by(users: { email: @cud.user.email },
-                                                      instructor: true).nil?
-    end
-  end
+  def moss; end
+
+  LANGUAGE_WHITELIST = %w[c cc java ml pascal ada lisp scheme haskell fortran ascii vhdl perl
+                          matlab python mips prolog spice vb csharp modula2 a8086 javascript plsql
+                          verilog].freeze
 
   action_auth_level :run_moss, :instructor
   def run_moss
@@ -378,21 +517,48 @@ class CoursesController < ApplicationController
     @failures = []
     tmp_dir = Dir.mktmpdir("#{@cud.user.email}Moss", Rails.root.join("tmp"))
 
+    files = params[:files]
     base_file = params[:box_basefile]
     max_lines = params[:box_max]
     language = params[:box_language]
 
     moss_params = ""
-
+    files&.each do |_, v|
+      # Space-separated patterns
+      patternList = v.split(" ")
+      # Each pattern consists of one or more segments, where each segment consists of
+      # - a leading period (optional)
+      # - a word character (A..Z, a..z, 0..9, _), or hyphen (-), or asterisk (*)
+      # Each pattern optionally ends with a period
+      # OKAY: foo.c *.c * .c README foo_c foo-c .* **
+      # NOT OKAY: . ..
+      patternList.each do |pattern|
+        unless pattern =~ /\A(\.?[\w*-])+\.?\z/
+          flash[:error] = "Invalid file pattern"
+          redirect_to(action: :moss) && return
+        end
+      end
+    end
     unless base_file.nil?
       extract_tar_for_moss(tmp_dir, params[:base_tar], false)
       moss_params = [moss_params, "-b", @basefiles].join(" ")
     end
     unless max_lines.nil?
       params[:max_lines] = 10 if params[:max_lines] == ""
+      # Only accept positive integers (> 0)
+      unless params[:max_lines] =~ /\A[1-9]([0-9]*)?\z/
+        flash[:error] = "Invalid max lines"
+        redirect_to(action: :moss) && return
+      end
       moss_params = [moss_params, "-m", params[:max_lines]].join(" ")
     end
-    moss_params = [moss_params, "-l", params[:language_selection]].join(" ") unless language.nil?
+    unless language.nil?
+      unless LANGUAGE_WHITELIST.include? params[:language_selection]
+        flash[:error] = "Invalid language"
+        redirect_to(action: :moss) && return
+      end
+      moss_params = [moss_params, "-l", params[:language_selection]].join(" ")
+    end
 
     # Get moss flags from text field
     moss_flags = ["mossnet#{moss_params} -d"].join(" ")
@@ -411,7 +577,7 @@ class CoursesController < ApplicationController
     @mossOutput = `#{@mossCmdString} 2>&1`
     @mossExit = $?.exitstatus
 
-    # Clean up after ourselves (droh: leave for dsebugging)
+    # Clean up after ourselves (droh: leave for debugging)
     `rm -rf #{tmp_dir}`
   end
 
@@ -422,7 +588,7 @@ private
   end
 
   def edit_course_params
-    params.require(:editCourse).permit(:name, :semester, :website, :late_slack,
+    params.require(:editCourse).permit(:semester, :website, :late_slack,
                                        :grace_days, :display_name, :start_date, :end_date,
                                        :disabled, :exam_in_progress, :version_threshold,
                                        :gb_message, late_penalty_attributes: %i[kind value],
@@ -522,11 +688,13 @@ private
         if !user.nil?
           cud = @course.course_user_data.new
           cud.user = user
-          params = ActionController::Parameters.new(section: new_cud["section"],
-                                                    grade_policy: new_cud[:grade_policy],
-                                                    lecture: new_cud[:lecture])
-          Rails.logger.debug params
-          cud.assign_attributes(params.permit(:lecture, :section, :grade_policy))
+          params = ActionController::Parameters.new(
+            course_number: new_cud[:course_number],
+            lecture: new_cud[:lecture],
+            section: new_cud[:section],
+            grade_policy: new_cud[:grade_policy]
+          )
+          cud.assign_attributes(params.permit(:course_number, :lecture, :section, :grade_policy))
 
           if email.include? "@"
               cud.nickname = email.split('@')[0]
@@ -587,10 +755,13 @@ private
         new_cud.delete(:year)
 
         # assign attributes
-        params = ActionController::Parameters.new(section: new_cud["section"],
-                                                  grade_policy: new_cud[:grade_policy],
-                                                  lecture: new_cud[:lecture])
-        existing.assign_attributes(params.permit(:lecture, :section, :grade_policy))
+        params = ActionController::Parameters.new(
+          course_number: new_cud[:course_number],
+          lecture: new_cud[:lecture],
+          section: new_cud[:section],
+          grade_policy: new_cud[:grade_policy]
+        )
+        existing.assign_attributes(params.permit(:course_number, :lecture, :section, :grade_policy))
         existing.dropped = false
         existing.save(validate: false) # Save without validations.
       end
@@ -652,7 +823,7 @@ private
           major: row[5].to_s.chomp(" "),
           year: row[6].to_s.chomp(" "),
           grade_policy: row[7].to_s.chomp(" "),
-          # Ignore courseNumber (row[8])
+          course_number: row[8].to_s.chomp(" "),
           lecture: row[9].to_s.chomp(" "),
           section: row[10].to_s.chomp(" ")
         }
@@ -683,16 +854,19 @@ private
         cud.instructor? || cud.user.administrator? || cud.course_assistant?
       end
       @currentCUDs.each do |cud| # These are the drops
-        new_cud = { email: cud.user.email,
-                    last_name: cud.user.last_name,
-                    first_name: cud.user.first_name,
-                    school: cud.school,
-                    major: cud.major,
-                    year: cud.year,
-                    grade_policy: cud.grade_policy,
-                    lecture: cud.lecture,
-                    section: cud.section,
-                    color: "red" }
+        new_cud = {
+          email: cud.user.email,
+          last_name: cud.user.last_name,
+          first_name: cud.user.first_name,
+          school: cud.school,
+          major: cud.major,
+          year: cud.year,
+          grade_policy: cud.grade_policy,
+          course_number: cud.course_number,
+          lecture: cud.lecture,
+          section: cud.section,
+          color: "red"
+        }
         @cuds << new_cud
       end
     end
@@ -725,7 +899,7 @@ private
   # map[5]: major
   # map[6]: year
   # map[7]: grade_policy
-  # map[8]: course (unused)
+  # map[8]: course
   # map[9]: lecture
   # map[10]: section
   # rubocop:disable Lint/UselessAssignment
@@ -738,7 +912,7 @@ private
     case parsedRoster[0].length
     when ROSTER_COLUMNS_F20 # 34 fields
       # In CMU S3 roster. Columns are:
-      # Semester(0 - skip), Course(1 - skip), Section(2), Lecture(3), Mini(4 - skip),
+      # Semester(0 - skip), Course(1), Section(2), Lecture(3), Mini(4 - skip),
       # Last Name(5), Preferred/First Name(6), MI(7 - skip), Andrew ID(8),
       # Email(9 - skip), College(10), Department(11 - skip), Major(12),
       # Class(13), Graduation Semester(14 - skip), Units(15 - skip), Grade Option(16)
@@ -747,11 +921,11 @@ private
       # Default Grade(21), Time Zone Code(22), Time Zone Description(23), Added By(24),
       # Added On(25), Confirmed(26), Waitlist Position(27), Units Carried/Max Units(28),
       # Waitlisted By(29), Waitlisted On(30), Dropped By(31), Dropped On(32), Roster As Of Date(33)
-      map = [-1, 8, 5, 6, 10, 12, 13, 16, -1, 3, 2]
+      map = [-1, 8, 5, 6, 10, 12, 13, 16, 1, 3, 2]
       select_columns = ROSTER_COLUMNS_F20
     when ROSTER_COLUMNS_F16 # 32 fields
       # In CMU S3 roster. Columns are:
-      # Semester(0 - skip), Course(1 - skip), Section(2), Lecture(3), Mini(4 - skip),
+      # Semester(0 - skip), Course(1), Section(2), Lecture(3), Mini(4 - skip),
       # Last Name(5), Preferred/First Name(6), MI(7 - skip), Andrew ID(8),
       # Email(9 - skip), College(10), Department(11), Major(12),
       # Class(13), Graduation Semester(14 - skip), Units(15 - skip), Grade Option(16)
@@ -760,7 +934,7 @@ private
       # Default Grade(21), Added By(22), Added On(23), Confirmed(24), Waitlist Position(25),
       # Units Carried/Max Units(26), Waitlisted By(27), Waitlisted On(28), Dropped By(29),
       # Dropped On(30), Roster As Of Date(31)
-      map = [-1, 8, 5, 6, 10, 12, 13, 16, -1, 3, 2]
+      map = [-1, 8, 5, 6, 10, 12, 13, 16, 1, 3, 2]
       select_columns = ROSTER_COLUMNS_F16
     when ROSTER_COLUMNS_S15 # 29 fields
       # In CMU S3 roster. Columns are:
@@ -772,7 +946,7 @@ private
     else
       # No header row. Columns are:
       # Semester(0 - skip), Email(1), Last Name(2), First Name(3), School(4),
-      # Major(5), Year(6), Grade Policy(7), Course(8 - skip), Lecture(9),
+      # Major(5), Year(6), Grade Policy(7), Course(8), Lecture(9),
       # Section(10)
       return parsedRoster
     end
@@ -868,7 +1042,10 @@ private
       end
 
       # add this assessment to the moss command
-      @mossCmd << File.join(assDir, "*", params["files"][ass.id.to_s])
+      patternList = params["files"][ass.id.to_s].split(" ")
+      patternList.each do |pattern|
+        @mossCmd << File.join(assDir, ["*", pattern])
+      end
     end
   end
 
@@ -908,15 +1085,18 @@ private
         pathname = Archive.get_entry_name(entry)
         next if Archive.looks_like_directory?(pathname)
 
-        destination = if archive
-                        File.join(extFilesDir,
-                                  pathname)
-                      else
-                        File.join(baseFilesDir, pathname)
-                      end
-        pathname.gsub!(%r{/}, "-")
+        output_dir = if archive
+                       extFilesDir
+                     else
+                       baseFilesDir
+                     end
+        output_file = File.join(output_dir, pathname)
+
+        # skip if the file lies outside the archive
+        next unless Archive.in_dir?(Pathname(output_file), Pathname(output_dir))
+
         # make sure all subdirectories are there
-        File.open(destination, "wb") do |out|
+        File.open(output_file, "wb") do |out|
           out.write Archive.read_entry_file(entry)
           begin
             out.fsync

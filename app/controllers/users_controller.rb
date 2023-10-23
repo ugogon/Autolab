@@ -3,11 +3,10 @@ class UsersController < ApplicationController
   skip_before_action :authorize_user_for_course
   skip_before_action :authenticate_for_action
   skip_before_action :update_persistent_announcements
-  rescue_from ActionView::MissingTemplate do |_exception|
-    redirect_to("/home/error_404")
-  end
   before_action :set_gh_oauth_client, only: [:github_oauth, :github_oauth_callback]
-  before_action :set_user, only: [:github_oauth, :github_revoke]
+  before_action :set_user,
+                only: [:github_oauth, :github_revoke, :lti_launch_initialize,
+                       :lti_launch_link_course]
 
   # GET /users
   action_auth_level :index, :student
@@ -31,9 +30,9 @@ class UsersController < ApplicationController
   # based on current user's role
   action_auth_level :show, :student
   def show
-    user = User.find(params[:id])
+    user = User.find_by id: params[:id]
     if user.nil?
-      flash[:error] = "User does not exist"
+      flash[:error] = "Failed to show user: user does not exist."
       redirect_to(users_path) && return
     end
 
@@ -60,7 +59,7 @@ class UsersController < ApplicationController
         @cuds = user_cuds
       elsif user != current_user
         # current user is not instructor to user
-        flash[:error] = "Permission denied"
+        flash[:error] = "Permission denied: you are not allowed to view this user."
         redirect_to(users_path) && return
       else
         @user = current_user
@@ -77,7 +76,7 @@ class UsersController < ApplicationController
       @user = User.new
     else
       # current user is a normal user. Permission denied
-      flash[:error] = "Permission denied"
+      flash[:error] = "Permission denied: you are not allowed to view this page."
       redirect_to(users_path) && return
     end
   end
@@ -93,7 +92,7 @@ class UsersController < ApplicationController
       @user = User.new(new_user_params)
     else
       # current user is a normal user. Permission denied
-      flash[:error] = "Permission denied"
+      flash[:error] = "Permission denied: you are not allowed to view this page."
       redirect_to(users_path) && return
     end
 
@@ -104,19 +103,19 @@ class UsersController < ApplicationController
     save_worked = false
     begin
       save_worked = @user.save
-      flash[:error] = "User creation failed" unless save_worked
+      flash[:error] = "Failed to create user." unless save_worked
     rescue StandardError => e
       error_message = e.message
       flash[:error] = if error_message.include?("Duplicate entry") && error_message.include?("@")
-                        "User with email #{@user.email} already exists"
+                        "Failed to create user: User with email #{@user.email} already exists."
                       else
-                        "User creation failed"
+                        "Failed to create user."
                       end
       save_worked = false
     end
     if save_worked
       @user.send_reset_password_instructions
-      flash[:success] = "User creation success"
+      flash[:success] = "Successfully created user."
       redirect_to(users_path) && return
     else
       render action: "new"
@@ -128,7 +127,7 @@ class UsersController < ApplicationController
   def edit
     user = User.find(params[:id])
     if user.nil?
-      flash[:error] = "User does not exist"
+      flash[:error] = "Failed to edit user: user does not exist."
       redirect_to(users_path) && return
     end
 
@@ -136,7 +135,7 @@ class UsersController < ApplicationController
       @user = user
     elsif user != current_user
       # current user can only edit himself if he's neither role
-      flash[:error] = "Permission denied"
+      flash[:error] = "Permission denied: you are not allowed to edit this user."
       redirect_to(users_path) && return
     else
       @user = current_user
@@ -148,7 +147,7 @@ class UsersController < ApplicationController
   def update
     user = User.find(params[:id])
     if user.nil?
-      flash[:error] = "User does not exist"
+      flash[:error] = "Failed to update user: user does not exist."
       redirect_to(users_path) && return
     end
 
@@ -157,7 +156,7 @@ class UsersController < ApplicationController
       @user = user
     elsif user != current_user
       # current user can only edit himself if he's neither role
-      flash[:error] = "Permission denied"
+      flash[:error] = "Permission denied: you are not allowed to update this user."
       redirect_to(users_path) && return
     else
       @user = current_user
@@ -168,10 +167,10 @@ class UsersController < ApplicationController
                    else
                      user_params
                    end)
-      flash[:success] = "User was successfully updated."
+      flash[:success] = "Successfully updated user."
       redirect_to(users_path) && return
     else
-      flash[:error] = "User update failed. Check all fields"
+      flash[:error] = "Failed to update user. Check all fields and try again."
       redirect_to(edit_user_path(user)) && return
     end
   end
@@ -180,21 +179,75 @@ class UsersController < ApplicationController
   action_auth_level :destroy, :administrator
   def destroy
     unless current_user.administrator?
-      flash[:error] = "Permission denied."
+      flash[:error] = "Permission denied: you are not allowed to delete this user."
+      redirect_to(users_path) && return
+    end
+
+    if current_user.id == params[:id].to_i
+      flash[:error] = "Failed to delete user: you cannot delete yourself."
       redirect_to(users_path) && return
     end
 
     user = User.find(params[:id])
     if user.nil?
-      flash[:error] = "User doesn't exist."
+      flash[:error] = "Failed to delete user: user doesn't exist."
       redirect_to(users_path) && return
     end
 
     # TODO: Need to cleanup user resources here
 
     user.destroy
-    flash[:success] = "User destroyed."
+    flash[:success] = "Successfully destroyed user."
     redirect_to(users_path) && return
+  end
+
+  def lti_launch_initialize
+    unless params[:course_title].present? && params[:context_id].present? &&
+           params[:course_memberships_url].present? && params[:platform].present?
+      raise LtiLaunchController::LtiError.new("Unable to launch LTI link, missing parameters",
+                                              :bad_request)
+    end
+
+    linked_lcd = LtiCourseDatum.joins(:course).find_by(context_id: params[:context_id])
+    unless linked_lcd.nil?
+      flash[:success] = "#{params[:course_title]} already linked"
+      redirect_to(course_path(linked_lcd.course)) && return
+    end
+
+    courses_for_user = User.courses_for_user @user
+    redirect_to(home_no_user_path) && return unless courses_for_user.any?
+
+    @listing = { current: [], completed: [], upcoming: [] }
+
+    courses_for_user.each do |course|
+      next if course.disabled?
+
+      course_cud = CourseUserDatum.find_cud_for_course(course, @user.id)
+      next unless course_cud.has_auth_level?(:course_assistant)
+
+      @listing[course.temporal_status] << course
+    end
+  end
+
+  action_auth_level :lti_launch_link_course, :instructor
+  def lti_launch_link_course
+    unless params[:context_id].present? && params[:course_memberships_url].present? &&
+           params[:platform].present?
+      raise LtiLaunchController::LtiError.new("Unable to link course, missing parameters",
+                                              :bad_request)
+    end
+
+    LtiCourseDatum.create(
+      course_id: params[:course_id],
+      context_id: params[:context_id],
+      membership_url: params[:course_memberships_url],
+      platform: params[:platform],
+      last_synced: DateTime.current
+    )
+
+    course = Course.find(params[:course_id])
+    flash[:success] = "#{course.name} successfully linked."
+    redirect_to(course)
   end
 
   action_auth_level :github_oauth, :student
@@ -296,7 +349,7 @@ private
 
   # user params that admin is allowed to edit
   def admin_user_params
-    params.require(:user).permit(:first_name, :last_name, :administrator)
+    params.require(:user).permit(:first_name, :last_name, :school, :major, :administrator)
   end
 
   def set_gh_oauth_client

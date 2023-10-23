@@ -7,47 +7,54 @@ module ControllerMacros
   end
 
   def get_instructor
-    instructorCUDs = CourseUserDatum.where(instructor: true)
+    instructorCUDs = CourseUserDatum.joins(:user).where("users.administrator" => false,
+                                                        :instructor => true)
     instructorCUDs.offset(rand(instructorCUDs.count)).first.user
   end
 
-  def get_course_assistant
-    caCUDs = CourseUserDatum.where(course_assistant: true)
-    caCUDs.offset(rand(caCUDs.count)).first.user
+  def get_instructor_by_cid(cid)
+    instructorCUDs = CourseUserDatum.where(course_id: cid, instructor: true)
+    instructorCUDs.offset(rand(instructorCUDs.count)).first.user
   end
 
-  def get_user
-    users = CourseUserDatum.joins(:user).where("users.administrator" => false,
-                                               :instructor => false,
-                                               :course_assistant => false)
-    users.offset(rand(users.count)).first.user
+  def get_students_by_cid(cid)
+    cuds = CourseUserDatum.where(course_id: cid, instructor: false, course_assistant: false).all
+    cuds.map(&:user)
   end
 
-  def login_admin
-    login_as(get_admin)
+  def get_students_by_assessment(assessment)
+    cid = assessment.course_id
+    get_students_by_cid(cid)
   end
 
-  def login_instructor
-    login_as(get_instructor)
-  end
-
-  def login_course_assistant
-    login_as(get_course_assistant)
-  end
-
-  def login_user
-    login_as(get_user)
-  end
-
-  def login_as(u)
-    before(:each) do
-      @request.env["devise.mapping"] = Devise.mappings[:user]
-      sign_in u
-    end
-  end
-
-  def get_course_id_by_uid(uid)
+  def get_first_cid_by_uid(uid)
     CourseUserDatum.where(user_id: uid).first.course_id
+  end
+
+  def get_first_cud_by_uid(uid)
+    CourseUserDatum.where(user_id: uid).first.id
+  end
+
+  def get_first_aid_by_cud(cud)
+    AssessmentUserDatum.where(course_user_datum_id: cud).first.assessment_id
+  end
+
+  def get_problems_by_assessment(assessment)
+    Problem.where(assessment_id: assessment).all
+  end
+
+  def get_first_problem_by_assessment(assessment)
+    Problem.where(assessment_id: assessment).first
+  end
+
+  def get_first_submission_by_assessment(assessment)
+    Submission.where(assessment_id: assessment).first
+  end
+
+  def get_handin_path(asmt)
+    course = asmt.course
+    path = Rails.root.join("courses/#{course.name}/#{asmt.name}")
+    Rails.root.join(path, asmt.handin_directory)
   end
 
   def create_scheduler_with_cid(cid)
@@ -57,7 +64,7 @@ module ControllerMacros
       f.write("module Updater def self.update(foo) 0 end end")
     end
     s = Course.find(cid).scheduler.new(action: "tmp/testscript.rb",
-                                       interval: 86_400, next: Time.now)
+                                       interval: 86_400, next: Time.zone.now)
     s.save
     s
   end
@@ -73,22 +80,10 @@ module ControllerMacros
                          released: true)
 
     att.file = Rack::Test::UploadedFile.new(
-        path=Rails.root.join("attachments", File.basename(course_att_file)), content_type="text/plain",
-        tempfile=Tempfile.new("attach.tmp"))
-    att.save
-    att
-  end
-
-  def create_assess_att_with_cid_aid(cid, aid)
-    # Prepare assessment attachment file
-    assess_att_file = Rails.root.join("attachments/assessattach.txt")
-    File.open(assess_att_file, "w") do |f|
-      f.write("Assessment attachment file")
-    end
-    att = Attachment.new(course_id: cid, assessment_id: aid,
-                         name: "att#{cid}-#{aid}", filename: assess_att_file,
-                         released: true, mime_type: "text/plain")
-    att.file = File.open(assess_att_file, "w")
+      Rails.root.join("attachments/#{File.basename(course_att_file)}"),
+      "text/plain",
+      Tempfile.new("attach.tmp")
+    )
     att.save
     att
   end

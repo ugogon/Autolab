@@ -2,7 +2,7 @@
 
 The Autolab Docker Compose installation is a fast and easy production-ready installation and deployment method. It uses a MySQL database for the Autolab deployment, and comes with TLS/SSL support. This is now the preferred way of installing Autolab due to its ease of use.
 
-If you are stuck or find issues with the installation process you can either file an issue on our Github repository, or join our Slack <a href="https://autolab-slack.herokuapp.com/" target="_blank">here</a> and let us know and we will try our best to help. Also see the [debugging](#debugging-your-deployment) section for tips on how to diagnose problems and check out the [troubleshooting](#troubleshooting) section if you run into any issues.
+If you are stuck or find issues with the installation process you can either file an issue on our Github repository, or join our Slack [here](https://communityinviter.com/apps/autolab/autolab-project) and let us know and we will try our best to help. Also see the [debugging](#debugging-your-deployment) section for tips on how to diagnose problems and check out the [troubleshooting](#troubleshooting) section if you run into any issues.
 
 ## Installation
 First ensure that you have Docker and Docker Compose installed on your machine. See the official <a href="https://docs.docker.com/install/" target="_blank">Docker docs</a> for the installation steps.
@@ -10,7 +10,7 @@ First ensure that you have Docker and Docker Compose installed on your machine. 
 1. Clone this repository and its Autolab and Tango submodules: 
 
         :::bash
-        git clone --recurse-submodules -j8 git@github.com:autolab/docker.git autolab-docker
+        git clone --recurse-submodules -j8 https://github.com/autolab/docker.git autolab-docker
 
 
 2. Enter the project directory:
@@ -23,6 +23,8 @@ First ensure that you have Docker and Docker Compose installed on your machine. 
         :::bash
         make update
 
+    You may need to install `make` using the appropriate command for your system, such as `apt install make`.
+
 4. Create initial default configs:
 
         :::bash
@@ -31,12 +33,12 @@ First ensure that you have Docker and Docker Compose installed on your machine. 
 5. Build the Dockerfiles for both Autolab and Tango:
 
         :::bash
-        docker-compose build
+        docker compose build
 
 6. Run the Docker containers:
 
         :::bash
-        docker-compose up -d
+        docker compose up -d
 
     Note at this point Nginx will still be crash-looping in the Autolab container because TLS/SSL has not been configured/disabled yet.
 
@@ -68,7 +70,7 @@ First ensure that you have Docker and Docker Compose installed on your machine. 
 11. Stop all containers, as we are going to setup/disable TLS:
 
         :::bash 
-        docker-compose stop
+        docker compose stop
 
 12. Update the Nginx config. Update all occurrences of `REPLACE_WITH_YOUR_DOMAIN` in `nginx/app.conf` and `nginx/no-ssl-app.conf` to your real domain name. The configs are used when TLS is enabled and disabled respectively. Double-check that ALL occurrences are replaced as otherwise you will have trouble accessing your deployment.
 
@@ -79,15 +81,16 @@ First ensure that you have Docker and Docker Compose installed on your machine. 
         :::bash
         docker build -t autograding_image Tango/vmms/
         
-Note that we can just run this directly on the host because we are mapping the Docker socket to the Tango container (i.e they are using the same Docker server).
+    Note that we can just run this directly on the host because we are mapping the Docker socket to the Tango container (i.e they are using the same Docker server).
 
 15. Start up everything: 
 
         :::bash
-        docker-compose up -d
+        docker compose up -d
         
-Autolab should now be accessible on port 80 (and 443 if you configured TLS)! You can now go on to configure mailing, [follow the instructions for setting up mailing](/installation/mailing/) with the only difference being that the paths mentioned are relative to the directory `Autolab/`.
+    Autolab should now be accessible on port 80 (and 443 if you configured TLS)! You can now go on to configure mailing, [follow the instructions for setting up mailing](/installation/mailing/) with the only difference being that the paths mentioned are relative to the directory `Autolab/`.
 
+16. Now you are all set to start using Autolab! Please fill out [this form](https://docs.google.com/forms/d/e/1FAIpQLSctfi3kwa03yuCuLgGF7qS_PItfk__1s80twhVDiKGQHvqUJg/viewform?usp=sf_link) to join our registry so that we can provide you with news about the latest features, bug-fixes, and security updates. For more info, visit the [Guide for Instructors](/instructors) and [Guide for Lab Authors](/lab). 
 ## Configuring TLS/SSL
 Having TLS/SSL configured is important as it helps to ensure that sensitive information like user credentials and submission information are encrypted instead of being sent over in plaintext across the network when users are using Autolab. We have made setting up TLS as easy and pain-free as possible. Using TLS is strongly recommended if you are using Autolab in a production environment with real students and instructors.
 
@@ -98,7 +101,7 @@ There are three options for TLS: using Let's Encrypt (for free TLS certificates)
 2. Ensure that port 443 is exposed on your server (i.e checking your firewall, AWS security group settings, etc)
 3. In `ssl/init-letsencrypt.sh`, change `domains=(example.com)` to the list of domains that your host is associated with, and change `email` to be your email address so that Let's Encrypt will be able to email you when your certificate is about to expire
 4. If necessary, change `staging=0` to `staging=1` to avoid being rate-limited by Let's Encrypt since there is a limit of 20 certificates/week. Setting this is helpful if you have an experimental setup.
-5. Run your modified script: `sudo sh ./ssl/init-letsencrypt.sh`
+5. Run your modified script: `sudo ./ssl/init-letsencrypt.sh`
 
 ### Option 2: Using your own TLS certificate
 1. Copy your private key to `ssl/privkey.pem`
@@ -138,7 +141,7 @@ There are three options for TLS: using Let's Encrypt (for free TLS certificates)
 1. Stop your running instances:
 
         :::bash
-        docker-compose stop
+        docker compose stop
 
 2. Update your Autolab and Tango repositories:
 
@@ -148,31 +151,31 @@ There are three options for TLS: using Let's Encrypt (for free TLS certificates)
 3. Rebuild the images with the latest code:
 
         :::bash
-        docker-compose build
+        docker compose build
 
 4. Re-deploy your containers:
 
         :::bash
-        docker-compose up
+        docker compose up
 
 ## Debugging your Deployment
-In the (very likely) event that you run into problems during setup, hopefully these steps will help you to help identify and diagnose the issue. If you continue to face difficulties or believe you discovered issues with the setup process please join our Slack [here](https://autolab-slack.herokuapp.com/) and let us know and we will try our best to help.
+In the (very likely) event that you run into problems during setup, hopefully these steps will help you to help identify and diagnose the issue. If you continue to face difficulties or believe you discovered issues with the setup process please join our Slack [here](https://communityinviter.com/apps/autolab/autolab-project) and let us know and we will try our best to help.
 
 ### Better logging output for Docker Compose
-By default, `docker-compose up -d` runs in detached state and it is not easy to immediately see errors:
+By default, `docker compose up -d` runs in detached state and it is not easy to immediately see errors:
 
     :::bash
-    $ docker-compose up -d
+    $ docker compose up -d
     Starting certbot ... done
     Starting redis   ... done
     Starting mysql   ... done
     Starting tango     ... done
     Recreating autolab ... done
 
-Use `docker-compose up` instead to get output from all the containers in real time:
+Use `docker compose up` instead to get output from all the containers in real time:
 
     :::bash
-    $ docker-compose up
+    $ docker compose up
     Starting certbot ... done
     Starting mysql   ... done
     Starting redis   ... done

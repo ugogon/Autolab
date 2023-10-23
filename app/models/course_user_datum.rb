@@ -63,17 +63,15 @@ class CourseUserDatum < ApplicationRecord
   end
 
   def valid_nickname?
-    if !nickname
-      true
-    elsif nickname.length > 32
+    return if nickname.nil?
+
+    if nickname.length > 32
       errors.add("nickname", "is too long (maximum is 32 characters)")
-      false
-    elsif !nickname.ascii_only?
-      errors.add("nickname", "can only contain ASCII characters")
-      false
-    else
-      true
     end
+
+    return if nickname.ascii_only?
+
+    errors.add("nickname", "can only contain ASCII characters")
   end
 
   ##
@@ -180,7 +178,7 @@ class CourseUserDatum < ApplicationRecord
 
         ggl = global_grace_days_left!
 
-        Rails.cache.write(ggl_cache_key, ggl)
+        Rails.cache.write(ggl_cache_key, ggl, expires_in: 7.days, race_condition_ttl: 1.minute)
         # release lock
       end
     end

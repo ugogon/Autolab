@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.6.8'
+ruby '2.7.7'
 
 gem 'rails', '=6.0.5'
 
@@ -22,7 +22,7 @@ gem 'terser', '>= 1.1.7'
 gem 'coffee-rails', '>= 4.0.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-gem 'mini_racer', '<= 0.4.0' , platforms: :ruby
+gem 'mini_racer', '~> 0.6.3' , platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -45,8 +45,8 @@ gem 'slack-notifier'
 gem 'exception_notification', ">= 4.1.0"
 
 # Used by lib/tasks/autolab.rake to populate DB with dummy seed data
-gem 'rake', '>=10.3.2'
 gem 'populator', '>=1.0.0'
+gem 'rake', '>=10.3.2'
 
 # To communicate with MySQL database
 gem 'mysql2', '~>0.4.10'
@@ -59,7 +59,7 @@ gem 'devise', '>=4.5.0'
 gem 'omniauth', '>=1.2.2'
 gem 'omniauth-facebook', '>=2.0.0'
 gem 'omniauth-google-oauth2', '>=0.2.5'
-gem 'omniauth-shibboleth', '>=1.1.2'
+gem 'omniauth-shibboleth-redux', '~> 2.0', require: 'omniauth-shibboleth'
 gem 'omniauth-ldap'
 
 # OAuth2 authentication
@@ -84,14 +84,20 @@ gem 'rubyzip'
 gem 'httparty'
 
 # Enables RSpec testing framework with Capybara and FactoryBot.
-gem 'rspec-rails', '>=3.5.0'
-gem 'rack-test'
 gem 'capybara', group: [:development, :test]
-gem 'factory_bot_rails', group: [:development, :test]
-gem 'database_cleaner', group: [:development, :test]
-gem 'webmock', group: [:development, :test]
+gem 'rack-test'
+gem 'rspec-rails', '>=3.5.0'
+# To enable webdriver testing capabilities along with capybara
+gem 'selenium-webdriver', '>=4.7.1', group: :test
+# required to run webdriver for selenium on chrome
+gem 'webdrivers', group: :test
+# required for capybara debugging
 gem 'codeclimate-test-reporter', group: :test, require: nil
+gem 'database_cleaner', group: [:development, :test]
+gem 'factory_bot_rails', group: [:development, :test]
+gem 'launchy', group: :test
 gem 'newrelic_rpm'
+gem 'webmock', group: [:development, :test]
 
 # Automatic Time Zone Management
 gem 'browser-timezone-rails'
@@ -107,9 +113,9 @@ gem 'js_cookie_rails'
 # gem 'capistrano-rails', group: :development
 
 # Dates and times
+gem 'bootstrap3-datetimepicker-rails', '>= 4.17.47'
 gem 'momentjs-rails', '>= 2.9.0'
 gem 'moment_timezone-rails'
-gem 'bootstrap3-datetimepicker-rails', '>= 4.17.47'
 
 # Force SSL on certain routes
 gem 'rack-ssl-enforcer'
@@ -120,22 +126,23 @@ group :development do
   gem 'binding_of_caller' # enhances better_errors
 
   # static code analyzer
+  gem 'erb_lint', require: false
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
 
   # pre-commit hook for rubocop
-  gem 'overcommit' 
+  gem 'overcommit'
 
   # documentation generator
   gem 'yard'
 
   # sqlite3 adapter
-  gem 'sqlite3', '~> 1.4'
+  gem 'sqlite3', '1.5.1'
 end
 
 # Also install sqlite3 for docker installations
 if ENV['DEPLOY_METHOD'] == "docker"
-  gem 'sqlite3', '~> 1.4'
+  gem 'sqlite3', '1.5.1'
 end
 
 gem 'tzinfo-data'
@@ -161,4 +168,7 @@ gem 'mimemagic', '>= 0.3.7'
 
 # For encrypting API tokens
 gem 'lockbox'
+
+# to decode / verify jwts for LTI Integration
+gem "jwt"
 

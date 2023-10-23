@@ -50,6 +50,26 @@ function showFiles() {
   var fileSelector = $("#handin_show_assessment input[type='file']").get(0);
   var file = fileSelector.files[0];
   $("#handin-file-name").text(file.name);
+
+  // only do check for file type that has a period
+  if( $('#handin-file-type').length && file
+     && file.name.split(".").length > 1)         // use this if you are using id to check
+  {
+    $('#handin-file-type-incorrect').text("")
+    var handin_filetype = $('#handin-file-type').text();
+    var handin_filetype_length = handin_filetype.split(".").length;
+    var file_type = file.name.split(".").slice(-handin_filetype_length).join('.');
+    // compare expected file extension (handin_filetype) to submitted file extension (file_type)
+    if (handin_filetype != file_type) {
+      $('#handin-file-type-incorrect').text(`Warning: ${file.name}'s file type doesn't match expected .${handin_filetype} file type`)
+    }
+  } else if ($('#handin-file-type').length) {
+    // no . in the filename, so probably wrong
+    var handin_filetype = $('#handin-file-type').text();
+    $('#handin-file-type-incorrect').text(`Warning: ${file.name}'s file type doesn't match expected .${handin_filetype} file type`)
+  }
+
+
   $("#handin-modify-date").text(moment(file.lastModified).format("MMMM Do YYYY, h:mm a"));
   submittedFile = false;
 
@@ -94,6 +114,7 @@ $("#remove-handed-in").click(function (e) {
     enableSubmit();
   });
   $(".handedin-row").hide();
+  $('#handin-file-type-incorrect').text("")
 });
 
 function enableSubmit() {
@@ -101,9 +122,10 @@ function enableSubmit() {
   var tab = $(".submission-panel .ui.tab.active").attr('id');
   var fileSelector = $("#handin_show_assessment input[type='file']").get(0);
   if (tab === "github_tab") {
-    fileSelector.value = null;
-    $(".handin-row").show();
-    $(".handedin-row").hide();
+    // hide file type check text
+    $("#filename-check").hide();
+  } else {
+    $("#filename-check").show();
   }
   if (!checkbox.checked) {
     $("#fake-submit").addClass("disabled");
@@ -115,14 +137,10 @@ function enableSubmit() {
         $("#fake-submit").removeClass("disabled");
       }  
     } else if (tab === "github_tab") {
-      var repoSelected = $("#repo-dropdown .noselection").length === 0;
-      var branchSelected = $("#branch-dropdown .noselection").length === 0;
-      // if there's no repos
-      if (!repoSelected || !branchSelected) {
-        $("#fake-submit").addClass("disabled");
-      } else {
-        $("#fake-submit").removeClass("disabled");
-      }
+      const repoSelected = $("#repo-dropdown .noselection").length === 0;
+      const branchSelected = $("#branch-dropdown .noselection").length === 0;
+      const commitSelected = $("#commit-dropdown .noselection").length === 0;
+      $("#fake-submit").toggleClass("disabled", !repoSelected || !branchSelected || !commitSelected);
     }
   }
 

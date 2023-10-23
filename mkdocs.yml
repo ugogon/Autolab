@@ -13,6 +13,7 @@ nav:
             - Troubleshooting: installation/troubleshoot.md
             - Mailing Setup: installation/mailing.md
             - Github Integration Setup: installation/github_integration.md
+            - LTI Advantage Integration Setup: installation/lti_integration.md
         - Tango: 
             - Installation: installation/tango.md
             - Troubleshooting: installation/tango-troubleshoot.md
@@ -25,10 +26,12 @@ nav:
                 - Formatted Feedback: features/formatted-feedback.md
                 - Scoreboards: features/scoreboards.md
                 - Embedded Forms: features/embedded-forms.md
+                - Schedulers: features/schedulers.md
                 - Annotations: features/annotations.md
                 - MOSS Plagiarism Detection: features/moss.md
                 - Metrics: features/metrics.md
                 - Git Submission: features/git-submission.md
+                - LTI Course Linking: features/lti-course-integration.md
         - Autolab Frontend CLI: command-line-interface.md
         - Tango CLI: tango-cli.md
     - Reference: 

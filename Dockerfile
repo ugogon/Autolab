@@ -7,7 +7,7 @@
 #     https://github.com/phusion/passenger-docker
 #
 #
-FROM phusion/passenger-ruby26:2.0.0
+FROM phusion/passenger-ruby27:2.5.0
 
 MAINTAINER Autolab Development Team "wr@cg.tu-berlin.de"
 
@@ -62,6 +62,7 @@ RUN mkdir -p /home/app/webapp/log && \
 USER app
 
 # precompile the Rails assets
+ENV SECRET_KEY_BASE=dummy_secret_key_base
 RUN RAILS_ENV=production bundle exec rails assets:precompile
 
 # Clean up APT when done.

@@ -1,3 +1,5 @@
+require "pathname"
+
 ##
 # Handles different handin methods, including web form, local_submit and log_submit
 #
@@ -39,12 +41,12 @@ module AssessmentHandin
       out_file = Tempfile.new('out.txt-')
       out_file.puts(contents)
       params[:submission]["file"] = out_file
-    elsif @assessment.github_submission_enabled && params["repo"].present? && params["branch"].present?
+    elsif @assessment.github_submission_enabled && params["github_submission"].present?
       # get code from Github
       github_integration = current_user.github_integration
 
       begin
-        @tarfile_path = github_integration.clone_repo(params["repo"], params["branch"], @assessment.max_size * (2 ** 20))
+        @tarfile_path = github_integration.clone_repo(params["repo"], params["branch"], params["commit"], @assessment.max_size * (2 ** 20))
       rescue StandardError => msg
         flash[:error] = msg
         redirect_to(action: :show)
@@ -126,13 +128,26 @@ module AssessmentHandin
     if !@assessment
       err = "ERROR: Invalid Assessment (#{params[:id]}) for course #{@course.id}"
       render(plain: err, status: :bad_request) && return
-    elsif @assessment.remote_handin_path.nil?
+    elsif @assessment.remote_handin_path.nil? || @assessment.remote_handin_path.empty?
       err = "ERROR: Remote handins have not been enabled by the instructor."
       render(plain: err, status: :bad_request) && return
     end
 
     personal_directory = @user.email + "_remote_handin_" + @assessment.name
     remote_handin_dir = File.join(@assessment.remote_handin_path, personal_directory)
+    remote_handin_path = Pathname.new(@assessment.remote_handin_path).expand_path
+    remote_handin_dir_path = Pathname.new(remote_handin_dir).expand_path
+
+    # https://stackoverflow.com/questions/39581798/check-if-file-folder-is-in-a-subdirectory-in-ruby
+    # Validate that the handin directory lies strictly within remote handin path
+    # Note: The fnmatch? check is ALMOST sufficient, except when the paths are /
+    is_dir_underneath = ((remote_handin_dir_path.fnmatch? File.join(remote_handin_path.to_s, "**")) and
+      (remote_handin_dir_path != remote_handin_path))
+
+    unless is_dir_underneath
+      # No way to reasonably handle this, so return an error
+      render(plain: "Unable to create handin directory for user", status: :bad_request) && return
+    end
 
     if params[:submit]
       # They've copied their handin over, lets go grab it.
@@ -149,9 +164,20 @@ module AssessmentHandin
 
         render(plain: flash[:error], status: :bad_request) && return unless validateHandinForGroups_forHTML
 
+        remote_handin_file = File.join(remote_handin_dir, handin_file)
+        remote_handin_file_path = Pathname.new(remote_handin_file).expand_path
+
+        # Validate that the handin file lies strictly within the handin directory
+        is_file_underneath = ((remote_handin_file_path.fnmatch? File.join(remote_handin_dir_path.to_s, "**")) and
+          (remote_handin_file_path != remote_handin_dir_path))
+
+        unless is_file_underneath
+          render(plain: "Invalid path to file", status: :bad_request) && return
+        end
+
         # save the submissions
         begin
-          submissions = saveHandin("local_submit_file" => File.join(remote_handin_dir, handin_file))
+          submissions = saveHandin("local_submit_file" => remote_handin_file_path)
         rescue StandardError => e
           ExceptionNotifier.notify_exception(e, env: request.env,
                                                 data: {
@@ -337,8 +363,6 @@ module AssessmentHandin
       return false
     end
 
-    validate_custom_form
-
     validity = validateHandin(params[:submission]["file"].size,
                               params[:submission]["file"].content_type,
                               params[:submission]["file"].original_filename)
@@ -382,18 +406,6 @@ module AssessmentHandin
 
     flash[:error] = msg
     return false
-  end
-
-  def validate_custom_form
-    # check if custom form exists
-    if @assessment.has_custom_form
-      for i in 0..@assessment.getTextfields.size - 1
-        if params[:submission][("formfield" + (i + 1).to_s).to_sym].blank?
-          flash[:error] = @assessment.getTextfields[i] + " is a required field."
-          return false
-        end
-      end
-    end
   end
 
   def handle_validity(validity)

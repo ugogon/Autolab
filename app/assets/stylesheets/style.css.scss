@@ -7,15 +7,8 @@
 * Class and ID Rules. Also pseudo classes *
 *******************************************/
 
-/********************************************************
-* These colors have been changed to fit a CMU aesthetic.*
-********************************************************/
-$autolab-red: rgba(153, 0, 0, 0.9);
-$autolab-subtle-red: #c87b7e;
-$autolab-subtle-gray: #eee;
-$autolab-highlight-gray: #ccc;
-$autolab-black-text: #212121;
-$autolab-blue-text: #0882af;
+@import 'variables';
+
 #F2EFEF html,
 body {
   height: 100%;
@@ -146,7 +139,7 @@ div.main-header img {
 }
 
 .action-links.navbar-nav .dropdown li:hover {
-  background-color: #eee;
+  background-color: $autolab-subtle-gray;
 }
 
 .action-links.navbar-nav li.dropdown a {
@@ -174,11 +167,76 @@ div.main-header img {
   overflow: hidden;
 }
 
-/* Custom Form Styling */
-form#edit_editCourse {
-  margin-top: 80px;
+/* Feedback Styling */
+.result-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+.result-pane {
+  border-radius: 10px;
+  padding: 2vh 2vw;
+  background-color: white;
+  border: 1px solid #C4C4C4;
+  margin-bottom: 2vh;
+}
+.feedback-container {
+  width: 74%;
+}
+.result-summary {
+  position: relative;
+  right: 0;
+  top: 0;
+  /* if the 25 is changed, also modify the containerWidth
+     multiplier in app/assets/javascripts/feedback.js */
+  width: 25%;
+}
+.result-fixed {
+  position: absolute;
+  width: 100%;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1vh;
+  margin-bottom: 1vh;
+  border-bottom: 2px solid #C4C4C4;
+}
+#status-refresh {
+  display: flex;
+  align-items: center;
+
+  .material-icons {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+.result-container .feedback-header h3 {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
+.feedback-status {
+  padding: 0.5vh 1vw;
+  color: white;
+  font-weight: bold;
+  border-radius: 10px;
+  &__completed {
+    background-color: $autolab-green;
+  }
+  &__inprogress {
+    background-color: $autolab-red;
+  }
+  &__queued {
+    background-color: $autolab-blue-text;
+  }
+}
+
+/* Custom Form Styling */
 .input-field,
 form > div {
   padding-bottom: 1rem !important;
@@ -239,24 +297,6 @@ input[type="email"] {
 
 .caret {
   border-color: transparent !important;
-}
-
-/* embedded-form */
-.embedded-form {
-  display: inline-block;
-  cursor: pointer;
-}
-
-input[type="file"].upload_embedded {
-  display: none;
-}
-
-#upload_button .control-label {
-  display: none;
-}
-
-.hide-all {
-  display: none;
 }
 
 .navbar-nav.action-links > li > .dropdown-menu {
@@ -495,7 +535,7 @@ ul.gray-box {
 }
 ul.gray-box > li {
   background-color: #fafafa;
-  border: 1px solid #eee;
+  border: 1px solid $autolab-subtle-gray;
   color: #666;
   margin: 0;
   padding: 10px;
@@ -586,33 +626,47 @@ p.attention {
 }
 
 /**
- * ULs on the moss page
+ * Moss Page Styling
  **/
+.moss-dropdown {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.moss-dropdown h5 {
+  margin: 0;
+}
+.moss-dropdown i {
+  font-size: 32px;
+}
 ul.moss-list {
   list-style: none;
-  padding: 0;
+  background: $autolab-subtle-gray;
+  border-radius: 5px;
 }
 ul.moss-list > li {
-  background: #eee;
-  border: 1px solid #ccc;
   cursor: pointer;
-  margin: 5px;
-  padding: 4px;
+  padding: 15px;
 }
 ul.moss-list > li > h5 {
-  color: #00a;
   font-weight: bold;
   margin: 0;
+  padding-bottom: 10px;
 }
 ul.moss-inner-list {
   list-style: none;
   padding: 0;
 }
 ul.moss-inner-list > li {
-  background: linear-gradient(to top, #eee, #fff);
-  border: 1px solid #ccc;
+  background: $autolab-white;
   cursor: default;
-  padding: 2px;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
 }
 ul.moss-inner-list > li > h5 {
   margin: 0;
@@ -689,7 +743,7 @@ table.prettyBorder td {
 }
 table.prettyBorder {
   border-collapse: collapse;
-  box-shadow: 0 0 5px 0px #eee;
+  box-shadow: 0 0 5px 0px $autolab-subtle-gray;
   font-size: 15px;
   width: 100%;
   // keep track of what row this is
@@ -713,6 +767,11 @@ table.prettyBorder {
     }
   }
 
+  thead.float th {
+    z-index: 1;
+    position: sticky;
+    top: 0;
+  }
   th {
     background-color: #ebebeb;
     color: #909090;
@@ -731,7 +790,7 @@ table.prettyBorder {
   }
 
   tr.selected {
-    background-color: #eee;
+    background-color: $autolab-subtle-gray;
   }
 
   tr .btn.small {
@@ -774,6 +833,7 @@ table.navigatable tr:hover {
   .card-content .card-title.white-text {
     line-height: normal;
     font-size: 24px;
+    word-break: break-word;
   }
 
   .collection {
@@ -852,11 +912,6 @@ body.autolab {
   }
 }
 
-@media (min-width: 1200px) {
-  #pageBody.container {
-    max-width: 970px;
-  }
-}
 
 input[type="text"],
 input[type="email"],
@@ -866,8 +921,8 @@ textarea {
   margin-top: 0.2rem;
   margin-bottom: 0.2rem;
   padding: 5px 0 5px 0;
-  border-color: #ccc;
-  box-shadow: 0 1px 0 0 #ccc;
+  border-color: $autolab-highlight-gray;
+  box-shadow: 0 1px 0 0 $autolab-highlight-gray;
   outline: none;
   font-weight: 400;
 }
@@ -883,14 +938,21 @@ input[type="password"]:focus {
   outline: none;
 }
 
+// To remove line for file-field
+.file-field input[type="text"].validate,
+.file-field input[type="text"].validate.valid, {
+  border-bottom: none;
+  box-shadow: none;
+}
+
 input[type="checkbox"] {
   // For spacing between this and an adjacent label
   margin-right: 10px;
 }
 
 input[type="search"] {
-  border-bottom: 1px #ccc;
-  box-shadow: 0 1px 0 0 #ccc;
+  border-bottom: 1px $autolab-highlight-gray;
+  box-shadow: 0 1px 0 0 $autolab-highlight-gray;
 }
 
 .flatpickr-input {
@@ -937,7 +999,7 @@ form p:last-child {
   color: black;
   font-size: 15px;
   margin-top: 0;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .autolab select.form-control {
@@ -1035,7 +1097,7 @@ label[for="switch"] {
   height: 24px;
   top: -2px;
   left: -2px;
-  background: #eee;
+  background: $autolab-subtle-gray;
   border: 1px solid #ddd;
   content: "";
   border-radius: 2px;
@@ -1080,16 +1142,16 @@ label[for="switch"] {
 .options {
   line-height: 36px;
   list-style: none;
-  border-top: 1px solid #eee;
+  border-top: 1px solid $autolab-subtle-gray;
   padding-left: 0;
 }
 
 .options li:hover {
-  background-color: #eee;
+  background-color: $autolab-subtle-gray;
 }
 
 .options li {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid $autolab-subtle-gray;
 }
 
 .options li a {
@@ -1205,7 +1267,7 @@ div.center {
   padding: 10px;
   margin-bottom: 0px;
   border-radius: 3px;
-  border: 1px solid #eee;
+  border: 1px solid $autolab-subtle-gray;
   font-weight: 500;
 }
 
@@ -1243,8 +1305,8 @@ div.center {
 
 .attachment {
   font-weight: bold;
-  color: #eee;
-  border: 2px solid #eee;
+  color: $autolab-subtle-gray;
+  border: 2px solid $autolab-subtle-gray;
   border-radius: 6px;
   list-style: none;
   padding: 8px;
@@ -1356,9 +1418,49 @@ table.sub {
 .sub th {
   vertical-align: top;
 }
+table.sub td, th {
+  padding-right: 25px;
+}
+
+.autograding-in-progress {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+@keyframes spin {
+  from {
+      transform:rotate(0deg);
+  }
+  to {
+      transform:rotate(360deg);
+  }
+}
+.refresh-feedback.loading {
+  animation: spin 2s linear infinite;
+}
+.refresh-feedback {
+  color: $autolab-blue-text;
+  margin-right: 1vw;
+}
+.refresh-feedback:hover {
+  cursor: pointer;
+}
+.autograding-in-progress:before, .autograding-in-progress:after{
+  content: "";
+  flex: 1 1;
+  border-bottom: 2px dashed;
+  margin: auto;
+}
+.autograding-in-progress:before {
+  margin-right: 10px
+}
+.autograding-in-progress:after {
+  margin-left: 10px
+}
 
 .submissions {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .submission-history-button {
@@ -1367,7 +1469,7 @@ table.sub {
   font-size: 13px;
   width: 100%;
   border-radius: 5px;
-  color: #0882af;
+  color: $autolab-blue-text;
   box-shadow: 0px -0.5px 0.5px 0px rgba(0, 0, 0, 0.15),
               0px 0.5px 0.5px 0.5px rgba(0, 0, 0, 0.15),
               0px 0.5px 0.5px -0.5px rgba(0, 0, 0, 0.15);
