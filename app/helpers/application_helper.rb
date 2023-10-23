@@ -26,7 +26,7 @@ module ApplicationHelper
     if val.is_a?(Float) && val.nan?
       return val
     elsif val.is_a? Numeric
-      return val.to_f.round(1)
+      return val.to_f.round(2)
     else
       return val
     end
@@ -110,7 +110,7 @@ module ApplicationHelper
   # TODO: fix during gradebook, handin history, etc. rewrite
   def computed_score(link = nil, nil_to_dash = true)
     value = yield
-    value = value ? value.round(1) : value
+    value = value ? value.round(2) : value
     nil_to_dash && (value.nil?) ? raw("&ndash;") : value
   rescue ScoreComputationException => e
     image = image_tag("score_error.png", style: "width: 1.3em; height: 1.3em")
@@ -118,7 +118,7 @@ module ApplicationHelper
   end
 
   def round(v)
-    v ? v.round(1) : v
+    v ? v.round(2) : v
   end
 
   # NOTE: aud.final_score cannot be nil in here

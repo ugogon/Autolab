@@ -12,7 +12,7 @@
 
 <div class="gradebook">
   <h4>Grades for <%= @_cud.email %></h4>
-
+  <% summed_points = 0 %>
   <% if not @course.gb_message.blank? %>
     <div class="gb_message"><%=raw(@course.gb_message)%></div>
   <% end %>
@@ -21,6 +21,7 @@
     <% @categories_sorted.each_slice(2) do |cat_pair| %>
     <div class="row cat_pair">
       <% cat_pair.each do |cat| %>
+      <% loop_counter = 0 %>
         <div class="col m12 l6 cat_container">
 
         <div class="category">
@@ -49,6 +50,7 @@
               <th>Final Score</th>
             </tr>
               <% @course.assessments_with_category(cat, @cud.student?).each do |asmt| %>
+                <% loop_counter += 1 %>
                 <% aud = asmt.aud_for @_cud  %>
                 <tr>
                   <td>
@@ -116,10 +118,11 @@
               </tr>
             <% end %>
             <tr class="footer">
-              <th>Category Average</th>
+              <th>Category Sum</th>
               <% if @course.grace_days > 0 %><th></th><% end %>
               <th></th>
-              <th class="cat_avg"><%= computed_score { @_cud.category_average cat, @cud } %></th>
+              <% summed_points += loop_counter * (@_cud.category_average cat, @cud) %>
+              <th class="cat_avg"><%= computed_score { loop_counter * (@_cud.category_average cat, @cud) } %></th>
             </tr>
           </table>
         </div>
@@ -145,6 +148,10 @@
         <tr>
           <th>Course Average</th>
           <td><%== computed_score { @_cud.average @cud } %></td>
+        </tr> 
+        <tr>
+          <th>Course Sum</th>
+          <td><%== computed_score { summed_points } %></td>
         </tr>
       </table>
     </div>
