@@ -1,5 +1,6 @@
 <div class="history-download-pane" style="margin-right: 30px;">
   <% if can_always_download or not (sub.assessment.exam or sub.assessment.course.exam_in_progress) then %>
+  <% if not @assessment.embedded_quiz then %>
     <% if link = view_course_assessment_submission_path(@course, @assessment, sub) then %>
       <%= button_to link, data: {toggle: "tooltip", placement: "top"}, title: "View Source",
                     aria: {label: "Justify"}, style: "margin-right:3px",
@@ -30,7 +31,21 @@
         Download Submission
       <% end %>
     <% end %>
+  <% end %>
+    <% problem = @problems.first() %>
+
+    <% if @scores[sub.id] and @scores[sub.id][problem.id] and @scores[sub.id][problem.id][:released] == 1 and @scores[sub.id][problem.id][:feedback] then %>
+      <div style="height: 4px">
+        <br>
+      </div>
+      <a href="<%= url_for action: :viewFeedback, params: { submission_id: sub.id, feedback: problem.id } %>" data-toggle="tooltip" data-placement="top" title="Feedback" aria-label="Justify" style="margin-right:3px" class="btn btn-small white submission-history-button" type="submit" value="Feedback">
+        <span style="margin-right:3px;"><i class="material-icons">grading</i></span>
+        Feedback
+      </a>
+    <% end %>
+
   <% else %>
     <%= sub.filename %>
   <% end %>
 </div>
+
