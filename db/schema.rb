@@ -95,8 +95,8 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
     t.text "embedded_quiz_form_data"
     t.boolean "embedded_quiz"
     t.binary "embedded_quiz_form"
-    t.boolean "allow_student_assign_group", default: true
     t.boolean "github_submission_enabled", default: true
+    t.boolean "allow_student_assign_group", default: true
     t.boolean "is_positive_grading", default: false
   end
 
@@ -294,7 +294,7 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
   create_table "scores", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "submission_id"
     t.float "score"
-    t.text "feedback", limit: 16777215
+    t.text "feedback", size: :medium
     t.integer "problem_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -357,19 +357,19 @@ ActiveRecord::Schema.define(version: 2022_09_29_205611) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "watchlist_configurations", force: :cascade do |t|
+  create_table "watchlist_configurations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.json "category_blocklist"
     t.json "assessment_blocklist"
-    t.integer "course_id"
+    t.bigint "course_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["course_id"], name: "index_watchlist_configurations_on_course_id"
   end
 
-  create_table "watchlist_instances", force: :cascade do |t|
-    t.integer "course_user_datum_id"
-    t.integer "course_id"
-    t.integer "risk_condition_id"
+  create_table "watchlist_instances", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "course_user_datum_id"
+    t.bigint "course_id"
+    t.bigint "risk_condition_id"
     t.integer "status", default: 0
     t.boolean "archived", default: false
     t.datetime "created_at", null: false
