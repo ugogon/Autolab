@@ -174,7 +174,7 @@
                 <% if @extension&.infinite? %>
                   <%= due_at_display @aud.due_at %>
                 <% else %>
-                  <span class="moment-date-time" data-format="MMMM Do YYYY, h:mm a z [(UTC] Z[)]"><%= due_at_display @aud.due_at %></span>
+                  <span class="moment-date-time" data-format="D MMMM YYYY, H:mm z"><%= due_at_display @aud.due_at %></span>
                 <% end %>
               </b>
           </p>
@@ -186,7 +186,7 @@
               <% if @extension&.infinite? %>
                 <%= end_at_display(@aud.end_at(false)) %>
               <% else %>
-                <span class="moment-date-time" data-format="MMMM Do YYYY, h:mm a z [(UTC] Z[)]"><%= end_at_display(@aud.end_at(false)) %></span>
+                <span class="moment-date-time" data-format="D MMMM YYYY, H:mm z"><%= end_at_display(@aud.end_at(false)) %></span>
               <% end %>
             </b>
           </p>
