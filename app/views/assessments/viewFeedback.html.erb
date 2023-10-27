@@ -1,43 +1,45 @@
-<% if @jsonFeedback.nil? %>
-  <h2><%= @score&.grader&.user ? "Grading" : "Autograding" %> Result for
-      <%= @score.nil? ? @assessment.display_name : "#{@assessment.display_name} - #{@score.problem.name} (#{@score.submission.course_user_datum.user.email})" %>
-  </h2>
-  <div class="result-container">
-    <div class="feedback-container">
-      <div class="result-pane">
-        <% if @score.nil? %>
-          <div class="feedback-header">
-            <h3>Feedback</h3>
-            <div id="status-refresh">
-              <i class="refresh-feedback small material-icons">refresh</i>
-              <div id="status-badge" class="feedback-status feedback-status__inprogress">
-                In-Progress
+<% if @assessment.has_autograder? && @assessment.autograder.release_score? %>
+  <% if @jsonFeedback.nil? %>
+    <h2><%= @score&.grader&.user ? "Grading" : "Autograding" %> Result for
+        <%= @score.nil? ? @assessment.display_name : "#{@assessment.display_name} - #{@score.problem.name} (#{@score.submission.course_user_datum.user.email})" %>
+    </h2>
+    <div class="result-container">
+      <div class="feedback-container">
+        <div class="result-pane">
+          <% if @score.nil? %>
+            <div class="feedback-header">
+              <h3>Feedback</h3>
+              <div id="status-refresh">
+                <i class="refresh-feedback small material-icons">refresh</i>
+                <div id="status-badge" class="feedback-status feedback-status__inprogress">
+                  In-Progress
+                </div>
               </div>
             </div>
-          </div>
-          <div id="partial-feedback"></div>
-          <%= render "partial_feedback_js" %>
-        <% else %>
-          <div class="feedback-header">
-            <h3>Feedback</h3>
-              <div id="status-badge" class="feedback-status feedback-status__completed">
-                Completed
-              </div>
-          </div>
-          <% if @score.feedback.nil? %>
-            <pre>There was an error autograding your submission. Feedback is not available.</pre>
+            <div id="partial-feedback"></div>
+            <%= render "partial_feedback_js" %>
           <% else %>
-            <pre><%= @score.feedback %></pre>
+            <div class="feedback-header">
+              <h3>Feedback</h3>
+                <div id="status-badge" class="feedback-status feedback-status__completed">
+                  Completed
+                </div>
+            </div>
+            <% if @score.feedback.nil? %>
+              <pre>There was an error autograding your submission. Feedback is not available.</pre>
+            <% else %>
+              <pre><%= @score.feedback %></pre>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
+        <%= render "remarks_panel" %>
       </div>
-      <%= render "remarks_panel" %>
+      <%= render "results_panel" %>
     </div>
-    <%= render "results_panel" %>
-  </div>
 
-<% else %>
-  <%= render "semantic" %>
+  <% else %>
+    <%= render "semantic" %>
+  <% end %>
 <% end %>
 <!--
 Yes, feedback is per problem but we show all annotations for this submission anyway. While this is not semantically correct, it offers a better UX than we had before. If we just show annotations attached to this problem, then where would we show annotations not attached to a problem at all?
