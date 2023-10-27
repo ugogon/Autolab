@@ -147,8 +147,8 @@
               <th>Category Sum</th>
               <% if @course.grace_days > 0 %><th></th><% end %>
               <th></th>
-              <% summed_points += loop_counter * (@_cud.category_average cat, @cud) %>
-              <th class="cat_avg"><%= computed_score { loop_counter * (@_cud.category_average cat, @cud) } %></th>
+              <% summed_points += loop_counter * ((@_cud.category_average cat, @cud) || 0) %>
+              <th class="cat_avg"><%= computed_score { loop_counter * ((@_cud.category_average cat, @cud) || 0) } %></th>
             </tr>
           </table>
         </div>
