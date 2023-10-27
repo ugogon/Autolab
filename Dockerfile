@@ -33,9 +33,11 @@ RUN rm /etc/nginx/sites-enabled/default
 # Install gems
 WORKDIR /tmp
 ADD Gemfile .
+ADD omniauth-ldap ./omniauth-ldap
 ADD Gemfile.lock .
 
 RUN chown app:app Gemfile Gemfile.lock
+RUN chown -R app:app omniauth-ldap
 
 # Prepare folders
 USER app

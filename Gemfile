@@ -13,7 +13,7 @@ gem 'materialize-sass', "=1.0.0"
 gem 'bootstrap-sass', '>= 3.4.1'
 
 # Use for Metrics page
-gem 'fomantic-ui-sass'
+gem 'fomantic-ui-sass', '=2.8.8'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'terser', '>= 1.1.7'
@@ -60,7 +60,7 @@ gem 'omniauth', '>=1.2.2'
 gem 'omniauth-facebook', '>=2.0.0'
 gem 'omniauth-google-oauth2', '>=0.2.5'
 gem 'omniauth-shibboleth-redux', '~> 2.0', require: 'omniauth-shibboleth'
-gem 'omniauth-ldap'
+gem 'omniauth-ldap', ">=2.0.0", path: './omniauth-ldap'
 
 # OAuth2 authentication
 gem 'oauth2'
@@ -75,7 +75,7 @@ gem 'doorkeeper'
 gem 'rack-attack'
 
 # Adds It also adds f.error_messages and f.error_message_on to form builders
-gem 'dynamic_form'
+gem 'dynamic_form', '=1.1.4'
 
 # Supports zip file generation.
 gem 'rubyzip'
