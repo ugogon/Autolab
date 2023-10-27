@@ -60,7 +60,6 @@ ActiveRecord::Schema.define(version: 2023_07_07_161335) do
   create_table "assessments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.timestamp "due_at"
     t.timestamp "end_at"
-    t.timestamp "visible_at"
     t.timestamp "start_at"
     t.string "name"
     t.text "description"
@@ -90,7 +89,6 @@ ActiveRecord::Schema.define(version: 2023_07_07_161335) do
     t.integer "group_size", default: 1
     t.text "embedded_quiz_form_data"
     t.boolean "embedded_quiz"
-    t.binary "embedded_quiz_form"
     t.boolean "github_submission_enabled", default: true
     t.boolean "allow_student_assign_group", default: true
     t.boolean "is_positive_grading", default: false
@@ -180,19 +178,19 @@ ActiveRecord::Schema.define(version: 2023_07_07_161335) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "lti_course_data", force: :cascade do |t|
+  create_table "lti_course_data", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "context_id"
     t.integer "course_id"
     t.datetime "last_synced"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "membership_url"
     t.string "platform"
-    t.boolean "auto_sync"
-    t.boolean "drop_missing_students"
+    t.boolean "auto_sync", default: false
+    t.boolean "drop_missing_students", default: false
   end
 
-  create_table "module_data", force: :cascade do |t|
+  create_table "module_data", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "field_id"
     t.integer "data_id"
     t.binary "data"
@@ -333,7 +331,6 @@ ActiveRecord::Schema.define(version: 2023_07_07_161335) do
     t.integer "tweak_id"
     t.boolean "ignored", default: false, null: false
     t.string "dave"
-    t.text "settings"
     t.text "embedded_quiz_form_answer"
     t.integer "submitted_by_app_id"
     t.string "group_key", default: ""
