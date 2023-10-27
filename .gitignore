@@ -30,6 +30,7 @@ public/images/CourseSubmissions.png
 public/images/HourlySubmissions.png
 public/assets/
 public/stylesheets/
+public/custom/exercises
 vendor/
 
 # sqlite databases
