@@ -31,7 +31,7 @@
   <% end %>
     <% problem = @problems.first() %>
 
-    <% if @scores[sub.id] and @scores[sub.id][problem.id] and @scores[sub.id][problem.id][:released] == 1 and @scores[sub.id][problem.id][:feedback] then %>
+    <% if @scores[sub.id] and @scores[sub.id][problem.id] and (@scores[sub.id][problem.id][:released] == 1 or @cud.instructor?) and @scores[sub.id][problem.id][:feedback] then %>
       <div style="height: 4px">
         <br>
       </div>
